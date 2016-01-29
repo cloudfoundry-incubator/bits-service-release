@@ -1,0 +1,9 @@
+---
+name: bits_service
+templates:
+  bits_service_ctl.erb: bin/bits_service_ctl
+
+packages:
+  - ruby-2.2.4
+  - bits_service
+  - common

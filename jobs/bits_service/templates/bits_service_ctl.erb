@@ -1,0 +1,46 @@
+#!/bin/bash
+
+export NAME=bits_service
+
+export JOB_DIR=/var/vcap/jobs/${NAME}
+export PATH=/var/vcap/packages/ruby-2.2.4/bin:$PATH
+
+PACKAGE_DIR=/var/vcap/packages/${NAME}
+
+RUN_DIR=/var/vcap/sys/run/${NAME}
+LOG_DIR=/var/vcap/sys/log/${NAME}
+PIDFILE=${RUN_DIR}/${NAME}.pid
+
+export BUNDLE_GEMFILE=$PACKAGE_DIR/${NAME}/Gemfile
+export HOME=/home/vcap # rake needs it to be set to run tasks
+export TMPDIR=/var/vcap/data/${NAME}/tmp
+
+source /var/vcap/packages/common/utils.sh
+
+case $1 in
+
+  start)
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+    mkdir -p $TMPDIR
+
+    chown vcap:vcap $RUN_DIR
+    chown vcap:vcap $LOG_DIR
+    chown vcap:vcap $TMPDIR
+
+    pid_guard $PIDFILE "Bits Service"
+
+    cd $PACKAGE_DIR/${NAME}
+
+    echo $! > ${PIDFILE}
+    sleep 30d
+    ;;
+  stop)
+      kill_and_wait $PIDFILE
+    ;;
+
+  *)
+    echo "Usage: bits_service_ctl {start|stop}"
+    ;;
+
+esac

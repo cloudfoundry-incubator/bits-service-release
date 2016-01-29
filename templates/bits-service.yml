@@ -1,0 +1,40 @@
+name: bits-service
+release:
+  name: bits-service
+  version: latest
+compilation:
+  workers: 1
+  network: default
+  cloud_properties:
+    instance_type: m1.small
+update:
+  canaries: 1
+  canary_watch_time: 30000
+  update_watch_time: 30000
+  max_in_flight: 4
+  max_errors: 1
+networks:
+  - name: default
+    type: dynamic
+    cloud_properties:
+      security_groups:
+      - default
+resource_pools:
+  - name: common
+    network: default
+    stemcell:
+      name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+      version: latest
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone:
+      key_name:
+jobs:
+- name: bits-service
+  template: bits_service
+  instances: 1
+  resource_pool: common
+  networks:
+  - name: default
+properties:
+  bits-service:
