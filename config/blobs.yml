@@ -1,0 +1,29 @@
+---
+ruby-2.2.4/bundler-1.10.6.gem:
+  object_id: 74aa8a43-e1f6-43d5-b90d-e86a01b2e404
+  sha: 55a37fccd1c0cb5542d468e35d3be46dd0667f73
+  size: 251392
+ruby-2.2.4/ruby-2.2.4.tar.gz:
+  object_id: bb355996-b778-4c98-939c-9716c81f03cd
+  sha: 818e5e157f76d4912ba3a7c7b4fc5156105e83c3
+  size: 16638151
+ruby-2.2.4/rubygems-2.4.8.tgz:
+  object_id: 998e4fd8-fd28-4b7d-8870-5394c26e8303
+  sha: 0db6b2f1cdd2267fe19f1f875057c2f2ce9f5696
+  size: 447712
+nginx/headers-more-v0.25.tgz:
+  object_id: a621718d-df24-4205-ba31-6ed8a212732e
+  sha: 514bc3df30b24eb0a06533f1ebaa579b898990f5
+  size: 27973
+nginx/nginx-upload-module-2.2.tar.gz:
+  object_id: 502854f1-9823-468f-baef-1a8d68823ead
+  sha: 74ccd116525a155db76f92a1cd484d9516a70398
+  size: 28505
+nginx/pcre-8.37.tar.gz:
+  object_id: 262a1857-da10-4680-b148-52d7803af7ae
+  sha: 4a24a20c61347d8da4edc86d5475aaf70ac146bb
+  size: 2041593
+nginx/nginx-1.8.0.tar.gz:
+  object_id: 0d18bbee-b79d-4fec-bba5-635821969fa0
+  sha: 12bad312764feae50246685ab2e74512d1aa9b2f
+  size: 832104
