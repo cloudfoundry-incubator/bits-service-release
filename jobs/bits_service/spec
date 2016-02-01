@@ -2,8 +2,11 @@
 name: bits_service
 templates:
   bits_service_ctl.erb: bin/bits_service_ctl
+  nginx_ctl.erb: bin/nginx_ctl
+  nginx.conf.erb: config/nginx.conf
 
 packages:
   - ruby-2.2.4
   - bits_service
   - common
+  - nginx
