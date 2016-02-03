@@ -1,3 +1,11 @@
 properties:
   bits-service:
     foo: bar
+networks:
+- name: default
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.250.0.0/24
+    reserved:
+    - 10.250.0.1

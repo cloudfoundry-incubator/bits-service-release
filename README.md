@@ -31,10 +31,10 @@ If the bits-service has an IP that is not in the 10.244.*.* range, add a route t
 
 ```
 # OSX:
-sudo route add -net 10.254.0.0/16 192.168.50.4
+sudo route add -net 10.250.0.0/16 192.168.50.4
 
 # Linux:
-sudo ip route add 10.254.0.0/16 via 192.168.50.4
+sudo ip route add 10.250.0.0/16 via 192.168.50.4
 ```
 
 ## Prerequisites for Development

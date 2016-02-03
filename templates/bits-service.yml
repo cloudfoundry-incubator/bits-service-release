@@ -13,12 +13,7 @@ update:
   update_watch_time: 30000
   max_in_flight: 4
   max_errors: 1
-networks:
-  - name: default
-    type: dynamic
-    cloud_properties:
-      security_groups:
-      - default
+networks: (( merge ))
 resource_pools:
   - name: common
     network: default
