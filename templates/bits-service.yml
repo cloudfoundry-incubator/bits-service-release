@@ -1,7 +1,7 @@
 name: bits-service
-release:
-  name: bits-service
-  version: latest
+releases:
+  - name: bits-service
+    version: latest
 compilation:
   workers: 1
   network: default
