@@ -1,7 +1,7 @@
 ---
 platform: linux
 
-image: docker:///concourse/concourse-ci
+image: docker:///flintstonecf/ci
 
 inputs:
 - name: git-bits-service-release
