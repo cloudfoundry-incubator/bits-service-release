@@ -2479,7 +2479,7 @@ properties:
     apps_domain: bosh-lite.com
     client_secret: tcp-emitter-secret
     include_routing: true
-    nodes: 1
+    nodes: 4
     skip_ssl_validation: true
     system_domain: bosh-lite.com
     use_http: true
