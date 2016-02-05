@@ -8,7 +8,7 @@ cd git-cf-release
 ./scripts/update
 ./scripts/generate-bosh-lite-dev-manifest
 
-bosh create release --force --with-tarball
+bosh create release --force --name cf --with-tarball
 mv dev_releases/cf/cf-*.tgz ../assets/release.tgz
 
 mv bosh-lite/deployments/cf.yml ../assets/manifest.yml
