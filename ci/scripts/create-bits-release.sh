@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-cd git-bits-service-release
+cd $(dirname $0)/../../
 
 bosh -u x -p x target $BOSH_TARGET Lite
 bosh login $BOSH_USERNAME $BOSH_PASSWORD

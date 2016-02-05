@@ -15,4 +15,4 @@ outputs:
 - name: assets
 
 run:
-  path: git-bits-service-release/ci/scripts/create-release-and-manifest.sh
+  path: git-bits-service-release/ci/scripts/create-bits-release.sh

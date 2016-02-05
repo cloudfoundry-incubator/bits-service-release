@@ -4,7 +4,8 @@ bosh -u x -p x target $BOSH_TARGET Lite
 bosh login $BOSH_USERNAME $BOSH_PASSWORD
 bosh status
 
-cd git-cf-release
+cd $(dirname $0)/../../../cf-release
+
 ./scripts/update
 ./scripts/generate-bosh-lite-dev-manifest
 
