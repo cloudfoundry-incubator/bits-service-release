@@ -2,8 +2,6 @@
 
 cd $(dirname $0)/../../../git-cf-release
 
-./scripts/update
-
 version=$(cat $VERSION_FILE)
 
 bosh create release --force --name cf --with-tarball --version $version
