@@ -4,5 +4,7 @@ cd $(dirname $0)/../../../git-cf-release
 
 ./scripts/update
 
-bosh create release --force --name cf --with-tarball
+version=$(cat $VERSION_FILE)
+
+bosh create release --force --name cf --with-tarball --version $version
 mv dev_releases/cf/cf-*.tgz ../assets/release.tgz
