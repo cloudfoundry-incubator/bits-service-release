@@ -4,6 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
+director_uuid: dc4e8b29-2f3a-4051-8b66-39193791a57b
 jobs:
 - instances: 1
   name: consul_z1
