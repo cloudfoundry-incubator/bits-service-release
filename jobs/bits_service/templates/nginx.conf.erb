@@ -31,8 +31,31 @@ http {
     server_name  _;
     server_name_in_redirect off;
 
-    # proxy and log all CC traffic
-    location / {
+    location ~ (/buildpacks/.*) {
+      # Pass altered request body to this location
+      upload_pass @bits_service;
+      upload_pass_args on;
+
+      # Store files to this directory
+      upload_store /var/vcap/data/bits-service/tmp/uploads;
+
+      # No limit for output body forwarded
+      upload_max_output_body_len 0;
+
+      # Allow uploaded files to be read only by user
+      upload_store_access user:r;
+
+      # Set specified fields in request body
+      upload_set_form_field "buildpack_name" $upload_file_name;
+      upload_set_form_field "buildpack_path" $upload_tmp_path;
+
+      # on any error, delete uploaded files
+      upload_cleanup 400-505;
+    }
+
+    # Pass altered request body to a backend
+    location @bits_service {
+      proxy_pass http://unix:/var/vcap/sys/run/bits-service/bits-service.sock;
     }
 
     location /nginx_status {

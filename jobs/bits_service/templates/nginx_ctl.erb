@@ -4,6 +4,7 @@ set -e -x
 
 RUN_DIR=/var/vcap/sys/run/nginx_bits
 LOG_DIR=/var/vcap/sys/log/nginx_bits
+UPLOADS_DIR=/var/vcap/data/bits-service/tmp/uploads
 PIDFILE=$RUN_DIR/nginx.pid
 JOB_DIR=/var/vcap/jobs/bits_service
 
@@ -18,6 +19,10 @@ case $1 in
     mkdir -p $LOG_DIR
 
     echo $$ > $PIDFILE
+
+    if [ ! -d "$UPLOADS_DIR" ]; then
+      chpst -u vcap:vcap mkdir -p $UPLOADS_DIR
+    fi
 
     exec /var/vcap/packages/nginx/sbin/nginx \
          -c $JOB_DIR/config/nginx.conf
