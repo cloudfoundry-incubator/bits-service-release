@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NAME=bits_service
+export NAME=bits-service
 
 export JOB_DIR=/var/vcap/jobs/${NAME}
 export PATH=/var/vcap/packages/ruby-2.2.4/bin:$PATH
@@ -40,7 +40,7 @@ case $1 in
     ;;
 
   *)
-    echo "Usage: bits_service_ctl {start|stop}"
+    echo "Usage: bits-service_ctl {start|stop}"
     ;;
 
 esac

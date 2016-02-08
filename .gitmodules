@@ -1,3 +1,6 @@
 [submodule "src/bits_service"]
 	path = src/bits_service
 	url = https://github.com/cloudfoundry-incubator/bits-service.git
+[submodule "src/bits-service"]
+	path = src/bits-service
+	url = https://github.com/cloudfoundry-incubator/bits-service.git

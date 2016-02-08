@@ -3,7 +3,7 @@ set -e -x
 
 cp -a * ${BOSH_INSTALL_TARGET}
 
-cd ${BOSH_INSTALL_TARGET}/bits_service
+cd ${BOSH_INSTALL_TARGET}/bits-service
 
 bundle_cmd=/var/vcap/packages/ruby-2.2.4/bin/bundle
 

@@ -1,0 +1,11 @@
+check process bits-service
+  with pidfile /var/vcap/sys/run/bits-service/bits-service.pid
+  start program "/var/vcap/jobs/bits-service/bin/bits-service_ctl start"
+  stop program "/var/vcap/jobs/bits-service/bin/bits-service_ctl stop"
+  group vcap
+
+check process nginx_bits
+  with pidfile /var/vcap/sys/run/nginx_bits/nginx.pid
+  start program "/var/vcap/jobs/bits-service/bin/nginx_ctl start"
+  stop program "/var/vcap/jobs/bits-service/bin/nginx_ctl stop"
+  group vcap
