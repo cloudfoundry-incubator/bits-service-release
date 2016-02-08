@@ -7,4 +7,7 @@ cd ${BOSH_INSTALL_TARGET}/bits-service
 
 bundle_cmd=/var/vcap/packages/ruby-2.2.4/bin/bundle
 
-$bundle_cmd install --local --deployment --without development test
+$bundle_cmd install --local \
+                    --deployment \
+                    --without development test \
+                    --path ${BOSH_INSTALL_TARGET}/bits-service/.gems

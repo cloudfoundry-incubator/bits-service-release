@@ -5,5 +5,5 @@ dependencies:
 - ruby-2.2.4
 
 files:
-- bits-service/{.ruby-version,Rakefile,Gemfile,Gemfile.lock}
+- bits-service/**/*
 - bits-service/app/**/*
