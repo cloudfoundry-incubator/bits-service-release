@@ -4,6 +4,7 @@ templates:
   bits-service_ctl.erb: bin/bits-service_ctl
   nginx_ctl.erb: bin/nginx_ctl
   nginx.conf.erb: config/nginx.conf
+  bits_config.yml.erb: config/bits_config.yml
 
 packages:
   - ruby-2.2.4
