@@ -3195,6 +3195,8 @@ properties:
 releases:
 - name: cf
   version: latest
+- name: bits-service
+  version: latest
 resource_pools:
 - cloud_properties:
     name: random
