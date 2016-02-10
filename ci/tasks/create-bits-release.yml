@@ -10,6 +10,7 @@ params:
   BOSH_TARGET:
   BOSH_USERNAME:
   BOSH_PASSWORD:
+  VERSION_FILE:
 
 outputs:
 - name: assets
