@@ -5,6 +5,7 @@ image: docker:///flintstonecf/ci
 
 inputs:
 - name: git-bits-service-release
+- name: bits-service-release-version
 
 params:
   BOSH_TARGET:
