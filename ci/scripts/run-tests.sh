@@ -1,6 +1,6 @@
 #!/bin/bash -ex
 
-cd git-bits-service-release
+cd $(dirname $0)/../../
 
 bundle install
 bundle exec rspec spec
