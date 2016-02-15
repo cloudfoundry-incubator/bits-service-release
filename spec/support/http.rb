@@ -3,8 +3,8 @@ module HttpHelpers
     try_catch { RestClient.get "#{bits_service_endpoint}#{path}" }
   end
 
-  def make_put_request(path, body)
-    try_catch { RestClient.put "#{bits_service_endpoint}#{path}", body }
+  def make_post_request(path, body)
+    try_catch { RestClient.post "#{bits_service_endpoint}#{path}", body }
   end
 
   private
