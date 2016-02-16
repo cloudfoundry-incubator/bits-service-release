@@ -46,7 +46,19 @@ brew tap xoebus/cloudfoundry
 brew install spiff
 ```
 
-## Running Tests
+# Tests
 
-	$ cd test
-	$ ./test.sh
+* Deploy release
+* Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
+
+  ```
+  export BITS_SERVICE_ENDPOINT=10.250.0.2
+  ```
+
+  Outside bosh-lite you will need to update the endpoint.
+
+* Run specs:
+
+  ```
+  bundle exec rspec spec
+  ```
