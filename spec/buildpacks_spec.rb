@@ -71,4 +71,29 @@ describe 'buildpacks resource' do
       end
     end
   end
+
+  describe 'DELETE /buildpacks/:guid', type: :integration do
+    context 'when the buildpack exists' do
+      it 'returns HTTP status 200' do
+        response = make_delete_request resource_path
+        expect(response.code).to eq 200
+      end
+    end
+
+    context 'when the buildpack does not exist' do
+      let(:resource_path) { '/buildpacks/not-existing' }
+
+      it 'has HTTP 404 as status code' do
+        response = make_delete_request resource_path
+        expect(response.code).to eq 404
+      end
+
+      it 'returns the correct error' do
+        response = make_delete_request resource_path
+        json = JSON.parse(response.body)
+        expect(json['code']).to eq(10000)
+        expect(json['description']).to match(/Unknown request/)
+      end
+    end
+  end
 end
