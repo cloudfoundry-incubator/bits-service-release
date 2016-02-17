@@ -20,10 +20,18 @@ describe 'buildpacks resource' do
 
   let(:upload_body) { { buildpack: zip_file } }
 
+  let(:blobstore_client) { backend_client(:buildpacks) }
+
   describe 'POST /buildpacks', type: :integration do
     it 'returns HTTP status 201' do
       response = make_post_request collection_path, upload_body
       expect(response.code).to eq 201
+    end
+
+    it 'stores the blob in the backend' do
+      response = make_post_request collection_path, upload_body
+      guid = guid_from_response(response)
+      expect(blobstore_client.guid_exist? guid).to eq(true)
     end
 
     context 'when the request body is invalid' do
