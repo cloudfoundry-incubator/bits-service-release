@@ -1,0 +1,10 @@
+metadata:
+  release_name: bits-service-local
+  networks:
+    reserved: 10.250.0.1
+    range: 10.250.0.0./24
+properties:
+  bits-service:
+    buildpacks:
+      directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
+      fog_connection: '{"provider":"local", "local_root": "/var/vcap/store/bits-service/"}'

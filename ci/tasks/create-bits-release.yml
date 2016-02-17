@@ -8,13 +8,11 @@ inputs:
 - name: bits-service-release-version
 
 params:
-  BOSH_TARGET:
-  BOSH_USERNAME:
-  BOSH_PASSWORD:
   VERSION_FILE:
+  RELEASE_NAME:
 
 outputs:
-- name: assets
+- name: releases
 
 run:
   path: git-bits-service-release/ci/scripts/create-bits-release.sh

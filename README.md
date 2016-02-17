@@ -13,8 +13,15 @@ git submodule update --init
 
 ### Create a deployment manifest
 
+Local file storage:
 ```
-./scripts/generate-bosh-lite-manifest
+./scripts/generate-bosh-lite-manifest ./templates/local-blobstore.yml
+
+```
+
+S3 file storage:
+```
+./scripts/generate-bosh-lite-manifest ./templates/s3-blobstore.yml
 
 ```
 

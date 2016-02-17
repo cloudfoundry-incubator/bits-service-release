@@ -11,3 +11,10 @@ packages:
   - bits-service
   - common
   - nginx
+
+properties:
+  bits-service.buildpacks.directory_key:
+    description: "Directory (bucket) used to store buildpack blobs."
+    default: "cc-buildpacks"
+  bits-service.buildpacks.fog_connection:
+    description: "Fog connection properties"

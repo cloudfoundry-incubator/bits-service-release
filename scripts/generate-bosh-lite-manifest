@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd $(dirname $0)/..
 export BOSH_USE_BUNDLER=true
 
 BOSH_RELEASES_DIR=${BOSH_RELEASES_DIR:-~/workspace}
