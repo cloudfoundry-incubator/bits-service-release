@@ -1,0 +1,19 @@
+---
+platform: linux
+
+image: docker:///flintstonecf/ci
+
+inputs:
+  - name: git-bits-service-release
+
+params:
+  BOSH_TARGET:
+  BOSH_USERNAME:
+  BOSH_PASSWORD:
+  RELEASE_FILE:
+
+outputs:
+- name: releases
+
+run:
+  path: git-bits-service-release/ci/scripts/upload-release.sh
