@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+export BITS_DIRECTORY_KEY=buildpacks
+./scripts/generate-bosh-lite-manifest ./templates/local.yml
+./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > /tmp/bits-service-bosh-lite.yml
+mv /tmp/bits-service-bosh-lite.yml ./deployments/bits-service-release-bosh-lite.yml
