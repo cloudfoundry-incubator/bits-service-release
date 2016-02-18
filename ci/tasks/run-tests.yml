@@ -7,8 +7,11 @@ inputs:
 - name: git-bits-service-release
 
 params:
+  BOSH_USERNAME:
+  BOSH_PASSWORD:
+  BOSH_TARGET:
   BITS_SERVICE_ENDPOINT:
-  BITS_SERVICE_MANIFEST:
+  RELEASE_NAME:
 
 run:
   path: git-bits-service-release/ci/scripts/run-tests.sh
