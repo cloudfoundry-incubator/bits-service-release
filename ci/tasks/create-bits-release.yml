@@ -9,7 +9,6 @@ inputs:
 
 params:
   VERSION_FILE:
-  RELEASE_NAME:
 
 outputs:
 - name: releases

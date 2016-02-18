@@ -13,8 +13,5 @@ params:
   BOSH_PASSWORD:
   RELEASE_FILE:
 
-outputs:
-- name: releases
-
 run:
   path: git-bits-service-release/ci/scripts/upload-release.sh
