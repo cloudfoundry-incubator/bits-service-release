@@ -36,7 +36,10 @@ jobs:
   - name: default
 properties:
   bits-service:
-    <<: (( merge ))
     buildpacks:
+      <<: (( merge ))
       directory_key: buildpacks
-      fog_connection: '{"provider": "local", "local_root": "/var/vcap/store/bits-service/"}'
+      fog_connection:
+        <<: (( merge ))
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
