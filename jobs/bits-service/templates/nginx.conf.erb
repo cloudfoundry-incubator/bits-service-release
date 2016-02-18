@@ -36,7 +36,7 @@ http {
     server_name_in_redirect off;
 
     # buildpack downloads
-    location ~ "/<%= p("bits-service.buildpacks.directory_key") %>/ew{2}/\w{2}/[^/]*" {
+    location ~ "/<%= p("bits-service.buildpacks.directory_key") %>/\w{2}/\w{2}/[^/]*" {
       internal;
       root /var/vcap/store/bits-service/;
     }
