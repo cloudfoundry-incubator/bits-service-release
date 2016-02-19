@@ -13,4 +13,5 @@ RSpec.configure do |conf|
   include ManifestHelpers
   include BackendHelpers
   include ResponseHelpers
+  include FileHelpers
 end

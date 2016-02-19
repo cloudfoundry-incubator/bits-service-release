@@ -18,3 +18,8 @@ properties:
     default: "cc-buildpacks"
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties"
+
+  bits-service.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
+

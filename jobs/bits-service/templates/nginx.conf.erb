@@ -24,7 +24,8 @@ http {
 
   keepalive_timeout  75 20; #inherited from router
 
-  client_max_body_size 15M; #already enforced upstream/but doesn't hurt.
+  # Allow large uploads
+  client_max_body_size <%= p("bits-service.max_body_size") %>;
 
   upstream bits_service {
     server unix:/var/vcap/sys/run/bits-service/bits-service.sock;

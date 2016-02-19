@@ -1,0 +1,3 @@
+properties:
+  bits-service:
+    max_body_size: 2M

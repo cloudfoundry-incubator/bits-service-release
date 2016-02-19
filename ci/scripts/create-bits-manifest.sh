@@ -9,7 +9,7 @@ if [ -z "$BLOBSTORE_TYPE" ]
 then
   ./scripts/generate-bosh-lite-manifest
 else
-  ./scripts/generate-bosh-lite-manifest ./templates/$BLOBSTORE_TYPE.yml
+  ./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/$BLOBSTORE_TYPE.yml
 fi
 
 ./scripts/manifest_parser.rb deployments/bits-service-release-bosh-lite.yml > "../manifests/manifest.yml"

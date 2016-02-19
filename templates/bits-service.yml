@@ -36,6 +36,7 @@ jobs:
   - name: default
 properties:
   bits-service:
+    <<: (( merge ))
     buildpacks:
       directory_key: (( merge ))
       fog_connection:
