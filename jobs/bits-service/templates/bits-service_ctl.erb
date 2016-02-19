@@ -36,6 +36,7 @@ case $1 in
     cd $PACKAGE_DIR/${NAME}
 
     bundle exec puma -d --pidfile $PIDFILE \
+      -e production \
       -b unix:/var/vcap/sys/run/bits-service/bits-service.sock \
       --redirect-stdout $LOG_DIR/bits-service.stdout.log \
       --redirect-stderr $LOG_DIR/bits-service.stderr.log \
