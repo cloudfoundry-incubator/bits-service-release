@@ -1,7 +1,7 @@
 # deployment bits-service nginx.conf
 user  vcap vcap;
 
-error_log /var/vcap/sys/log/nginx_bits/nginx.error.log info;
+error_log <%= p("bits-service.nginx.error_log_destination") %> <%= p("bits-service.nginx.error_log_level") %>;
 pid       /var/vcap/sys/run/nginx_bits/nginx.pid;
 
 events {
@@ -13,10 +13,9 @@ http {
   default_type  text/html;
   server_tokens off;
 
-  log_format main  '$host - [$time_local] "$request" $status $bytes_sent "$http_referer" "$http_user_agent"
-      $proxy_add_x_forwarded_for vcap_request_id:$upstream_http_x_vcap_request_id response_time:$upstream_response_time';
-
-  access_log  /var/vcap/sys/log/nginx_bits/nginx.access.log  main;
+  log_format main  '<%= p("bits-service.nginx.access_log_format").chomp %>';
+  
+  access_log  <%= p("bits-service.nginx.access_log_destination") %> main;
 
   sendfile             on;  #enable use of sendfile()
   tcp_nopush           on;

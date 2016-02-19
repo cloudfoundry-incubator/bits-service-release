@@ -4,4 +4,7 @@ buildpacks:
 nginx:
   use_nginx: true
 logging:
-  level: debug
+  file: /var/vcap/sys/log/bits-service/bits-service.log
+  syslog: vcap.bits-service
+  level: <%= p("bits-service.logging.level") %>
+  max_retries: <%= p("bits-service.logging.max_retries") %>

@@ -17,9 +17,30 @@ properties:
     description: "Directory (bucket) used to store buildpack blobs."
     default: "cc-buildpacks"
   bits-service.buildpacks.fog_connection:
-    description: "Fog connection properties"
-
+    description: "Fog connection properties."
+  
   bits-service.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
+  
+  bits-service.logging.level:
+    default: "debug"
+    description: "Log level for bits-service. See Steno logger for details."
+  bits-service.logging.max_retries:
+    default: 1
+    description: "Number of times to retry if a write to the log file fails. See Steno logger for details."
 
+  bits-service.nginx.access_log_destination:
+    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/nginx.access.log"
+  bits-service.nginx.access_log_format:
+    description: "Nginx log format string to use when writing to the access log."
+    default: >
+      $host - [$time_local] "$request" $status $bytes_sent "$http_referer" "$http_user_agent"
+      $proxy_add_x_forwarded_for vcap_request_id:$upstream_http_x_vcap_request_id response_time:$upstream_response_time
+  bits-service.nginx.error_log_destination:
+    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/nginx.error.log"
+  bits-service.nginx.error_log_level:
+    description: "The lowest severity nginx log level to capture in the error log."
+    default: error
