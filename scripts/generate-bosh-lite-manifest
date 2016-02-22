@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ "$#" -ne 1 ] && echo "Requies at least 1 stub" && exit 1
+[ "$#" -eq 0 ] && echo "Requies at least 1 stub" && exit 1
 
 cd $(dirname $0)/..
 export BOSH_USE_BUNDLER=true
