@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image: docker:///flintstonecf/ci
+
+inputs:
+- name: git-bits-service-release
+
+params:
+  BOSH_TARGET:
+  BOSH_USERNAME:
+  BOSH_PASSWORD:
+  DEPLOYMENT_NAME:
+
+run:
+  path: git-bits-service-release/ci/scripts/delete-deployment.sh
