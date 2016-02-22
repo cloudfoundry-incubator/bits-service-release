@@ -4,7 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: dc4e8b29-2f3a-4051-8b66-39193791a57b
+director_uuid: 553a6e62-1b01-4e9a-9cdc-ae95a65e6ab4
 jobs:
 - instances: 1
   name: bits_service_z1
