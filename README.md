@@ -56,18 +56,24 @@ brew install spiff
 # Tests
 
 * Generate manifest with tests stubs:
+
   ```
-    ./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
+  ./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
   ```
+
 * Parse the manifest with the ENV variables required
-    ```
-    BITS_DIRECTORY_KEY=buildpacks ./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
-    ```
+
+  ```
+  BITS_DIRECTORY_KEY=buildpacks ./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
+  ```
+
 * Set the deployment and tell the test where to find it:
-    ```
-    bosh deployment manifest.yml
-    export BITS_SERVICE_MANIFEST=./manifest.yml
-    ```
+
+  ```
+  bosh deployment manifest.yml
+  export BITS_SERVICE_MANIFEST=./manifest.yml
+  ```
+
 * Deploy release using the generated manifest above
 * Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
 

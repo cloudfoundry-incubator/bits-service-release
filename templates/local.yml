@@ -6,7 +6,12 @@ metadata:
 properties:
   bits-service:
     buildpacks:
-      directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
+      directory_key: buildpacks
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
+    droplets:
+      directory_key: droplets
       fog_connection:
         provider: "local"
         local_root: "/var/vcap/store/bits-service/"

@@ -37,7 +37,3 @@ jobs:
 properties:
   bits-service:
     <<: (( merge ))
-    buildpacks:
-      directory_key: (( merge ))
-      fog_connection:
-        <<: (( merge ))

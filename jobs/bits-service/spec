@@ -18,11 +18,16 @@ properties:
     default: "cc-buildpacks"
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
-  
+  bits-service.droplets.directory_key:
+    description: "Directory (bucket) used to store droplet blobs."
+    default: "cc-droplets"
+  bits-service.droplets.fog_connection:
+    description: "Fog connection properties."
+
   bits-service.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
-  
+
   bits-service.logging.level:
     default: "debug"
     description: "Log level for bits-service. See Steno logger for details."

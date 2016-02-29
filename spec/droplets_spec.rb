@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'buildpacks resource' do
+describe 'droplets resource' do
   let(:guid) { SecureRandom.uuid }
 
-  let(:collection_path) { '/buildpacks' }
+  let(:collection_path) { '/droplets' }
 
-  let(:resource_path) { "/buildpacks/#{existing_guid}" }
+  let(:resource_path) { "/droplets/#{existing_guid}" }
 
   let(:existing_guid) do
     response = make_post_request collection_path, upload_body
@@ -18,11 +18,11 @@ describe 'buildpacks resource' do
     File.new(zip_filepath)
   end
 
-  let(:upload_body) { { buildpack: zip_file } }
+  let(:upload_body) { { droplet: zip_file } }
 
-  let(:blobstore_client) { backend_client(:buildpacks) }
+  let(:blobstore_client) { backend_client(:droplets) }
 
-  describe 'POST /buildpacks', type: :integration do
+  describe 'POST /droplets', type: :integration do
     it 'returns HTTP status 201' do
       response = make_post_request collection_path, upload_body
       expect(response.code).to eq 201
@@ -44,7 +44,7 @@ describe 'buildpacks resource' do
     end
 
     context 'when the uploaded file is not a zip file' do
-      let(:upload_body) { { buildpack: __FILE__ } }
+      let(:upload_body) { { droplet: __FILE__ } }
 
       it 'returns HTTP status 415' do
         response = make_post_request collection_path, upload_body
@@ -53,8 +53,8 @@ describe 'buildpacks resource' do
     end
   end
 
-  describe 'GET /buildpacks/:guid', type: :integration do
-    context 'when the buildpack exists' do
+  describe 'GET /droplets/:guid', type: :integration do
+    context 'when the droplet exists' do
       it 'returns HTTP status 200' do
         response = make_get_request resource_path
         expect(response.code).to eq 200
@@ -66,8 +66,8 @@ describe 'buildpacks resource' do
       end
     end
 
-    context 'when the buildpack does not exist' do
-      let(:resource_path) { '/buildpacks/not-existing' }
+    context 'when the droplet does not exist' do
+      let(:resource_path) { '/droplets/not-existing' }
 
       it 'returns the correct error' do
         response = make_get_request resource_path
@@ -80,8 +80,8 @@ describe 'buildpacks resource' do
     end
   end
 
-  describe 'DELETE /buildpacks/:guid', type: :integration do
-    context 'when the buildpack exists' do
+  describe 'DELETE /droplets/:guid', type: :integration do
+    context 'when the droplet exists' do
       it 'returns HTTP status 204' do
         response = make_delete_request resource_path
         expect(response.code).to eq 204
@@ -93,8 +93,8 @@ describe 'buildpacks resource' do
       end
     end
 
-    context 'when the buildpack does not exist' do
-      let(:resource_path) { '/buildpacks/not-existing' }
+    context 'when the droplet does not exist' do
+      let(:resource_path) { '/droplets/not-existing' }
 
       it 'has HTTP 404 as status code' do
         response = make_delete_request resource_path
@@ -109,4 +109,5 @@ describe 'buildpacks resource' do
       end
     end
   end
+
 end

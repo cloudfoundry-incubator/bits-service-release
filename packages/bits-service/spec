@@ -6,4 +6,3 @@ dependencies:
 
 files:
 - bits-service/**/*
-- bits-service/app/**/*

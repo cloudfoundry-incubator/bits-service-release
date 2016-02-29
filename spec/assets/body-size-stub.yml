@@ -1,3 +1,4 @@
 properties:
   bits-service:
+    <<: (( merge ))
     max_body_size: 2M
