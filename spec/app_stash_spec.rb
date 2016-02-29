@@ -23,7 +23,7 @@ describe 'app_stash endpoint' do
     it 'stores the blob in the backend' do
       make_post_request endpoint, request_body
       app_stash_entries.each do |entry|
-        expect(blobstore_client.guid_exist? entry['sha1']).to eq(true)
+        expect(blobstore_client.key_exist? entry['sha1']).to eq(true)
       end
     end
 

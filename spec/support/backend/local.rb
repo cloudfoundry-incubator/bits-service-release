@@ -9,7 +9,7 @@ module Backend
         @job_ip = URI.parse(job_ip).host
       end
 
-      def guid_exist?(guid)
+      def key_exist?(guid)
         path = File.join(root_path, directory_key, path_for_guid(guid))
 
         remote_path_exists?(job_ip, path)

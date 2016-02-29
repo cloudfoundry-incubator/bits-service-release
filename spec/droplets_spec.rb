@@ -31,7 +31,7 @@ describe 'droplets resource' do
     it 'stores the blob in the backend' do
       response = make_post_request collection_path, upload_body
       guid = guid_from_response(response)
-      expect(blobstore_client.guid_exist? guid).to eq(true)
+      expect(blobstore_client.key_exist? guid).to eq(true)
     end
 
     context 'when the request body is invalid' do
@@ -88,8 +88,8 @@ describe 'droplets resource' do
       end
 
       it 'deletes the blob from the backend' do
-        response = make_delete_request resource_path
-        expect(blobstore_client.guid_exist? guid).to eq(false)
+        make_delete_request resource_path
+        expect(blobstore_client.key_exist? guid).to eq(false)
       end
     end
 

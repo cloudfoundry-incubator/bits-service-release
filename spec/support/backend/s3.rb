@@ -12,7 +12,7 @@ module Backend
         @bucket = bucket
       end
 
-      def guid_exist?(guid)
+      def key_exist?(guid)
         path = path_for_guid(guid)
         @client.get_object(
           bucket: @bucket,
