@@ -2495,6 +2495,11 @@ properties:
       fog_connection:
         local_root: /var/vcap/store/bits-service/
         provider: local
+    droplets:
+      directory_key: droplets
+      fog_connection:
+        local_root: /var/vcap/store/bits-service/
+        provider: local
   acceptance_tests:
     admin_password: admin
     admin_user: admin
