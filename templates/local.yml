@@ -15,3 +15,8 @@ properties:
       fog_connection:
         provider: "local"
         local_root: "/var/vcap/store/bits-service/"
+    app_stash:
+      directory_key: app_stash
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"

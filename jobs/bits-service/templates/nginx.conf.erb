@@ -41,11 +41,7 @@ http {
       root /var/vcap/store/bits-service/;
     }
 
-    location ~ /(buildpacks|droplets)/.* {
-      proxy_pass http://bits_service;
-    }
-
-    location ~ /(buildpacks|droplets) {
+    location ~ ^/(buildpacks$|droplets$|app_stash/entries$) {
       # POSTs
 
       # Pass altered request body to this location
@@ -68,6 +64,11 @@ http {
       # on any error, delete uploaded files
       upload_cleanup 400-505;
     }
+
+    location ~ ^/(buildpacks|droplets|app_stash) {
+      proxy_pass http://bits_service;
+    }
+
 
     # Pass altered request body to a backend
     location @bits_service {

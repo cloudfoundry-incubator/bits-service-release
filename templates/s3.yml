@@ -19,3 +19,10 @@ properties:
         aws_access_key_id: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
         aws_secret_access_key: "<%= ENV['AWS_SECRET_ACCESS_KEY'] %>"
         region: "<%= ENV['BITS_AWS_REGION'] %>"
+    app_stash:
+      directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
+      fog_connection:
+        provider: "AWS"
+        aws_access_key_id: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
+        aws_secret_access_key: "<%= ENV['AWS_SECRET_ACCESS_KEY'] %>"
+        region: "<%= ENV['BITS_AWS_REGION'] %>"

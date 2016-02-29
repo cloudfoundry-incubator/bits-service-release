@@ -15,13 +15,18 @@ packages:
 properties:
   bits-service.buildpacks.directory_key:
     description: "Directory (bucket) used to store buildpack blobs."
-    default: "cc-buildpacks"
+    default: "buildpacks"
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
     default: "cc-droplets"
   bits-service.droplets.fog_connection:
+    description: "Fog connection properties."
+  bits-service.app_stash.directory_key:
+    description: "Directory (bucket) used to store app stash blobs."
+    default: "app_stash"
+  bits-service.app_stash.fog_connection:
     description: "Fog connection properties."
 
   bits-service.max_body_size:
