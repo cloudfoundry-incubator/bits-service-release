@@ -2489,17 +2489,7 @@ networks:
     - 10.244.3.253
     static: []
 properties:
-  bits-service:
-    buildpacks:
-      directory_key: buildpacks
-      fog_connection:
-        local_root: /var/vcap/store/bits-service/
-        provider: local
-    droplets:
-      directory_key: droplets
-      fog_connection:
-        local_root: /var/vcap/store/bits-service/
-        provider: local
+    <<: (( merge ))
   acceptance_tests:
     admin_password: admin
     admin_user: admin
