@@ -2489,6 +2489,7 @@ networks:
     - 10.244.3.253
     static: []
 properties:
+  bits-service:
     <<: (( merge ))
   acceptance_tests:
     admin_password: admin
