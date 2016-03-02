@@ -4,7 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: 553a6e62-1b01-4e9a-9cdc-ae95a65e6ab4
+director_uuid: 44586d7c-bcce-4f5f-ae80-42bb8a1ed08b
 jobs:
 - instances: 1
   name: consul_z1
@@ -3305,4 +3305,3 @@ update:
   max_in_flight: 50
   serial: true
   update_watch_time: 1000-180000
-
