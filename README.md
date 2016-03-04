@@ -15,7 +15,6 @@ git submodule update --init
 
 ```
 ./scripts/generate-default-bosh-lite-manifest
-
 ```
 
 For different backends:
@@ -61,10 +60,19 @@ brew install spiff
   ./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
   ```
 
+* When targeting an S3 blobstore, the following environment variables are required to be set:
+
+  ```
+  BITS_DIRECTORY_KEY
+  AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY
+  BITS_AWS_REGION
+  ```
+
 * Parse the manifest with the ENV variables required
 
   ```
-  BITS_DIRECTORY_KEY=buildpacks ./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
+  ./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
   ```
 
 * Set the deployment and tell the test where to find it:
@@ -75,6 +83,7 @@ brew install spiff
   ```
 
 * Deploy release using the generated manifest above
+
 * Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
 
   ```
