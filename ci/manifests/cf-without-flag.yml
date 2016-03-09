@@ -216,13 +216,63 @@ jobs:
     static_ips: null
   persistent_disk: 102400
   properties:
+    consul:
+      agent:
+        services:
+          blobstore: {}
     metron_agent:
       zone: z1
+    route_registrar:
+      routes:
+      - name: blobstore
+        port: 80
+        registration_interval: 20s
+        tags:
+          component: blobstore
+        uris:
+        - blobstore.bosh-lite.com
   resource_pool: medium_z1
   templates:
+  - name: consul_agent
+    release: cf
   - name: debian_nfs_server
     release: cf
   - name: metron_agent
+    release: cf
+  - name: route_registrar
+    release: cf
+  update: {}
+- instances: 1
+  name: blobstore_z1
+  networks:
+  - name: cf1
+    static_ips: null
+  persistent_disk: 102400
+  properties:
+    consul:
+      agent:
+        services:
+          blobstore: {}
+    metron_agent:
+      zone: z1
+    route_registrar:
+      routes:
+      - name: blobstore
+        port: 80
+        registration_interval: 20s
+        tags:
+          component: blobstore
+        uris:
+        - blobstore.bosh-lite.com
+  resource_pool: medium_z1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: metron_agent
+    release: cf
+  - name: blobstore
+    release: cf
+  - name: route_registrar
     release: cf
   update: {}
 - instances: 1
@@ -257,6 +307,7 @@ jobs:
       routes:
       - name: uaa
         port: 8080
+        registration_interval: 20s
         tags:
           component: uaa
         uris:
@@ -296,6 +347,7 @@ jobs:
       routes:
       - name: uaa
         port: 8080
+        registration_interval: 20s
         tags:
           component: uaa
         uris:
@@ -330,7 +382,6 @@ jobs:
       agent:
         services:
           cloud_controller_ng: {}
-          routing-api: {}
     metron_agent:
       zone: z1
     nfs_server:
@@ -343,27 +394,38 @@ jobs:
       routes:
       - name: api
         port: 9022
+        registration_interval: 20s
         tags:
           component: CloudController
         uris:
         - api.bosh-lite.com
   resource_pool: large_z1
   templates:
+  - name: consul_agent
+    release: cf
+  - name: go-buildpack
+    release: cf
+  - name: binary-buildpack
+    release: cf
+  - name: nodejs-buildpack
+    release: cf
+  - name: ruby-buildpack
+    release: cf
+  - name: php-buildpack
+    release: cf
+  - name: python-buildpack
+    release: cf
+  - name: staticfile-buildpack
+    release: cf
   - name: cloud_controller_ng
     release: cf
   - name: cloud_controller_clock
     release: cf
   - name: cloud_controller_worker
     release: cf
-  - name: routing-api
-    release: cf
   - name: metron_agent
     release: cf
   - name: statsd-injector
-    release: cf
-  - name: consul_agent
-    release: cf
-  - name: nfs_mounter
     release: cf
   - name: route_registrar
     release: cf
@@ -390,19 +452,34 @@ jobs:
       routes:
       - name: api
         port: 9022
+        registration_interval: 20s
         tags:
           component: CloudController
         uris:
         - api.bosh-lite.com
   resource_pool: large_z2
   templates:
+  - name: consul_agent
+    release: cf
+  - name: go-buildpack
+    release: cf
+  - name: binary-buildpack
+    release: cf
+  - name: nodejs-buildpack
+    release: cf
+  - name: ruby-buildpack
+    release: cf
+  - name: php-buildpack
+    release: cf
+  - name: python-buildpack
+    release: cf
+  - name: staticfile-buildpack
+    release: cf
   - name: cloud_controller_ng
     release: cf
   - name: metron_agent
     release: cf
   - name: statsd-injector
-    release: cf
-  - name: consul_agent
     release: cf
   - name: nfs_mounter
     release: cf
@@ -440,13 +517,13 @@ jobs:
       share: null
   resource_pool: small_z1
   templates:
-  - name: cloud_controller_worker
-    release: cf
-  - name: metron_agent
-    release: cf
   - name: consul_agent
     release: cf
   - name: nfs_mounter
+    release: cf
+  - name: cloud_controller_worker
+    release: cf
+  - name: metron_agent
     release: cf
   update: {}
 - instances: 0
@@ -465,13 +542,13 @@ jobs:
       share: null
   resource_pool: small_z2
   templates:
-  - name: cloud_controller_worker
-    release: cf
-  - name: metron_agent
-    release: cf
   - name: consul_agent
     release: cf
   - name: nfs_mounter
+    release: cf
+  - name: cloud_controller_worker
+    release: cf
+  - name: metron_agent
     release: cf
   update: {}
 - instances: 1
@@ -489,19 +566,20 @@ jobs:
       routes:
       - name: hm9000
         port: 5155
+        registration_interval: 20s
         tags:
           component: HM9K
         uris:
         - hm9000.bosh-lite.com
   resource_pool: medium_z1
   templates:
+  - name: consul_agent
+    release: cf
   - name: hm9000
     release: cf
   - name: metron_agent
     release: cf
   - name: route_registrar
-    release: cf
-  - name: consul_agent
     release: cf
   update: {}
 - instances: 0
@@ -519,19 +597,20 @@ jobs:
       routes:
       - name: hm9000
         port: 5155
+        registration_interval: 20s
         tags:
           component: HM9K
         uris:
         - hm9000.bosh-lite.com
   resource_pool: medium_z2
   templates:
+  - name: consul_agent
+    release: cf
   - name: hm9000
     release: cf
   - name: metron_agent
     release: cf
   - name: route_registrar
-    release: cf
-  - name: consul_agent
     release: cf
   update: {}
 - instances: 1
@@ -556,13 +635,13 @@ jobs:
       zone: z1
   resource_pool: runner_z1
   templates:
+  - name: consul_agent
+    release: cf
   - name: dea_next
     release: cf
   - name: dea_logging_agent
     release: cf
   - name: metron_agent
-    release: cf
-  - name: consul_agent
     release: cf
   update:
     max_in_flight: 1
@@ -587,13 +666,13 @@ jobs:
       zone: z2
   resource_pool: runner_z2
   templates:
+  - name: consul_agent
+    release: cf
   - name: dea_next
     release: cf
   - name: dea_logging_agent
     release: cf
   - name: metron_agent
-    release: cf
-  - name: consul_agent
     release: cf
   update:
     max_in_flight: 1
@@ -680,10 +759,12 @@ jobs:
       routes:
       - name: doppler
         port: 8081
+        registration_interval: 20s
         uris:
         - doppler.bosh-lite.com
       - name: loggregator
         port: 8080
+        registration_interval: 20s
         uris:
         - loggregator.bosh-lite.com
     traffic_controller:
@@ -708,10 +789,12 @@ jobs:
       routes:
       - name: doppler
         port: 8081
+        registration_interval: 20s
         uris:
         - doppler.bosh-lite.com
       - name: loggregator
         port: 8080
+        registration_interval: 20s
         uris:
         - loggregator.bosh-lite.com
     traffic_controller:
@@ -743,11 +826,11 @@ jobs:
       zone: z1
   resource_pool: router_z1
   templates:
+  - name: consul_agent
+    release: cf
   - name: gorouter
     release: cf
   - name: metron_agent
-    release: cf
-  - name: consul_agent
     release: cf
   update: {}
 - default_networks:
@@ -767,11 +850,11 @@ jobs:
       zone: z2
   resource_pool: router_z2
   templates:
+  - name: consul_agent
+    release: cf
   - name: gorouter
     release: cf
   - name: metron_agent
-    release: cf
-  - name: consul_agent
     release: cf
   update: {}
 - instances: 1
@@ -2480,7 +2563,7 @@ properties:
     apps_domain: bosh-lite.com
     client_secret: tcp-emitter-secret
     include_routing: true
-    nodes: 4
+    nodes: 1
     skip_ssl_validation: true
     system_domain: bosh-lite.com
     use_http: true
@@ -2489,9 +2572,14 @@ properties:
   app_ssh:
     host_key_fingerprint: a6:d1:08:0b:b0:cb:9b:5f:c4:ba:44:2a:97:26:19:8a
     oauth_client_id: ssh-proxy
+  blobstore:
+    admin_users:
+    - password: blobstore-password
+      username: blobstore-username
+    port: 80
+    secure_link:
+      secret: blobstore-secret
   cc:
-    bits_service:
-      enabled: false
     allow_app_ssh_access: true
     allowed_cors_domains: []
     app_events:
@@ -2504,11 +2592,16 @@ properties:
     broker_client_max_async_poll_duration_minutes: null
     broker_client_timeout_seconds: 70
     buildpacks:
+      blobstore_type: webdav
       buildpack_directory_key: bosh-lite.com-cc-buildpacks
       cdn: null
-      fog_connection:
-        local_root: /var/vcap/store
-        provider: Local
+      fog_connection: null
+      webdav_config:
+        password: blobstore-password
+        private_endpoint: http://blobstore.service.cf.internal
+        public_endpoint: http://blobstore.bosh-lite.com
+        secret: blobstore-secret
+        username: blobstore-username
     bulk_api_password: bulk-password
     client_max_body_size: 15M
     db_encryption_key: db-encryption-key
@@ -2517,21 +2610,21 @@ properties:
     default_app_memory: 256
     default_buildpacks:
     - name: staticfile_buildpack
-      package: buildpack_staticfile
+      package: staticfile-buildpack
     - name: java_buildpack
       package: buildpack_java
     - name: ruby_buildpack
-      package: buildpack_ruby
+      package: ruby-buildpack
     - name: nodejs_buildpack
-      package: buildpack_nodejs
+      package: nodejs-buildpack
     - name: go_buildpack
-      package: buildpack_go
+      package: go-buildpack
     - name: python_buildpack
-      package: buildpack_python
+      package: python-buildpack
     - name: php_buildpack
-      package: buildpack_php
+      package: php-buildpack
     - name: binary_buildpack
-      package: buildpack_binary
+      package: binary-buildpack
     default_health_check_timeout: 60
     default_quota_definition: default
     default_running_security_groups:
@@ -2548,32 +2641,37 @@ properties:
     directories: null
     disable_custom_buildpacks: false
     droplets:
+      blobstore_type: webdav
       cdn: null
       droplet_directory_key: bosh-lite.com-cc-droplets
-      fog_connection:
-        local_root: /var/vcap/store
-        provider: Local
+      fog_connection: null
       max_staged_droplets_stored: null
+      webdav_config:
+        password: blobstore-password
+        private_endpoint: http://blobstore.service.cf.internal
+        public_endpoint: http://blobstore.bosh-lite.com
+        secret: blobstore-secret
+        username: blobstore-username
     external_host: api
     external_port: 9022
     external_protocol: null
     install_buildpacks:
     - name: staticfile_buildpack
-      package: buildpack_staticfile
+      package: staticfile-buildpack
     - name: java_buildpack
       package: buildpack_java
     - name: ruby_buildpack
-      package: buildpack_ruby
+      package: ruby-buildpack
     - name: nodejs_buildpack
-      package: buildpack_nodejs
+      package: nodejs-buildpack
     - name: go_buildpack
-      package: buildpack_go
+      package: go-buildpack
     - name: python_buildpack
-      package: buildpack_python
+      package: python-buildpack
     - name: php_buildpack
-      package: buildpack_php
+      package: php-buildpack
     - name: binary_buildpack
-      package: buildpack_binary
+      package: binary-buildpack
     internal_api_password: internal-password
     internal_api_user: internal_user
     jobs:
@@ -2613,12 +2711,17 @@ properties:
         record_sql: obfuscated
     packages:
       app_package_directory_key: bosh-lite.com-cc-packages
+      blobstore_type: webdav
       cdn: null
-      fog_connection:
-        local_root: /var/vcap/store
-        provider: Local
+      fog_connection: null
       max_package_size: 1073741824
       max_valid_packages_stored: null
+      webdav_config:
+        password: blobstore-password
+        private_endpoint: http://blobstore.service.cf.internal
+        public_endpoint: http://blobstore.bosh-lite.com
+        secret: blobstore-secret
+        username: blobstore-username
     quota_definitions:
       default:
         memory_limit: 10240
@@ -2626,11 +2729,16 @@ properties:
         total_routes: 1000
         total_services: 100
     resource_pool:
+      blobstore_type: webdav
       cdn: null
-      fog_connection:
-        local_root: /var/vcap/store
-        provider: Local
+      fog_connection: null
       resource_directory_key: bosh-lite.com-cc-resources
+      webdav_config:
+        password: blobstore-password
+        private_endpoint: http://blobstore.service.cf.internal
+        public_endpoint: http://blobstore.bosh-lite.com
+        secret: blobstore-secret
+        username: blobstore-username
     security_group_definitions:
     - name: public_networks
       rules:
@@ -2674,21 +2782,21 @@ properties:
     staging_upload_user: upload-user
     system_buildpacks:
     - name: staticfile_buildpack
-      package: buildpack_staticfile
+      package: staticfile-buildpack
     - name: java_buildpack
       package: buildpack_java
     - name: ruby_buildpack
-      package: buildpack_ruby
+      package: ruby-buildpack
     - name: nodejs_buildpack
-      package: buildpack_nodejs
+      package: nodejs-buildpack
     - name: go_buildpack
-      package: buildpack_go
+      package: go-buildpack
     - name: python_buildpack
-      package: buildpack_python
+      package: python-buildpack
     - name: php_buildpack
-      package: buildpack_php
+      package: php-buildpack
     - name: binary_buildpack
-      package: buildpack_binary
+      package: binary-buildpack
     thresholds:
       api:
         alert_if_above_mb: null
@@ -2700,6 +2808,12 @@ properties:
         restart_if_consistently_above_mb: null
     user_buildpacks: []
     users_can_select_backend: true
+    webdav_config:
+      password: blobstore-password
+      private_endpoint: http://blobstore.service.cf.internal
+      public_endpoint: http://blobstore.bosh-lite.com
+      secret: blobstore-secret
+      username: blobstore-username
   ccdb:
     address: 10.244.0.30
     databases:
@@ -2910,14 +3024,14 @@ properties:
   doppler:
     blacklisted_syslog_ranges: null
     debug: false
-    enable_tls_transport: null
     maxRetainedLogMessages: 100
     message_drain_buffer_size: null
     port: 4443
-    tls_server:
-      cert: null
-      key: null
+    tls:
+      enable: null
       port: null
+      server_cert: null
+      server_key: null
     unmarshaller_count: 5
     zone: null
   doppler_endpoint:
@@ -2949,7 +3063,7 @@ properties:
     maxRetainedLogMessages: 100
     outgoing_dropsonde_port: 8081
     tls:
-      ca: null
+      ca_cert: null
   loggregator_endpoint:
     shared_secret: loggregator-secret
   login:
@@ -2987,9 +3101,9 @@ properties:
     deployment: cf-warden
     enable_buffer: null
     preferred_protocol: null
-    tls_client:
-      cert: null
-      key: null
+    tls:
+      client_cert: null
+      client_key: null
   metron_endpoint:
     shared_secret: loggregator-secret
   nats:
@@ -3012,12 +3126,14 @@ properties:
   router:
     cipher_suites: null
     debug_addr: null
-    enable_routing_api: true
+    drain_wait: null
+    enable_routing_api: null
     enable_ssl: null
     extra_headers_to_log: null
     logrotate: null
     port: null
     requested_route_registration_interval_in_seconds: null
+    route_services_recommend_https: false
     route_services_secret: route-services-secret
     route_services_secret_decrypt_only: null
     route_services_timeout: null
@@ -3045,6 +3161,7 @@ properties:
   system_domain: bosh-lite.com
   system_domain_organization: null
   traffic_controller:
+    disable_access_control: null
     outgoing_port: 8080
     zone: null
   uaa:
@@ -3305,3 +3422,4 @@ update:
   max_in_flight: 50
   serial: true
   update_watch_time: 1000-180000
+
