@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-`gem install mime-types`
-
 require 'fog'
 
 s = Fog::Storage.new(
