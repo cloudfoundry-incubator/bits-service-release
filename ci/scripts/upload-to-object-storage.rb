@@ -2,6 +2,10 @@
 
 require 'fog'
 
+start_time = Time.now
+
+puts "Started: #{start_time}"
+
 s = Fog::Storage.new(
   :provider => 'OpenStack',
   :openstack_auth_url => ENV.fetch('OPENSTACK_AUTH_URL'),
@@ -35,4 +39,8 @@ remote_file = dir.files.create(
   public: true
 )
 
+end_time = Time.now
+puts "Finished: #{end_time}"
+puts "Duration: #{(end_time - start_time) / 60} minutes"
+puts
 puts "Successfully uploaded #{file_name} as #{remote_file.public_url}"
