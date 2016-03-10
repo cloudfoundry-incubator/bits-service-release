@@ -30,7 +30,7 @@ end
 dir = s.directories.create key: ENV.fetch('REMOTE_FOLDER'), public: true
 
 remote_file = dir.files.create(
-  key: (release_version / file_name).to_s,
+  key: File.join(release_version, file_name),
   body: file.open,
   public: true
 )
