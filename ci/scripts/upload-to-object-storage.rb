@@ -19,7 +19,20 @@ end
 file = files.first
 file_name = file.basename
 
+release_version_file = Pathname(ENV.fetch('VERSION_FILE'))
+release_version = release_version_file.read.chomp
+
+if release_version.empty?
+  warn "Could not find a release version in #{release_version_file}"
+  exit 1
+end
+
 dir = s.directories.create key: ENV.fetch('REMOTE_FOLDER'), public: true
-remote_file = dir.files.create key: file_name.to_s, body: file.open, public: true
+
+remote_file = dir.files.create(
+  key: (release_version / file_name).to_s,
+  body: file.open,
+  public: true
+)
 
 puts "Successfully uploaded #{file_name} as #{remote_file.public_url}"
