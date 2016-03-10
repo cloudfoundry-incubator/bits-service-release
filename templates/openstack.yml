@@ -12,6 +12,20 @@ properties:
         openstack_auth_url: "<%= ENV['OPENSTACK_AUTH_URL'] %>"
         openstack_username: "<%= ENV['OPENSTACK_USER_NAME'] %>"
         openstack_api_key:  "<%= ENV['OPENSTACK_API_KEY'] %>"
+    droplets:
+      directory_key: droplets
+      fog_connection:
+        provider: "OpenStack"
+        openstack_auth_url: "<%= ENV['OPENSTACK_AUTH_URL'] %>"
+        openstack_username: "<%= ENV['OPENSTACK_USER_NAME'] %>"
+        openstack_api_key:  "<%= ENV['OPENSTACK_API_KEY'] %>"
+    packages:
+      directory_key: packages
+      fog_connection:
+        provider: "OpenStack"
+        openstack_auth_url: "<%= ENV['OPENSTACK_AUTH_URL'] %>"
+        openstack_username: "<%= ENV['OPENSTACK_USER_NAME'] %>"
+        openstack_api_key:  "<%= ENV['OPENSTACK_API_KEY'] %>"
     app_stash:
       directory_key: app_stash
       fog_connection:
