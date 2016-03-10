@@ -23,6 +23,11 @@ properties:
     default: "cc-droplets"
   bits-service.droplets.fog_connection:
     description: "Fog connection properties."
+  bits-service.packages.directory_key:
+    description: "Directory (bucket) used to store package blobs."
+    default: "cc-packages"
+  bits-service.packages.fog_connection:
+    description: "Fog connection properties."
   bits-service.app_stash.directory_key:
     description: "Directory (bucket) used to store app stash blobs."
     default: "app_stash"

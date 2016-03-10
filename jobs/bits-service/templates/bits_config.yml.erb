@@ -4,6 +4,9 @@ buildpacks:
 droplets:
   directory_key: <%= p("bits-service.droplets.directory_key") %>
   fog_connection: <%= p("bits-service.droplets.fog_connection").to_json %>
+packages:
+  directory_key: <%= p("bits-service.packages.directory_key") %>
+  fog_connection: <%= p("bits-service.packages.fog_connection").to_json %>
 app_stash:
   directory_key: <%= p("bits-service.app_stash.directory_key") %>
   fog_connection: <%= p("bits-service.app_stash.fog_connection").to_json %>

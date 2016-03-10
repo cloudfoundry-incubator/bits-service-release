@@ -36,12 +36,12 @@ http {
     server_name_in_redirect off;
 
     # resource downloads
-    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>)/\w{2}/\w{2}/[^/]*" {
+    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/[^/]*" {
       internal;
       root /var/vcap/store/bits-service/;
     }
 
-    location ~ ^/(buildpacks$|droplets$|app_stash/entries$) {
+    location ~ ^/(buildpacks|droplets|app_stash/entries|packages)$ {
       # POSTs
 
       # Pass altered request body to this location
@@ -65,10 +65,9 @@ http {
       upload_cleanup 400-505;
     }
 
-    location ~ ^/(buildpacks|droplets|app_stash) {
+    location ~ ^/(buildpacks|droplets|app_stash|packages) {
       proxy_pass http://bits_service;
     }
-
 
     # Pass altered request body to a backend
     location @bits_service {
