@@ -5,13 +5,13 @@ image: docker:///flintstonecf/ci
 
 inputs:
   - name: git-bits-service-release
-  - name: releases
 
 params:
   OPENSTACK_AUTH_URL:
   OPENSTACK_USER_NAME:
   OPENSTACK_API_KEY:
-  RELEASE_FILE:
+  FILE_GLOB:
+  REMOTE_FOLDER:
 
 run:
   path: git-bits-service-release/ci/scripts/upload-to-object-storage.rb
