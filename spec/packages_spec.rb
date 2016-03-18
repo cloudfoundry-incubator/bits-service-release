@@ -96,7 +96,6 @@ describe 'packages resource' do
 
       it 'returns the correct error' do
         response = make_get_request resource_path
-
         expect(response).to be_a_404
       end
     end
@@ -125,9 +124,7 @@ describe 'packages resource' do
 
       it 'returns the correct error' do
         response = make_delete_request resource_path
-        json = JSON.parse(response.body)
-        expect(json['code']).to eq(10000)
-        expect(json['description']).to match(/Unknown request/)
+        expect(response).to be_a_404
       end
     end
   end

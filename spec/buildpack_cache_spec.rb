@@ -53,14 +53,12 @@ describe 'buildpack cache resource', type: :integration do
 
       it 'returns HTTP status 404' do
         response = make_delete_request(endpoint)
-        expect(response.code).to eq(404)
+        expect(response).to be_a_404
       end
 
       it 'returns the correct error' do
         response = make_delete_request(endpoint)
-        json = JSON.parse(response.body)
-        expect(json['code']).to eq(10000)
-        expect(json['description']).to match(/Unknown request/)
+        expect(response).to be_a_404
       end
     end
   end
@@ -92,9 +90,7 @@ describe 'buildpack cache resource', type: :integration do
 
       it 'returns the correct error' do
         response = make_get_request(endpoint)
-        json = JSON.parse(response.body)
-        expect(json['code']).to eq(10000)
-        expect(json['description']).to match(/Unknown request/)
+        expect(response).to be_a_404
       end
     end
   end
