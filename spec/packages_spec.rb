@@ -53,6 +53,31 @@ describe 'packages resource' do
     end
   end
 
+  describe 'PUT /packages/:guid/duplicate', type: :integration do
+    let(:resource_path) { "/packages/#{existing_guid}/duplicate" }
+    context 'when the package exists' do
+      it 'returns HTTP status 201' do
+        response = make_put_request resource_path, ''
+        expect(response.code).to eq 201
+      end
+
+      it 'returns the guid and the package exists' do
+        response = make_put_request resource_path, ''
+        guid = guid_from_response(response)
+        expect(blobstore_client.key_exist? guid).to eq(true)
+      end
+
+      context 'when ghe package does not exist' do
+        let(:resource_path) { '/packages/1234-5678-1234/duplicate' }
+
+        it 'returns the correct error' do
+          response = make_put_request resource_path, ''
+          expect(response).to be_a_404
+        end
+      end
+    end
+  end
+
   describe 'GET /packages/:guid', type: :integration do
     context 'when the package exists' do
       it 'returns HTTP status 200' do
@@ -72,10 +97,7 @@ describe 'packages resource' do
       it 'returns the correct error' do
         response = make_get_request resource_path
 
-        expect(response.code).to eq 404
-        json = JSON.parse(response.body)
-        expect(json['code']).to eq(10000)
-        expect(json['description']).to match(/Unknown request/)
+        expect(response).to be_a_404
       end
     end
   end
