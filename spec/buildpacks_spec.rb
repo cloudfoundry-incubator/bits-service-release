@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'buildpacks resource' do
+describe 'buildpacks resource', type: :integration do
   let(:guid) { SecureRandom.uuid }
 
   let(:collection_path) { '/buildpacks' }
@@ -22,7 +22,7 @@ describe 'buildpacks resource' do
 
   let(:blobstore_client) { backend_client(:buildpacks) }
 
-  describe 'POST /buildpacks', type: :integration do
+  describe 'POST /buildpacks' do
     it 'returns HTTP status 201' do
       response = make_post_request collection_path, upload_body
       expect(response.code).to eq 201
@@ -53,7 +53,7 @@ describe 'buildpacks resource' do
     end
   end
 
-  describe 'GET /buildpacks/:guid', type: :integration do
+  describe 'GET /buildpacks/:guid' do
     context 'when the buildpack exists' do
       it 'returns HTTP status 200' do
         response = make_get_request resource_path
@@ -80,7 +80,7 @@ describe 'buildpacks resource' do
     end
   end
 
-  describe 'DELETE /buildpacks/:guid', type: :integration do
+  describe 'DELETE /buildpacks/:guid' do
     context 'when the buildpack exists' do
       it 'returns HTTP status 204' do
         response = make_delete_request resource_path

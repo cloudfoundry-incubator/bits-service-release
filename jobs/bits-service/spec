@@ -18,6 +18,11 @@ properties:
     default: "buildpacks"
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
+  bits-service.buildpack_cache.directory_key:
+    description: "Directory (bucket) used to store buildpack cache blobs."
+    default: "buildpack_cache"
+  bits-service.buildpack_cache.fog_connection:
+    description: "Fog connection properties."
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
     default: "cc-droplets"

@@ -11,6 +11,10 @@ module HttpHelpers
     try_catch { RestClient.post "#{bits_service_endpoint}#{path}", body }
   end
 
+  def make_put_request(path, body)
+    try_catch { RestClient.put "#{bits_service_endpoint}#{path}", body }
+  end
+
   private
 
   def try_catch

@@ -36,9 +36,36 @@ http {
     server_name_in_redirect off;
 
     # resource downloads
-    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/[^/]*" {
+    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>|<%= p("bits-service.buildpack_cache.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
       root /var/vcap/store/bits-service/;
+    }
+
+    location ~ ^/buildpack_cache {
+      if ($request_method != PUT ) {
+        proxy_pass http://bits_service;
+        break;
+      }
+
+      # Pass altered request body to this location
+      upload_pass @bits_service;
+      upload_pass_args on;
+
+      # Store files to this directory
+      upload_store /var/vcap/data/bits-service/tmp/uploads;
+
+      # No limit for output body forwarded
+      upload_max_output_body_len 0;
+
+      # Allow uploaded files to be read only by user
+      upload_store_access user:r;
+
+      # Set specified fields in request body
+      upload_set_form_field "${upload_field_name}_name" $upload_file_name;
+      upload_set_form_field "${upload_field_name}_path" $upload_tmp_path;
+
+      # on any error, delete uploaded files
+      upload_cleanup 400-505;
     }
 
     location ~ ^/(buildpacks|droplets|app_stash/entries|packages)$ {

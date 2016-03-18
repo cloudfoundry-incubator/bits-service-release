@@ -10,6 +10,11 @@ properties:
       fog_connection:
         provider: "local"
         local_root: "/var/vcap/store/bits-service/"
+    buildpack_cache:
+      directory_key: buildpack_cache
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
     droplets:
       directory_key: droplets
       fog_connection:
