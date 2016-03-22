@@ -23,56 +23,46 @@ describe 'packages resource' do
   let(:blobstore_client) { backend_client(:packages) }
 
   describe 'POST /packages', type: :integration do
-    it 'returns HTTP status 201' do
-      response = make_post_request collection_path, upload_body
-      expect(response.code).to eq 201
-    end
-
-    it 'stores the blob in the backend' do
-      response = make_post_request collection_path, upload_body
-      guid = guid_from_response(response)
-      expect(blobstore_client.key_exist? guid).to eq(true)
-    end
-
-    context 'when the request body is invalid' do
-      let(:upload_body) { Hash.new }
-
-      it 'returns HTTP status 415' do
-        response = make_post_request collection_path, upload_body
-        expect(response.code).to eq 415
-      end
-    end
-
-    context 'when the uploaded file is not a zip file' do
-      let(:upload_body) { { package: __FILE__ } }
-
-      it 'returns HTTP status 415' do
-        response = make_post_request collection_path, upload_body
-        expect(response.code).to eq 415
-      end
-    end
-  end
-
-  describe 'PUT /packages/:guid/duplicate', type: :integration do
-    let(:resource_path) { "/packages/#{existing_guid}/duplicate" }
-    context 'when the package exists' do
+    context 'when package is uploaded' do
       it 'returns HTTP status 201' do
-        response = make_put_request resource_path, ''
+        response = make_post_request collection_path, upload_body
         expect(response.code).to eq 201
       end
 
-      it 'returns the guid and the package exists' do
-        response = make_put_request resource_path, ''
+      it 'stores the blob in the backend' do
+        response = make_post_request collection_path, upload_body
         guid = guid_from_response(response)
         expect(blobstore_client.key_exist? guid).to eq(true)
       end
 
-      context 'when ghe package does not exist' do
-        let(:resource_path) { '/packages/1234-5678-1234/duplicate' }
+      context 'when the request body is invalid' do
+        let(:upload_body) { Hash.new }
 
-        it 'returns the correct error' do
-          response = make_put_request resource_path, ''
-          expect(response).to be_a_404
+        it 'returns HTTP status 4XX' do
+          response = make_post_request collection_path, upload_body
+          expect(response.code).to eq 400
+        end
+      end
+    end
+
+    context 'when package is duplicated' do
+      context 'when the package exists' do
+        it 'returns HTTP status 201' do
+          response = make_post_request collection_path, JSON.generate(source_guid: existing_guid)
+          expect(response.code).to eq 201
+        end
+
+        it 'returns the guid and the package exists' do
+          response = make_post_request collection_path, JSON.generate(source_guid: existing_guid)
+          guid = guid_from_response(response)
+          expect(blobstore_client.key_exist? guid).to eq(true)
+        end
+
+        context 'when the package does not exist' do
+          it 'returns the correct error' do
+            response = make_post_request collection_path, JSON.generate(source_guid: 'invalid-guid')
+            expect(response).to be_a_404
+          end
         end
       end
     end

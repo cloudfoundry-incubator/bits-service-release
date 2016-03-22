@@ -72,6 +72,9 @@ http {
 
     location ~ ^/(buildpacks|droplets|app_stash/entries|packages)$ {
       # POSTs
+      if ($content_type !~ "multipart/form-data") {
+        proxy_pass http://bits_service;
+      }
 
       # Pass altered request body to this location
       upload_pass @bits_service;
