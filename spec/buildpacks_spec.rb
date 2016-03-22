@@ -34,17 +34,34 @@ describe 'buildpacks resource', type: :integration do
       expect(blobstore_client.key_exist? guid).to eq(true)
     end
 
-    context 'when the request body is invalid' do
-      let(:upload_body) { Hash.new }
+    context 'when the request body is empty' do
+      let(:tempfile){
+        @f = Tempfile.new('xxx')
+      }
 
-      it 'returns HTTP status 415' do
+      after :each do
+        @f.unlink
+      end
+
+      let(:upload_body) { { buildpack: tempfile } }
+
+      it 'returns HTTP status 4XX' do
         response = make_post_request collection_path, upload_body
-        expect(response.code).to eq 415
+        expect(response.code).to eq 400
       end
     end
 
     context 'when the uploaded file is not a zip file' do
-      let(:upload_body) { { buildpack: __FILE__ } }
+      let(:upload_body) { { buildpack: File.new(__FILE__) } }
+
+      it 'returns HTTP status 4XX' do
+        response = make_post_request collection_path, upload_body
+        expect(response.code).to eq 400
+      end
+    end
+
+    context 'when the POST is no multipart request' do
+      let(:upload_body) { Hash.new }
 
       it 'returns HTTP status 415' do
         response = make_post_request collection_path, upload_body

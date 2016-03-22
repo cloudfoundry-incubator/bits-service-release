@@ -64,6 +64,29 @@ describe 'packages resource' do
             expect(response).to be_a_404
           end
         end
+
+        context 'when the body is invalid' do
+          it 'returns the correct error' do
+            response = make_post_request collection_path, 'foobar'
+            expect(response.code).to eq(400)
+          end
+        end
+
+        context 'when the body is empty' do
+          it 'returns the correct error' do
+            response = make_post_request collection_path, ''
+            expect(response.code).to eq(400)
+          end
+        end
+      end
+    end
+
+    context 'when the POST is not a multipart request' do
+      let(:upload_body) { Hash.new }
+
+      it 'returns HTTP status 4XX' do
+        response = make_post_request collection_path, upload_body
+        expect(response.code).to eq 400
       end
     end
   end

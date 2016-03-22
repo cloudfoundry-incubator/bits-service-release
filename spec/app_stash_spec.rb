@@ -38,11 +38,11 @@ describe 'app_stash endpoint' do
     end
 
     context 'when the uploaded file is not a zip file' do
-      let(:request_body) { { application: __FILE__ } }
+      let(:request_body) { { application: File.new(__FILE__) } }
 
-      it 'returns HTTP status 415' do
+      it 'returns HTTP status 4XX' do
         response = make_post_request endpoint, request_body
-        expect(response.code).to eq 415
+        expect(response.code).to eq 400
       end
     end
   end
