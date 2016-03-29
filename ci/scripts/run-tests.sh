@@ -9,4 +9,4 @@ bosh login $BOSH_USERNAME $BOSH_PASSWORD
 bosh download manifest $RELEASE_NAME $BITS_SERVICE_MANIFEST
 
 bundle install
-bundle exec rspec spec
+bundle exec rake spec

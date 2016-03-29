@@ -97,3 +97,5 @@ brew install spiff
   ```
   bundle exec rspec spec
   ```
+
+  If you run into errors like `Net::SSH::HostKeyMismatch`, you need to remove the offending entry from `~/.ssh/known_hosts`.

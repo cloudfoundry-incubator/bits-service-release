@@ -6,5 +6,6 @@ gem 'rest-client'
 gem 'aws-sdk'
 gem 'net-sftp'
 
+gem 'rubocop'
 gem 'pry'
 gem 'pry-nav'
