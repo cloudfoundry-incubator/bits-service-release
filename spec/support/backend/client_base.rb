@@ -1,6 +1,5 @@
 module Backend
   class ClientBase
-
     private
 
     def path_for_guid(guid)

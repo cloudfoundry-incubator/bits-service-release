@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'buildpack cache resource', type: :integration do
-
-  let(:zip_filepath) { File.expand_path("../assets/empty.zip", __FILE__)}
+  let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
   let(:zip_file) do
     File.new(zip_filepath)
   end
@@ -20,7 +19,7 @@ describe 'buildpack cache resource', type: :integration do
 
     it 'stores the blob in the backend' do
       make_put_request(endpoint, upload_body)
-      expect(blobstore_client.key_exist? app_name).to eq(true)
+      expect(blobstore_client.key_exist?(app_name)).to eq(true)
     end
 
     context 'when the request body is invalid' do
@@ -44,7 +43,7 @@ describe 'buildpack cache resource', type: :integration do
 
       it 'deletes the blob from the backend' do
         make_delete_request(endpoint)
-        expect(blobstore_client.key_exist? app_name).to eq(false)
+        expect(blobstore_client.key_exist?(app_name)).to eq(false)
       end
     end
 

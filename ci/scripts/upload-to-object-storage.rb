@@ -7,10 +7,10 @@ start_time = Time.now
 puts "Started: #{start_time}"
 
 s = Fog::Storage.new(
-  :provider => 'OpenStack',
-  :openstack_auth_url => ENV.fetch('OPENSTACK_AUTH_URL'),
-  :openstack_username => ENV.fetch('OPENSTACK_USER_NAME'),
-  :openstack_api_key  => ENV.fetch('OPENSTACK_API_KEY'),
+  provider: 'OpenStack',
+  openstack_auth_url: ENV.fetch('OPENSTACK_AUTH_URL'),
+  openstack_username: ENV.fetch('OPENSTACK_USER_NAME'),
+  openstack_api_key: ENV.fetch('OPENSTACK_API_KEY'),
 )
 
 files = Pathname.glob(ENV.fetch('FILE_GLOB'))

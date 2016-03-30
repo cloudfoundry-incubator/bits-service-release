@@ -12,7 +12,7 @@ describe 'droplets resource' do
     JSON.parse(response.body)['guid']
   end
 
-  let(:zip_filepath) { File.expand_path("../assets/empty.zip", __FILE__)}
+  let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
 
   let(:zip_file) do
     File.new(zip_filepath)
@@ -31,11 +31,11 @@ describe 'droplets resource' do
     it 'stores the blob in the backend' do
       response = make_post_request collection_path, upload_body
       guid = guid_from_response(response)
-      expect(blobstore_client.key_exist? guid).to eq(true)
+      expect(blobstore_client.key_exist?(guid)).to eq(true)
     end
 
     context 'when the request body is invalid' do
-      let(:tempfile){
+      let(:tempfile) {
         @f = Tempfile.new('xxx')
       }
 
@@ -93,7 +93,7 @@ describe 'droplets resource' do
 
       it 'deletes the blob from the backend' do
         make_delete_request resource_path
-        expect(blobstore_client.key_exist? guid).to eq(false)
+        expect(blobstore_client.key_exist?(guid)).to eq(false)
       end
     end
 
@@ -111,5 +111,4 @@ describe 'droplets resource' do
       end
     end
   end
-
 end

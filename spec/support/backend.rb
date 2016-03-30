@@ -27,6 +27,4 @@ module BackendHelpers
       raise "Unknown blobstore provider: #{config['provider']}"
     end
   end
-
-
 end

@@ -26,7 +26,7 @@ module Backend
           end
         end
 
-        return false
+        false
       end
     end
   end

@@ -23,7 +23,7 @@ describe 'app_stash endpoint' do
     it 'stores the blob in the backend' do
       make_post_request endpoint, request_body
       app_stash_entries.each do |entry|
-        expect(blobstore_client.key_exist? entry['sha1']).to eq(true)
+        expect(blobstore_client.key_exist?(entry['sha1'])).to eq(true)
       end
     end
 
@@ -102,7 +102,7 @@ describe 'app_stash endpoint' do
 
       it 'returns an error' do
         description = JSON.parse(response.body)['description']
-        expect(description).to eq("The request is semantically invalid: must be a non-empty array.")
+        expect(description).to eq('The request is semantically invalid: must be a non-empty array.')
       end
     end
   end
@@ -156,7 +156,7 @@ describe 'app_stash endpoint' do
 
       it 'returns an error' do
         description = JSON.parse(response.body)['description']
-        expect(description).to eq("not-there not found")
+        expect(description).to eq('not-there not found')
       end
     end
 
@@ -174,7 +174,7 @@ describe 'app_stash endpoint' do
 
       it 'returns an error' do
         description = JSON.parse(response.body)['description']
-        expect(description).to eq("The request is semantically invalid: key `sha1` missing or empty")
+        expect(description).to eq('The request is semantically invalid: key `sha1` missing or empty')
       end
     end
 
@@ -192,7 +192,7 @@ describe 'app_stash endpoint' do
 
       it 'returns an error' do
         description = JSON.parse(response.body)['description']
-        expect(description).to eq("The request is semantically invalid: key `fn` missing or empty")
+        expect(description).to eq('The request is semantically invalid: key `fn` missing or empty')
       end
     end
   end

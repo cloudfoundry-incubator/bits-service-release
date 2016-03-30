@@ -18,10 +18,8 @@ module HttpHelpers
   private
 
   def try_catch
-    begin
-      yield
-    rescue Exception => e
-      e.response
-    end
+    yield
+  rescue StandardError => e
+    e.response
   end
 end
