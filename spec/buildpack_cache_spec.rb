@@ -63,7 +63,6 @@ describe 'buildpack cache resource', type: :integration do
   end
 
   describe 'DELETE /buildpack_cache' do
-
     let(:key1) { "#{SecureRandom.uuid}/some-stack-name" }
     let(:key2) { "#{SecureRandom.uuid}/some-stack-name" }
 
@@ -79,9 +78,9 @@ describe 'buildpack cache resource', type: :integration do
     end
 
     it 'removes all the stored files' do
-      [key1, key2].each { |key| expect(blobstore_client.key_exist? key).to eq(true) }
+      [key1, key2].each { |key| expect(blobstore_client.key_exist?(key)).to eq(true) }
       make_delete_request('/buildpack_cache')
-      [key1, key2].each { |key| expect(blobstore_client.key_exist? key).to eq(false) }
+      [key1, key2].each { |key| expect(blobstore_client.key_exist?(key)).to eq(false) }
     end
   end
 
