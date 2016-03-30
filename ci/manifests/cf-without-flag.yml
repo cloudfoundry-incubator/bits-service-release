@@ -4,7 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: <%= `bosh status --uuid` %> 
+director_uuid: 17a45148-1d00-43bc-af28-9882e5a6535a
 jobs:
 - default_networks:
   - name: cf1
@@ -3684,4 +3684,3 @@ update:
   max_in_flight: 50
   serial: true
   update_watch_time: 1000-180000
-
