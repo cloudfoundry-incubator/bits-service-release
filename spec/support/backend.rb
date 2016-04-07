@@ -9,6 +9,8 @@ module BackendHelpers
     config = fog_config(resource_type)
     directory_key = directory_key(resource_type)
 
+    directory_key = File.join(directory_key, resource_type.to_s) if resource_type.to_sym == :buildpack_cache
+
     case config['provider'].downcase
     when 'aws'
       Backend::S3::Client.new(
