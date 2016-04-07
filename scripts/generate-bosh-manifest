@@ -1,0 +1,38 @@
+#!/bin/bash
+
+[ "$#" -eq 0 ] && echo "Requies at least 1 stub" && exit 1
+
+cd $(dirname $0)/..
+export BOSH_USE_BUNDLER=true
+
+BOSH_RELEASES_DIR=${BOSH_RELEASES_DIR:-~/workspace}
+SCRIPT_DIR=$(dirname $0)
+BITS_SERVICE_RELEASE_DIR=${BITS_SERVICE_RELEASE_DIR:-$SCRIPT_DIR/..}
+
+if [[ ! -d "${BITS_SERVICE_RELEASE_DIR}" ]]; then
+  echo "Cannot find bits-service-release at '${BITS_SERVICE_RELEASE_DIR}'; override with \$BITS_SERVICE_RELEASE_DIR variable"
+  exit 1
+fi
+
+BOSH_STATUS=$(bosh status)
+EXPECTED_DIRECTOR_NAME="Bosh Lite Director"
+
+if [[ "$(echo "$BOSH_STATUS" | grep Name)" != *"$EXPECTED_DIRECTOR_NAME"* ]]; then
+  echo "Can only target $EXPECTED_DIRECTOR_NAME. Please use 'bosh target' before running this script."
+  exit 1
+fi
+
+mkdir -p "${BITS_SERVICE_RELEASE_DIR}/deployments"
+
+DIRECTOR_UUID=$(echo "$BOSH_STATUS" | grep UUID | awk '{print $2}')
+echo "director_uuid: ${DIRECTOR_UUID}" > ${BITS_SERVICE_RELEASE_DIR}/deployments/bits-service-release.yml
+
+MANIFEST_FILE="${BITS_SERVICE_RELEASE_DIR}/deployments/bits-service-release.yml"
+
+spiff merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml "$@" >> "${MANIFEST_FILE}"
+
+TMP=${MANIFEST_FILE}.tmp
+${SCRIPT_DIR}/manifest_parser.rb "${MANIFEST_FILE}" > "${MANIFEST_FILE}.tmp"
+mv ${TMP} ${MANIFEST_FILE}
+
+bosh deployment "${MANIFEST_FILE}"

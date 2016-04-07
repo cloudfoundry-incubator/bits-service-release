@@ -6,8 +6,22 @@ networks:
     range: (( metadata.networks.range ))
     reserved:
     - (( metadata.networks.reserved ))
+    static:
+    - (( metadata.networks.static ))
 
-metadata:
+resource_pools:
+  - name: common
+    network: default
+    stemcell:
+      name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+      version: latest
+    cloud_properties:
+      instance_type: m1.small
+      availability_zone:
+      key_name:
+
+metadata: 
   networks:
-    reserved: 10.250.0.1
-    range: 10.250.0.0./24
+    reserved: (( metadata.networks.reserved || 10.250.0.1 ))
+    range: (( metadata.networks.range || 10.250.0.0./24 ))
+    static: (( metadata.networks.static || 10.250.0.2 - 10.250.0.20 ))

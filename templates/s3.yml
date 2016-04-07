@@ -3,6 +3,7 @@ metadata:
   networks:
     reserved: 10.250.1.1
     range: 10.250.1.0./24
+    static: 10.250.1.2 - 10.250.1.20
 properties:
   bits-service:
     buildpacks:

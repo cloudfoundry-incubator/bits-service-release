@@ -7,8 +7,9 @@ if [ -z "$BITS_SERVICE_MANIFEST" ]; then
   exit 1
 fi
 
-./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/local.yml
-./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
-bosh deployment manifest.yml
+./scripts/generate-bosh-manifest ./templates/blobstore-job.yml \
+                                 ./templates/bosh-lite.yml \
+                                 ./spec/assets/body-size-stub.yml \
+                                 $@
 
 echo Now you can deploy and run \'bundle exec rake spec\'.

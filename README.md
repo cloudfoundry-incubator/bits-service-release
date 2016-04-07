@@ -20,8 +20,9 @@ git submodule update --init
 For different backends:
 
 ```
-./scripts/generate-bosh-lite-manifest ./templates/s3.yml
-./scripts/generate-bosh-lite-manifest ./templates/local.yml
+./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/s3.yml
+./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/local.yml
+./scripts/generate-bosh-manifest ./blobstore-job.yml ./templates/bosh-lite.yml ./templates/webdav.yml
 ```
 
 ### Deploy
@@ -57,7 +58,7 @@ brew install spiff
 * Generate manifest with tests stubs:
 
   ```
-  ./scripts/generate-bosh-lite-manifest ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
+  ./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
   ```
 
 * When targeting an S3 blobstore, the following environment variables are required to be set:
@@ -72,7 +73,7 @@ brew install spiff
 * Parse the manifest with the ENV variables required
 
   ```
-  ./scripts/manifest_parser.rb ./deployments/bits-service-release-bosh-lite.yml > manifest.yml
+  ./scripts/manifest_parser.rb ./deployments/bits-service-release.yml > manifest.yml
   ```
 
 * Set the deployment and tell the test where to find it:

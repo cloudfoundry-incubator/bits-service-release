@@ -1,39 +1,42 @@
 name: (( metadata.release_name ))
+
 metadata:
   <<: (( merge ))
   release_name: bits-service
+
 releases:
+  - <<: (( merge ))
   - name: bits-service
     version: latest
+
+networks: (( merge ))
+
+resource_pools: (( merge ))
+
 compilation:
   workers: 1
   network: default
   cloud_properties:
     instance_type: m1.small
+
 update:
   canaries: 1
   canary_watch_time: 30000
   update_watch_time: 30000
   max_in_flight: 4
   max_errors: 1
-networks: (( merge ))
-resource_pools:
-  - name: common
-    network: default
-    stemcell:
-      name: bosh-warden-boshlite-ubuntu-trusty-go_agent
-      version: latest
-    cloud_properties:
-      instance_type: m1.small
-      availability_zone:
-      key_name:
+
 jobs:
+- <<: (( merge ))
 - name: bits-service
-  template: bits-service
+  templates: 
+  - name: bits-service
+    release: bits-service
   instances: 1
   resource_pool: common
   networks:
   - name: default
+    static_ips: (( static_ips(0) ))
+
 properties:
-  bits-service:
-    <<: (( merge ))
+  <<: (( merge ))

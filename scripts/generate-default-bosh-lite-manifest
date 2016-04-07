@@ -2,4 +2,4 @@
 
 cd $(dirname $0)/..
 
-./scripts/generate-bosh-lite-manifest ./templates/local.yml
+./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/local.yml
