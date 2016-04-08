@@ -58,7 +58,7 @@ brew install spiff
 * Generate manifest with tests stubs:
 
   ```
-  ./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./spec/assets/body-size-stub.yml ./templates/local.yml # (or s3.yml)
+  ./scripts/generate-test-bosh-lite-manifest ./templates/local.yml # (or s3.yml, or webdav.yml)
   ```
 
 * When targeting an S3 blobstore, the following environment variables are required to be set:
@@ -88,7 +88,7 @@ brew install spiff
 * Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
 
   ```
-  export BITS_SERVICE_ENDPOINT=10.250.0.2
+  export BITS_SERVICE_ENDPOINT=10.250.0.2 # depends on which backend was set
   ```
 
   Outside bosh-lite you will need to update the endpoint.

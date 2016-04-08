@@ -9,7 +9,7 @@ fi
 
 ./scripts/generate-bosh-manifest ./templates/blobstore-job.yml \
                                  ./templates/bosh-lite.yml \
-                                 ./spec/assets/body-size-stub.yml \
+                                 ./templates/body-size-stub.yml \
                                  $@
 
 echo Now you can deploy and run \'bundle exec rake spec\'.
