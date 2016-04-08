@@ -26,13 +26,65 @@ properties:
   bits-service: (( merge ))
   blobstore:
     admin_users:
-      - username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
+      - username: blobstore
+        password: blobstore
     port: 80
     tls:
       port: 443
-      cert: (( metadata.blobstore.tls.cert ))
-      private_key: (( metadata.blobstore.tls.private_key ))
+      cert: |+
+        -----BEGIN CERTIFICATE-----
+        MIIENzCCAh+gAwIBAgIRAJ03qh3/aQftQ8WLV20cI3owDQYJKoZIhvcNAQELBQAw
+        EzERMA8GA1UEAxMIQ2VydEF1dGgwHhcNMTYwNDA4MTM1NjE0WhcNMTgwNDA4MTM1
+        NjE0WjAVMRMwEQYDVQQDEwoxMC4yNTAuMy4zMIIBIjANBgkqhkiG9w0BAQEFAAOC
+        AQ8AMIIBCgKCAQEA25q/SYUb5Y3lm61aqd9gLEZR4AnGILM/21fTT8KrmqzXtVfL
+        sJjuECaoGU1g0lf4USLQUckaZXHZCQeN+X/2he+r2x50G2dItAk5QAfNoOE1rX8S
+        dqPel9MZEG6VFR95EmuB4HasNWXYZ1Xk9+IL98DrSHXOfEgYPjaw49h9yYqbPmUU
+        5357sQccEMm1t3eyLUCjXzXpkwhvC3IJ8acQi5RGdIWMkwiGDTNnSI7GhNA2JKmG
+        Vc7v0ppWI8+z7Kolr3qpDORHynEpZKJlFlyWbEVhtcizU5oNDZYk9gh/oQyKIEkH
+        MU0u7AhYL6wNUnZ/3dVoYTUq6fIgq+JtP85ehwIDAQABo4GDMIGAMA4GA1UdDwEB
+        /wQEAwIDuDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHQYDVR0OBBYE
+        FINAAIsYVmOlwWxMD8uqflqTvkaDMB8GA1UdIwQYMBaAFLz8dV7DiJPEzuHNUhAL
+        Ej+QHM7GMA8GA1UdEQQIMAaHBAr6AwMwDQYJKoZIhvcNAQELBQADggIBAAYQUf5Y
+        nOmNa1jXurhMsO7RYZTYKb+8pP29gcVq02kvymXGckcL9CksGyiFv0roisLiGtGw
+        jPNCzrPSQbhmyyXXrihUhVJJgsRBWRB02FQwtzHYHELgHuH9cz5JVbt0Ect1KLcv
+        OzUEMjYRjFjbtSnUdnhsIqS2CHjHzkQmTUffTsaY61Co+IIt7mErlg+jOkzEtXPV
+        z17Ny3MVMoP5lAKXW1rqqQYNAtl4R3jcfoAxTqUEg90pCUvWzwJRhUnsO2kjWmJN
+        uPL0Wtr5vrA8/zQEFg3QNewtWeRQqgEwvOZ2yhqJb5expLjNfzjV1e9+Nzavqz8m
+        7pwokQpEapDrNS95TZlaZxeGPrMStJzs1e6t4hcp7FNlZ/jRvbxet3OHp/LbdDxa
+        rlniHPQWTY7CcRbSPjnRIuBeL4a7nh6vjcXL2+tqjlYfJGk0uf0W94H02O8yxZus
+        wDco06ia37IhGEV+CNNGtJytLdTN3cWpI8cYWduIJww89yU7HDVwUHltZnS+XMkD
+        9B40+lo0MpmpzC6vWlOE3yEJi+w6c/QdF5hgi2Yl5vC7LhYFtHunIq4X0JY4GkRZ
+        +7kwPI8vP9ylbF5trC9OE1eYt5B35zgMiGpXxU6Zux85JjLN8koEJ1uhpSX/EpPd
+        bD3WOofMptV+RJLnetNefgGL0xtWPltxQr2s
+        -----END CERTIFICATE-----
+      private_key: |+
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpQIBAAKCAQEA25q/SYUb5Y3lm61aqd9gLEZR4AnGILM/21fTT8KrmqzXtVfL
+        sJjuECaoGU1g0lf4USLQUckaZXHZCQeN+X/2he+r2x50G2dItAk5QAfNoOE1rX8S
+        dqPel9MZEG6VFR95EmuB4HasNWXYZ1Xk9+IL98DrSHXOfEgYPjaw49h9yYqbPmUU
+        5357sQccEMm1t3eyLUCjXzXpkwhvC3IJ8acQi5RGdIWMkwiGDTNnSI7GhNA2JKmG
+        Vc7v0ppWI8+z7Kolr3qpDORHynEpZKJlFlyWbEVhtcizU5oNDZYk9gh/oQyKIEkH
+        MU0u7AhYL6wNUnZ/3dVoYTUq6fIgq+JtP85ehwIDAQABAoIBAQC93nra/wpSnC/U
+        PLrxup81SItLsEesSC7C35llEcQ7FIvgT4teIatbLYETd1JqKwMYa4g/3idDZH6p
+        Du4StS+ZN9KXvinW86LpfjwQf26rVWyKmB6Hk0FGdY7rJSEixTZx1Z/SSei0tly3
+        Y413QOrmB9elq62eyNqlF7YzGSAQmnrlgf5HyZE3t4C1CqwPowN0o2MEtDn7nNdG
+        tgfJY1Iy2dTlFYBxDXEgfHm36JhmoD1D4jZwmD22XuSa43uCAiPQfVKvVSxyEZ7v
+        JMf8OpZ5Nw6OFpVBu3qAbRg9sIMTPgixOo/n+LV12WzPUB4ErJML6wYM8IgQo6Te
+        gNqDdqbZAoGBAOBxfg4jGW2Xsvrz7WQLv4bN4jo7Z/e8RV6WXJ+FVECOzsuNM1RL
+        fxne2ue8iEUb0QRGrKy0HFXgsWrlkCbBmZkiI8ewFhCfnm1taJ9iack+nUKaKE0J
+        lsUKZP4XrrZ/wTixueeP2PzWfCG+hHpOZXn8sdbKpA1+DR+bn+f/IcfFAoGBAPp7
+        Fmuq1BMKT/B2CwQXgzkoiQesh56utOtLeNgiiBAQhhFD+Sjro08/nExLMjJ1SYrh
+        B9c/PVmznR8efusTbaog0obIrlaB0yiulUA9CcfztQ2KoI+HBjZezwBIJNdLfuwb
+        WwWmbgyeb/DhZzLsvgHQyu+X1EmiHHNVyHyDdSXbAoGAanrtht94DNpPe2eGVFSO
+        hPHgRigw5wNXFczYHIYwtoAJ8+AFXhSDNE7aI975929+9jxhZ337g3KaOVC31us6
+        Z8AeoXoUvcY8b0XcwOD7txIRoatpO0M1WD3aNAIgTUzG6pLG0+kW1L0dHxU33J6c
+        3gbYiEKTGiOXLkuyzWnpKNECgYEA1WhboN4KFDLcCva3ygOyZNeZcHVZkyQstrA1
+        xIgfPvilET7FoUyqdlGu+/2xRfZR80Zo5MZXof57JtFXtzd1XtbaJ8YBa2jvHKEq
+        PnICzF5iaqgqxj53V4mNeiL9aIVFHSrtcTHsX0n5+9Q/lc7I0EkxLdNBJn89GDMF
+        PrjN7bMCgYEAvvAqhev+a67USQBCJjx8q78z8wl25nbAmt9SURX+jUjjoXMIk33U
+        HecDFdKEoxjc9TTkSboH+I91ITUa7ncNRThlGqMjQYs7hTOcVInAA7HAl54Qi/Iv
+        IS/3qP8LCZ031n9kZzcDLE5rVQM88cSMlH2YFduQVM7LoP4WdXJku28=
+        -----END RSA PRIVATE KEY-----
     secure_link:
       secret: blobstore-secret
 
