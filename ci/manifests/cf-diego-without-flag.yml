@@ -2578,16 +2578,10 @@ properties:
     backend: diego
     include_backend_compatibility: true
     include_internet_dependent: true
-    include_diego_docker: false
     include_diego_ssh: true
-    include_logging: true
-    include_route_services: false
     include_routing: true
     include_security_groups: true
-    include_services: true
-    include_sso: true
-    include_v3: false
-    nodes: 1
+    nodes: 4
     skip_diego_unsupported_tests: true
     admin_password: admin
     admin_user: admin
