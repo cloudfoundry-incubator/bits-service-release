@@ -1,0 +1,16 @@
+---
+platform: linux
+
+image: docker:///flintstonecf/ci
+
+params:
+  MANIFEST_STUBS:
+
+inputs:
+- name: git-bits-service-release
+
+outputs:
+- name: manifests
+
+run:
+  path: git-bits-service-release/ci/scripts/update-cf-manifest.sh

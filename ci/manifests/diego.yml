@@ -23,12 +23,12 @@ jobs:
       zone: z1
   resource_pool: database_z1
   templates:
-  - name: consul_agent
-    release: cf
   - name: etcd
     release: etcd
   - name: bbs
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -48,12 +48,12 @@ jobs:
       zone: z2
   resource_pool: database_z2
   templates:
-  - name: consul_agent
-    release: cf
   - name: etcd
     release: etcd
   - name: bbs
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -73,12 +73,12 @@ jobs:
       zone: z3
   resource_pool: database_z3
   templates:
-  - name: consul_agent
-    release: cf
   - name: etcd
     release: etcd
   - name: bbs
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -116,10 +116,10 @@ jobs:
       zone: z1
   resource_pool: cell_z1
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
+  - name: consul_agent
+    release: cf
   - name: garden
     release: garden-linux
   - name: rootfses
@@ -162,10 +162,10 @@ jobs:
       zone: z1
   resource_pool: route_emitter_z1
   templates:
-  - name: consul_agent
-    release: cf
   - name: route_emitter
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -180,10 +180,10 @@ jobs:
       zone: z1
   resource_pool: access_z1
   templates:
-  - name: consul_agent
-    release: cf
   - name: ssh_proxy
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   - name: file_server
@@ -223,10 +223,10 @@ jobs:
       zone: z2
   resource_pool: cell_z2
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
+  - name: consul_agent
+    release: cf
   - name: garden
     release: garden-linux
   - name: rootfses
@@ -269,10 +269,10 @@ jobs:
       zone: z2
   resource_pool: route_emitter_z2
   templates:
-  - name: consul_agent
-    release: cf
   - name: route_emitter
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -287,10 +287,10 @@ jobs:
       zone: z2
   resource_pool: access_z2
   templates:
-  - name: consul_agent
-    release: cf
   - name: ssh_proxy
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   - name: file_server
@@ -330,10 +330,10 @@ jobs:
       zone: z3
   resource_pool: cell_z3
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
+  - name: consul_agent
+    release: cf
   - name: garden
     release: garden-linux
   - name: rootfses
@@ -376,10 +376,10 @@ jobs:
       zone: z3
   resource_pool: route_emitter_z3
   templates:
-  - name: consul_agent
-    release: cf
   - name: route_emitter
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   update:
@@ -394,10 +394,10 @@ jobs:
       zone: z3
   resource_pool: access_z3
   templates:
-  - name: consul_agent
-    release: cf
   - name: ssh_proxy
     release: diego
+  - name: consul_agent
+    release: cf
   - name: metron_agent
     release: cf
   - name: file_server
@@ -422,8 +422,6 @@ jobs:
       zone: z1
   resource_pool: colocated_z1
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
   - name: auctioneer
@@ -434,6 +432,8 @@ jobs:
     release: diego
   - name: converger
     release: diego
+  - name: consul_agent
+    release: cf
   - name: etcd
     release: etcd
   - name: file_server
@@ -474,8 +474,6 @@ jobs:
       zone: z2
   resource_pool: colocated_z2
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
   - name: auctioneer
@@ -486,6 +484,8 @@ jobs:
     release: diego
   - name: converger
     release: diego
+  - name: consul_agent
+    release: cf
   - name: etcd
     release: etcd
   - name: file_server
@@ -526,8 +526,6 @@ jobs:
       zone: z3
   resource_pool: colocated_z3
   templates:
-  - name: consul_agent
-    release: cf
   - name: rep
     release: diego
   - name: auctioneer
@@ -538,6 +536,8 @@ jobs:
     release: diego
   - name: converger
     release: diego
+  - name: consul_agent
+    release: cf
   - name: etcd
     release: etcd
   - name: file_server
@@ -1533,12 +1533,9 @@ networks:
     static: []
   type: manual
 properties:
-  cflinuxfs2-rootfs:
-    trusted_certs: null
   consul:
     agent:
       datacenter: null
-      domain: cf.internal
       log_level: null
       servers:
         lan:
@@ -1687,7 +1684,7 @@ properties:
   diego:
     auctioneer:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -1782,7 +1779,7 @@ properties:
     bbs:
       active_key_label: key1
       auctioneer:
-        api_url: null
+        api_url: http://auctioneer.service.cf.internal:9016
       ca_cert: |+
         -----BEGIN CERTIFICATE-----
         MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -1903,7 +1900,8 @@ properties:
           1QEHVOsm4YyocfmEAdeBPW125nh12k7nZ79YUYCVqhF3jVFn4aH/
           -----END RSA PRIVATE KEY-----
         client_session_cache_size: null
-        machines: null
+        machines:
+        - etcd.service.cf.internal
         max_idle_conns_per_host: null
         require_ssl: true
       log_level: null
@@ -1968,7 +1966,7 @@ properties:
       log_level: null
     converger:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2083,7 +2081,7 @@ properties:
       log_level: null
     nsync:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2179,7 +2177,7 @@ properties:
       log_level: debug
     rep:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2270,13 +2268,12 @@ properties:
       dropsonde_port: null
       evacuation_timeout_in_seconds: 60
       log_level: debug
-      preloaded_rootfses: null
       trusted_certs: null
     rootfs_cflinuxfs2:
       trusted_certs: null
     route_emitter:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2374,7 +2371,7 @@ properties:
         user: nats
     ssh_proxy:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2500,7 +2497,7 @@ properties:
       skip_cert_verify: true
     stager:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2596,7 +2593,7 @@ properties:
       log_level: null
     tps:
       bbs:
-        api_location: null
+        api_location: bbs.service.cf.internal:8889
         ca_cert: |+
           -----BEGIN CERTIFICATE-----
           MIIE/TCCAuegAwIBAgIBATALBgkqhkiG9w0BAQswEDEOMAwGA1UEAxMFYmJzQ0Ew
@@ -2691,7 +2688,6 @@ properties:
       log_level: null
       traffic_controller_url: wss://doppler.bosh-lite.com:443
   etcd:
-    advertise_urls_dns_suffix: etcd.service.cf.internal
     ca_cert: |+
       -----BEGIN CERTIFICATE-----
       MIIFATCCAuugAwIBAgIBATALBgkqhkiG9w0BAQswEjEQMA4GA1UEAxMHZGllZ29D

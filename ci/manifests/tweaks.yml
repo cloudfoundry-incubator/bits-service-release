@@ -1,0 +1,4 @@
+director_uuid: <%= `bosh status --uuid` %>
+properties:
+  acceptance_tests:
+    nodes: 4

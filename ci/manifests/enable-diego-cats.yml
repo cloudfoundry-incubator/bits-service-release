@@ -1,0 +1,15 @@
+properties:
+  acceptance_tests:
+    admin_password: admin
+    admin_user: admin
+    api: api.bosh-lite.com
+    apps_domain: bosh-lite.com
+    skip_ssl_validation: true
+    use_http: true
+    backend: diego
+    include_backend_compatibility: true
+    include_internet_dependent: true
+    include_diego_ssh: true
+    include_routing: true
+    include_security_groups: true
+    skip_diego_unsupported_tests: true

@@ -4,7 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: b7e651e2-3afe-471f-9bca-93048fa591f4
+director_uuid: 553a6e62-1b01-4e9a-9cdc-ae95a65e6ab4
 jobs:
 - default_networks:
   - name: cf1
@@ -2575,18 +2575,11 @@ networks:
     static: []
 properties:
   acceptance_tests:
-    backend: diego
-    include_backend_compatibility: true
-    include_internet_dependent: true
-    include_diego_ssh: true
-    include_routing: true
-    include_security_groups: true
-    nodes: 4
-    skip_diego_unsupported_tests: true
     admin_password: admin
     admin_user: admin
     api: api.bosh-lite.com
     apps_domain: bosh-lite.com
+    nodes: 1
     skip_ssl_validation: true
     use_http: true
   app_domains:
@@ -2709,7 +2702,7 @@ properties:
     default_staging_security_groups:
     - public_networks
     - dns
-    default_to_diego_backend: true
+    default_to_diego_backend: false
     development_mode: false
     directories: null
     disable_custom_buildpacks: false
@@ -3691,3 +3684,4 @@ update:
   max_in_flight: 50
   serial: true
   update_watch_time: 1000-180000
+
