@@ -20,8 +20,4 @@ resource_pools:
       availability_zone:
       key_name:
 
-metadata: 
-  networks:
-    reserved: (( metadata.networks.reserved || 10.250.0.1 ))
-    range: (( metadata.networks.range || 10.250.0.0./24 ))
-    static: (( metadata.networks.static || 10.250.0.2 - 10.250.0.20 ))
+metadata: (( merge ))

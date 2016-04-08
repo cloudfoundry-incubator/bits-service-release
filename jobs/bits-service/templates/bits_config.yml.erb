@@ -1,18 +1,48 @@
 buildpacks:
   directory_key: <%= p("bits-service.buildpacks.directory_key") %>
-  fog_connection: <%= p("bits-service.buildpacks.fog_connection").to_json %>
+  blobstore_type: <%= p("bits-service.buildpacks.blobstore_type") %>
+  webdav_config:
+    public_endpoint: <%= p("bits-service.buildpacks.webdav_config.public_endpoint") %>
+    private_endpoint: <%= p("bits-service.buildpacks.webdav_config.private_endpoint") %>
+    username: <%= p("bits-service.buildpacks.webdav_config.username") %>
+    password: <%= p("bits-service.buildpacks.webdav_config.password") %>
+  fog_connection: <%= p("bits-service.buildpacks.fog_connection", {}).to_json %>
 buildpack_cache:
   directory_key: <%= p("bits-service.buildpack_cache.directory_key") %>
-  fog_connection: <%= p("bits-service.buildpack_cache.fog_connection").to_json %>
+  blobstore_type: <%= p("bits-service.buildpack_cache.blobstore_type") %>
+  webdav_config:
+    public_endpoint: <%= p("bits-service.buildpack_cache.webdav_config.public_endpoint") %>
+    private_endpoint: <%= p("bits-service.buildpack_cache.webdav_config.private_endpoint") %>
+    username: <%= p("bits-service.buildpack_cache.webdav_config.username") %>
+    password: <%= p("bits-service.buildpack_cache.webdav_config.password") %>
+  fog_connection: <%= p("bits-service.buildpack_cache.fog_connection", {}).to_json %>
 droplets:
   directory_key: <%= p("bits-service.droplets.directory_key") %>
-  fog_connection: <%= p("bits-service.droplets.fog_connection").to_json %>
+  blobstore_type: <%= p("bits-service.droplets.blobstore_type") %>
+  webdav_config:
+    public_endpoint: <%= p("bits-service.droplets.webdav_config.public_endpoint") %>
+    private_endpoint: <%= p("bits-service.droplets.webdav_config.private_endpoint") %>
+    username: <%= p("bits-service.droplets.webdav_config.username") %>
+    password: <%= p("bits-service.droplets.webdav_config.password") %>
+  fog_connection: <%= p("bits-service.droplets.fog_connection", {}).to_json %>
 packages:
   directory_key: <%= p("bits-service.packages.directory_key") %>
-  fog_connection: <%= p("bits-service.packages.fog_connection").to_json %>
+  blobstore_type: <%= p("bits-service.packages.blobstore_type") %>
+  webdav_config:
+    public_endpoint: <%= p("bits-service.packages.webdav_config.public_endpoint") %>
+    private_endpoint: <%= p("bits-service.packages.webdav_config.private_endpoint") %>
+    username: <%= p("bits-service.packages.webdav_config.username") %>
+    password: <%= p("bits-service.packages.webdav_config.password") %>
+  fog_connection: <%= p("bits-service.packages.fog_connection", {}).to_json %>
 app_stash:
   directory_key: <%= p("bits-service.app_stash.directory_key") %>
-  fog_connection: <%= p("bits-service.app_stash.fog_connection").to_json %>
+  blobstore_type: <%= p("bits-service.app_stash.blobstore_type") %>
+  webdav_config:
+    public_endpoint: <%= p("bits-service.app_stash.webdav_config.public_endpoint") %>
+    private_endpoint: <%= p("bits-service.app_stash.webdav_config.private_endpoint") %>
+    username: <%= p("bits-service.app_stash.webdav_config.username") %>
+    password: <%= p("bits-service.app_stash.webdav_config.password") %>
+  fog_connection: <%= p("bits-service.app_stash.fog_connection", {}).to_json %>
 nginx:
   use_nginx: true
 logging:

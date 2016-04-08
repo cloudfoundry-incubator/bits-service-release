@@ -1,0 +1,143 @@
+metadata:
+  blobstore:
+    instances: 1
+    username: blobstore
+    password: blobstore
+    tls:
+      cert: |+
+        -----BEGIN CERTIFICATE-----
+        MIIEHzCCAgegAwIBAgIRANyGPMAjTnO0m5D9pJubKgwwDQYJKoZIhvcNAQELBQAw
+        EzERMA8GA1UEAxMIQ2VydEF1dGgwHhcNMTYwNDA4MTAxMjQyWhcNMTgwNDA4MTAx
+        MjQyWjAQMQ4wDAYDVQQDEwVjZXJ0MTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+        AQoCggEBANYmA7oJuMEH0S0CC4cABuhcNMkqKNvEPGTiNbrvoRGXAEcHnSzy7r4w
+        jGTwumdMbFJQnDE7E1If3dnrgfOKUfilqmbLJhgT1/dx0EVnsgCm5+O3vbvTFeN5
+        RiIQxRTEJ+NaPhZROw72VZmX7RHC8IltAn+wOUGHO480+VSDgkLL7RZMuKls/myp
+        6gbexgMJOVNMdpOkdI9ByKH1+SNRrofvg1zjLU7pqDp6W4swkj8WbecrBtvBkSYu
+        sSQ/ikrxx8ZsUbWsImDNKyx+L6t8JXY7nvYR855MW95k6mOolyezmFQPdoDbJyN2
+        KHtUunymc22C2YgfjamPr93Xgv0DS98CAwEAAaNxMG8wDgYDVR0PAQH/BAQDAgO4
+        MB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAdBgNVHQ4EFgQUwhhHG4A6
+        g+5xQhEoLsmeZEbgBrIwHwYDVR0jBBgwFoAUn4h/bzOXR9PfaRBUlDUe+b95ALgw
+        DQYJKoZIhvcNAQELBQADggIBACt8joUINaFMkaMglHxeZQW59zwqQSn836NWErJ5
+        ANZcK025mxlDCXbFeqWoALcj8dCzmNKrSPukt6HT5tjGjs2Uxrg59PmqWIuqz+yq
+        GdFsYb7NFPcFFb2gpxpUR8Zvilj3zzUuD5Ud58tH8pL8ppQ4lIijrumsC7kZUdwH
+        0wccca3QhUuIGmnLDzHQaqXvczikxf2zBjYR4FKfHW1AhAH2CuE8pPT+KCQlyya0
+        OO7HRK9HTRnGtueubJokZK6Vkn48Olk3YPT8jszBEoiT8gkUqJUb1H1rDWOJ7pPs
+        FnyPjn2Woghm++KalW/ZbuyGt+e/l5YJ5x5QvaKyuBsNtTEOPbhdS+wemggr5lAa
+        yqVyUDXxyXq+leIGRNgFbmyKJeLS0qbnKXXPMIu7Wap3/QrOSPAkEMQXXMNVFv+q
+        jmKFpeVbpgsOZ3xyVPEAgXSNRRUPUv2wsD71MFczGxPRvOTrcbazWqmhpT55mrxy
+        bG0BTtiglPtGX/Zpa+TgPfq21la47Md1xy1q8djsIeVH7NUknHuIxdKScxpOqdSg
+        Vs1wVW+Bgh94cPOsn0OWTPyN0jUeOjn7VmrbKQpQxvBwLvgEYA9R1C3tPABtZycb
+        6uKMJRXMYDRZYhK0/MRxQhGeqZ1d1HdRrsp41dp+80lJt2KyWolmO+gos6k1vHMa
+        E8qT
+        -----END CERTIFICATE-----
+      private_key: |+
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpQIBAAKCAQEA1iYDugm4wQfRLQILhwAG6Fw0ySoo28Q8ZOI1uu+hEZcARwed
+        LPLuvjCMZPC6Z0xsUlCcMTsTUh/d2euB84pR+KWqZssmGBPX93HQRWeyAKbn47e9
+        u9MV43lGIhDFFMQn41o+FlE7DvZVmZftEcLwiW0Cf7A5QYc7jzT5VIOCQsvtFky4
+        qWz+bKnqBt7GAwk5U0x2k6R0j0HIofX5I1Guh++DXOMtTumoOnpbizCSPxZt5ysG
+        28GRJi6xJD+KSvHHxmxRtawiYM0rLH4vq3wldjue9hHznkxb3mTqY6iXJ7OYVA92
+        gNsnI3Yoe1S6fKZzbYLZiB+NqY+v3deC/QNL3wIDAQABAoIBAD5g4GEGh+yibEnh
+        +J2gYmK4yR93ymMJrFXulpwXRSGsjIYkL6JyORzpY1vby1BfsIXhuT2V6bDYW3Uo
+        5recKPh2uUYsErKcxSHs4y/0XqNV+uIYGYpmmE+kecteeynrYXsWRFOX4c4f7xtI
+        Z+PulsZRHJM5L9Rooe67DY2SqRTvbVSUFjLW3N/WR1AfgLSs2/7B2AOUmokQza7E
+        L6Ie0l8S/6FAAsumrwDpECnA3saFkAkr4SWH+P9IBRjAFQaJejiZ3Lc5tBHUHP2G
+        p3Y0f9iNEj22Il6gQWxyWGIrX9UPMHSp5aQTvS/Vpb+h7DD/LG9S0itq7ZvoMjSQ
+        33zHVwECgYEA3vjvdIqmSuntcXt4vJS1FTznhot19zUe+mrgUHmw+ykl+mQXQSWZ
+        Fugdtvj8TaC6sL66+lgCVWtKHmn8kHDht1G9QjGrSkmwPrT9b8hcUo6L/OSjiuiL
+        Gpv6FSQXMVEb9Zx/LekiFbOJ+IdlZe1K0xcHwnMAQCTfRiynUwNVYB8CgYEA9d56
+        fWVhPmddMI2q2L/sA/Y9JxoP/k8DrxUhv9urGbDyRANy9Xj6YpstnMhClT+muJay
+        eoM/zYkMDC++445J4PS5EuFi1AUWV3wYDnxuB/7EHPmi+cw40bsqX2SVUETWRH/M
+        puuLdOSGtG2Ypj4MFblFImyfTW05VECivH3dnEECgYEAlDtobdDzJqCH00bjiHNQ
+        Q3M+9GponVT6aD5/K+EK8J51ehXqg8vsD5d2kbrLeQwesPvLsDysKH9wQfHyD1CM
+        LmQv7v64QmXkvntydUr9XYEYvaJ+uw1H1QPW6REaPhYPAWTuA+aWW1kFo2zX00BC
+        2zzXUsVDaGFa8fsjrgNsUb8CgYEA7RNGNw1/U+XlRMEFgRSmZjeURdTqoQPdgIA2
+        18Hf3Njy8cQFoE6z2ErbE3dCRJlokEq29E0EQ5KnLEUJom/8Ks6uelcbrWbuYRMG
+        O0md61WsEmhfztAt5YW82Niq5QhLNyen1TgAc4k7nlSjQYFIs9W+pO/qN4VfJy9f
+        +7K98kECgYEAwMspwJZhvEgU1t2pPcha/SaPYRo4hA12M8hd0Qmi6IgUO6tF2Z9R
+        S06EpkYJdgHd/sT+DxQ/JmX7THlmeLY6tph/ZyJK8x3xzDCVAC2ek38OVxxjcCAK
+        6Ox3ahNKEgedppL2tgc17FOR5oUmnNeAVl/N+nqwLwcyPa0M3RGemiE=
+        -----END RSA PRIVATE KEY-----
+      ca_cert: |+
+        -----BEGIN CERTIFICATE-----
+        MIIFBzCCAu+gAwIBAgIBATANBgkqhkiG9w0BAQsFADATMREwDwYDVQQDEwhDZXJ0
+        QXV0aDAeFw0xNjA0MDgxMDEyMTJaFw0yNjA0MDgxMDEyMjRaMBMxETAPBgNVBAMT
+        CENlcnRBdXRoMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyK7yf4UX
+        dbVm0mOBlw5qmfDoWTtrCri+zryIojC3cMkUHp8h6YdDdIYmH705BbrgDzKWAXX9
+        /l9Z9V+CMI6sNcqtWuDmQC6tgTEFfUd5xfekNHdlm8j3jKsCJLleuv3ekoc95iPw
+        FRlUelYi0CT8R1zo9eyP8d4JVCxaUrqD7BrHH4SQZbaQKBA3ohqxd03UShBET1/C
+        zBXWQPggEKiHN3Z92TYPfC35UDQ8rIYWHx0Jr2Em3lNIYVoZDAo/+CuZdYUSv3Bo
+        Y8IW6yaiau9TO7cJakgqd1EQqTcvEy06+qR+C3v5rGc1AcNBq46WmlD+gLj+eGQH
+        jpA+AP6GjVi/Z2OJZrW2/i80vUA3Bcy8Cf6kEmsP1/cLJv4dvnDz2feH+eTPfNVm
+        XTwaJqoUeDOiRyoeSnoeCF5FzGDaufg16yV9GPv3FjF8SUEVvDrU57vQSBSSSeih
+        Hj8USmRqc9xxSmLvxTdmgExPYOzHZtaacsqOpVUXjwOhdMHh6YYsJULUqrI/450Y
+        uYZuFxVidB2ORdUEVXRHEHKMHXXVfn8vFbcr+bgzm9QsFur+niDnAn5ldH6AR6VV
+        6tFH3Kp1hpAawMNXYjUY999CrrSKEQhYmpOLgFCF2XWRVh1tU6V3N6fc8Uhxfh/p
+        +teOKM8y/S542AS3poMo2LZUCURU/Y56aN0CAwEAAaNmMGQwDgYDVR0PAQH/BAQD
+        AgEGMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFJ+If28zl0fT32kQVJQ1
+        Hvm/eQC4MB8GA1UdIwQYMBaAFJ+If28zl0fT32kQVJQ1Hvm/eQC4MA0GCSqGSIb3
+        DQEBCwUAA4ICAQAv49N1VFIMsumANL15Gvq7fR6wR0yyZNcufbMXPqZdZU8U6Uq3
+        3+kUPFftUh9WEssxK6NZAKHoIOVp4+NmurVs8p+SckCyo6WqR+uez6hOjJ6p12nr
+        vONKM67rMs8ArLDdLATSwRtbuYMzDkqyM9ArAfJWDs0R05D0RWmveajO9PaGrwc3
+        OLuoGWZecv4/URyyH1YUPX1PenA/p16RyovV/lMsLWMhjH45Rif5Y6fl2EG7dXKr
+        ALNjugsYm+uV3RqxW1ejSpMVUYNmhSmupOPtokccJB4gHfWvJ89E6VBZgGr/Adkx
+        4JO1Zrlt5HtL2dMhw9VnQNRy8PQ+CHmu9UKkKiWvZecJU7pXK9Z86FuVw3Eo7dqq
+        hnTjqe4BndjtViv0a58gmoUZ0mrxSS/9pO4vKTnQ/QE8OAHsTdHtmjlL9v3EwDRr
+        homOw0vdgaPfM1+eJgczg/RqGUnj1xR/ba7HrXADp68AjvusMzTM9vU2vqA2dkdC
+        5B9wwigcaBvmp7HmCyuADCPS++ftdfxeFi9GPTU2bJJg02/4HB+tqkMrJ7LtRE+G
+        LWQyj/Sko5WpCVmTQeyCT4eYIk6gbR15gVV9Jpihgd7Lc2x2pJyeRWYNXh4W6PoB
+        M52x4hpB32lacPYuJmEBrB7hr3aCFuVXQHSMn4MVM7AoDonDCzVusGH9Qg==
+        -----END CERTIFICATE-----
+  release_name: bits-service-webdav
+  networks:
+    reserved: 10.250.3.1
+    range: 10.250.3.0./24
+    static: 10.250.3.2 - 10.250.3.20
+
+properties:
+  bits-service:
+    buildpacks:
+      directory_key: buildpacks
+      blobstore_type: webdav
+      webdav_config:
+        username: (( metadata.blobstore.username ))
+        password: (( metadata.blobstore.password ))
+        public_endpoint: 10.250.3.3
+        private_endpoint: 10.250.3.3
+        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+    buildpack_cache:
+      directory_key: buildpack_cache
+      blobstore_type: webdav
+      webdav_config:
+        username: (( metadata.blobstore.username ))
+        password: (( metadata.blobstore.password ))
+        public_endpoint: 10.250.3.3
+        private_endpoint: 10.250.3.3
+        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+    droplets:
+      directory_key: droplets
+      blobstore_type: webdav
+      webdav_config:
+        username: (( metadata.blobstore.username ))
+        password: (( metadata.blobstore.password ))
+        public_endpoint: 10.250.3.3
+        private_endpoint: 10.250.3.3
+        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+    packages:
+      directory_key: packages
+      blobstore_type: webdav
+      webdav_config:
+        username: (( metadata.blobstore.username ))
+        password: (( metadata.blobstore.password ))
+        public_endpoint: 10.250.3.3
+        private_endpoint: 10.250.3.3
+        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+    app_stash:
+      directory_key: app_stash
+      blobstore_type: webdav
+      webdav_config:
+        username: (( metadata.blobstore.username ))
+        password: (( metadata.blobstore.password ))
+        public_endpoint: 10.250.3.3
+        private_endpoint: 10.250.3.3
+        ca_cert: (( metadata.blobstore.tls.ca_cert ))
