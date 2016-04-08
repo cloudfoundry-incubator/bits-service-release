@@ -2,11 +2,6 @@
 
 cd $(dirname $0)/..
 
-if [ -z "$BITS_SERVICE_MANIFEST" ]; then
-  echo "Error: The variable BITS_SERVICE_MANIFEST is not set."
-  exit 1
-fi
-
 ./scripts/generate-bosh-manifest ./templates/blobstore-job.yml \
                                  ./templates/bosh-lite.yml \
                                  ./templates/body-size-stub.yml \
