@@ -6,6 +6,12 @@ templates:
   nginx.conf.erb: config/nginx.conf
   bits_config.yml.erb: config/bits_config.yml
 
+  app_stash_ca_cert.pem.erb: config/certs/app_stash_ca_cert.pem
+  buildpack_cache_ca_cert.pem.erb: config/certs/buildpack_cache_ca_cert.pem
+  buildpacks_ca_cert.pem.erb: config/certs/buildpacks_ca_cert.pem
+  droplets_ca_cert.pem.erb: config/certs/droplets_ca_cert.pem
+  packages_ca_cert.pem.erb: config/certs/packages_ca_cert.pem
+
 packages:
   - ruby-2.2.4
   - bits-service
