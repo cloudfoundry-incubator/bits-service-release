@@ -1,15 +1,23 @@
 require_relative './backend/client_base'
 require_relative './backend/s3'
 require_relative './backend/local'
+require_relative './backend/webdav'
 
 module BackendHelpers
   def backend_client(resource_type)
     resource_type = resource_type.to_s
+    directory_key = directory_key(resource_type)
+    directory_key = File.join(directory_key, resource_type.to_s) if resource_type.to_sym == :buildpack_cache
+
+    if blobstore_type(resource_type) == 'webdav'
+      config = webdav_config(resource_type)
+      return Backend::Webdav::Client.new(
+        config['private_endpoint'],
+        directory_key
+      )
+    end
 
     config = fog_config(resource_type)
-    directory_key = directory_key(resource_type)
-
-    directory_key = File.join(directory_key, resource_type.to_s) if resource_type.to_sym == :buildpack_cache
 
     case config['provider'].downcase
     when 'aws'
