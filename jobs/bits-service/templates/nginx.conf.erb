@@ -43,7 +43,7 @@ http {
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
     }
 
-    location ~ ^/buildpack_cache {
+    location ~ ^/buildpack_cache/entries {
       if ($request_method != PUT ) {
         proxy_pass http://bits_service;
         break;
