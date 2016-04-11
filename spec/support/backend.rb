@@ -7,13 +7,14 @@ module BackendHelpers
   def backend_client(resource_type)
     resource_type = resource_type.to_s
     directory_key = directory_key(resource_type)
-    directory_key = File.join(directory_key, resource_type.to_s) if resource_type.to_sym == :buildpack_cache
+    path_prefix = resource_type.to_sym == :buildpack_cache ? 'buildpack_cache' : nil
 
     if blobstore_type(resource_type) == 'webdav'
       config = webdav_config(resource_type)
       return Backend::Webdav::Client.new(
         config['private_endpoint'],
-        directory_key
+        directory_key,
+        path_prefix
       )
     end
 
@@ -25,12 +26,14 @@ module BackendHelpers
         config['aws_access_key_id'],
         config['aws_secret_access_key'],
         directory_key,
+        path_prefix,
         config['region'],
       )
     when 'local'
       Backend::Local::Client.new(
         config['local_root'],
         directory_key,
+        path_prefix,
         bits_service_endpoint
       )
     else

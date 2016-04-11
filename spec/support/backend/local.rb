@@ -3,9 +3,10 @@ require 'net/sftp'
 module Backend
   module Local
     class Client < Backend::ClientBase
-      def initialize(root_path, directory_key, job_ip)
+      def initialize(root_path, directory_key, path_prefix, job_ip)
         @root_path = root_path
         @directory_key = directory_key
+        @path_prefix = path_prefix
         @job_ip = URI.parse(job_ip).host
       end
 

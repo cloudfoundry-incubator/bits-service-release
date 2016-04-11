@@ -3,7 +3,7 @@ module Backend
     private
 
     def path_for_guid(guid)
-      File.join(guid[0..1], guid[2..3], guid)
+      File.join(@path_prefix.to_s, guid[0..1], guid[2..3], guid).gsub(/^\//, '')
     end
   end
 end

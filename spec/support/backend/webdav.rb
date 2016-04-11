@@ -3,9 +3,10 @@ require 'net/sftp'
 module Backend
   module Webdav
     class Client < Backend::Local::Client
-      def initialize(private_endpoint, directory_key)
+      def initialize(private_endpoint, directory_key, path_prefix)
         @job_ip = URI.parse(private_endpoint).host
         @directory_key = directory_key
+        @path_prefix = path_prefix
       end
 
       def key_exist?(guid)
