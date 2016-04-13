@@ -1,6 +1,6 @@
 module HttpHelpers
   def make_get_request(path)
-    try_catch { RestClient::Request.execute(:url => url(path), :method => :get, :verify_ssl => false) }
+    try_catch { RestClient::Request.execute(url: url(path), method: :get, verify_ssl: false) }
   end
 
   def make_delete_request(path)
