@@ -55,40 +55,29 @@ brew install spiff
 
 # Tests
 
+* When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
+
+  ```
+  export BITS_DIRECTORY_KEY=
+  export AWS_ACCESS_KEY_ID=
+  export AWS_SECRET_ACCESS_KEY=
+  export BITS_AWS_REGION=
+  ```
+
 * Generate manifest with tests stubs:
 
   ```
   ./scripts/generate-test-bosh-lite-manifest ./templates/local.yml # (or s3.yml, or webdav.yml)
   ```
 
-* When targeting an S3 blobstore, the following environment variables are required to be set:
-
-  ```
-  BITS_DIRECTORY_KEY
-  AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY
-  BITS_AWS_REGION
-  ```
-
-* Parse the manifest with the ENV variables required
-
-  ```
-  ./scripts/manifest_parser.rb ./deployments/bits-service-release.yml > manifest.yml
-  ```
-
-* Set the deployment and tell the test where to find it:
-
-  ```
-  bosh deployment manifest.yml
-  export BITS_SERVICE_MANIFEST=./manifest.yml
-  ```
-
-* Deploy release using the generated manifest above
+* Deploy release using the generated manifest
 
 * Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
 
   ```
-  export BITS_SERVICE_ENDPOINT=10.250.0.2 # depends on which backend was set
+  export BITS_SERVICE_ENDPOINT=10.250.0.2 # for local backend
+  export BITS_SERVICE_ENDPOINT=10.250.1.2 # for S3 backend
+  export BITS_SERVICE_ENDPOINT=10.250.3.2 # for WebDav backend
   ```
 
   Outside bosh-lite you will need to update the endpoint.
