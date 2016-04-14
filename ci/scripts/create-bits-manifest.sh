@@ -12,4 +12,4 @@ else
   ./scripts/generate-test-bosh-lite-manifest ./templates/$BLOBSTORE_TYPE.yml
 fi
 
-./scripts/manifest_parser.rb deployments/bits-service-release.yml > "../manifests/manifest.yml"
+cp deployments/bits-service-release.yml ../manifests/manifest.yml
