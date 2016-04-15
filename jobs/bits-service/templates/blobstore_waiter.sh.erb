@@ -1,0 +1,28 @@
+function wait_for_blobstore {
+    max_attempts=30
+    sleep_length=1
+
+    <% if p('bits-service.buildpacks.blobstore_type') == 'webdav' %>
+    echo "Checking for blobstore availability"
+
+    curl -s -k <%= p('bits-service.buildpacks.webdav_config.private_endpoint') %> >/dev/null
+    found=$?
+    blobstore_check_attempts=0
+
+    while [ $found -ne 0 ]
+    do
+      sleep $sleep_length
+      blobstore_check_attempts=$((blobstore_check_attempts+1))
+
+      curl -s -k <%= p('bits-service.buildpacks.webdav_config.private_endpoint') %> >/dev/null
+      found=$?
+
+      if [[ blobstore_check_attempts -eq $max_attempts ]]; then
+        echo "Blobstore is not available"
+        exit 1
+      fi
+    done
+
+    echo "Blobstore is available"
+    <% end %>
+}

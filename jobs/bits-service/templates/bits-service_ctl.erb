@@ -20,6 +20,7 @@ export TMPDIR=/var/vcap/data/${NAME}/tmp
 export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
 source /var/vcap/packages/common/pid_utils.sh
+source ${JOB_DIR}/bin/blobstore_waiter.sh
 
 case $1 in
 
@@ -34,6 +35,8 @@ case $1 in
     chown vcap:vcap $TMPDIR
 
     pid_guard $PIDFILE "Bits Service"
+
+    wait_for_blobstore
 
     cd $PACKAGE_DIR/${NAME}
 
