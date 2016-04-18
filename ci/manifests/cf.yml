@@ -254,6 +254,10 @@ jobs:
   update: {}
 - instances: 0
   name: bits_service_z1
+  templates: []
+  resource_pool: medium_z1
+  networks:
+  - name: cf1
 - instances: 1
   name: blobstore_z1
   networks:
