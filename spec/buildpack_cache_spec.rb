@@ -84,7 +84,7 @@ describe 'buildpack cache resource', type: :integration do
     context 'when deleting an unknown file' do
       let(:path) { '/buildpack_cache/entries/unknown_app' }
 
-      it 'returns HTTP status 404' do
+      it 'returns HTTP status 204' do
         response = make_delete_request(path)
         expect(response.code).to eq(204)
       end
