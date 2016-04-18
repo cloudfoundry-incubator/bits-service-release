@@ -252,6 +252,8 @@ jobs:
   - name: route_registrar
     release: cf
   update: {}
+- instances: 0
+  name: bits_service_z1
 - instances: 1
   name: blobstore_z1
   networks:

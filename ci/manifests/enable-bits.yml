@@ -6,6 +6,40 @@ releases:
 - name: bits-service
   version: <%= ENV.fetch('RELEASE_VERSION', 'latest') %>
 jobs:
+- (( merge on name ))
+- instances: 1
+  name: blobstore_z1
+  networks:
+  - name: cf1
+    static_ips: null
+  persistent_disk: 102400
+  properties:
+    consul:
+      agent:
+        services:
+          blobstore: {}
+    metron_agent:
+      zone: z1
+    route_registrar:
+      routes:
+      - name: blobstore
+        port: 80
+        registration_interval: 20s
+        tags:
+          component: blobstore
+        uris:
+        - blobstore.bosh-lite.com
+  resource_pool: medium_z1
+  templates:
+  - name: consul_agent
+    release: cf
+  - name: metron_agent
+    release: cf
+  - name: blobstore
+    release: cf
+  - name: route_registrar
+    release: cf
+  update: {}
 - instances: 1
   name: bits_service_z1
   networks:
