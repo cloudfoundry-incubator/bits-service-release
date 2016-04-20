@@ -8,6 +8,10 @@ inputs:
 
 outputs:
 - name: manifests
+- name: cf-release-version
+
+params:
+  VERSION_FILE: ../cf-release-version/number
 
 run:
   path: git-bits-service-release/ci/scripts/create-colocated-cf-manifest.sh
