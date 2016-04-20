@@ -28,7 +28,7 @@ function create-directory {
 }
 
 function copy-file {
-  scp -i "$PWD/.ssh-key" "$FILE" "$SSH_CONNECTION_STRING:$1"
+  scp -i "$PWD/.ssh-key" ${FILE} "$SSH_CONNECTION_STRING:$1"
 }
 
 main
