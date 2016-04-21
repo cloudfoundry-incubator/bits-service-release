@@ -11,6 +11,7 @@ function main {
   local remote_dir="$RELEASE_NAME/$(cat $VERSION_FILE)/"
   create-directory "$remote_dir"
   copy-file "$remote_dir"
+  echo "Copied $FILE to $remote_dir"
 }
 
 # copied from ci/scripts/recreate-bosh-lite.sh
