@@ -5,6 +5,7 @@ image: docker:///flintstonecf/ci
 
 inputs:
 - name: git-bits-service-release
+- name: bits-service-release-version
 
 params:
   BOSH_TARGET:
@@ -15,6 +16,7 @@ params:
   AWS_ACCESS_KEY_ID:
   AWS_SECRET_ACCESS_KEY:
   BLOBSTORE_TYPE:
+  VERSION_FILE: ../bits-service-release-version/number
 
 outputs:
 - name: manifests
