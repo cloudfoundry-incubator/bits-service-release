@@ -19,7 +19,7 @@ function setup_ssh {
   echo "$SSH_KEY" > $PWD/.ssh-key
   chmod 600 $PWD/.ssh-key
   mkdir -p ~/.ssh && chmod 700 ~/.ssh
-  local ip=$(echo $SSH_CONNECTION_STRING | cut -d "@" -f2)
+  local ip=$(echo $SSH_CONNECTION_STRING | cut -d "@" -f2 | tr -d '"')
 
   ssh-keyscan -t rsa,dsa $ip >> ~/.ssh/known_hosts
 }
