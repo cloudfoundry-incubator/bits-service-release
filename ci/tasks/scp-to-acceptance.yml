@@ -7,7 +7,7 @@ inputs:
   - name: git-bits-service-release
 
 params:
-  SSH_CONNECTION_STRING:
+  ACCEPTANCE_IP:
   SSH_KEY:
   FILE:
   VERSION_FILE:

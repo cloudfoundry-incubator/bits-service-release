@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-# scp $FILE to $SSH_CONNECTION_STRING/$RELEASE_NAME/$VERSION_FILE/
+# scp $FILE to $ACCEPTANCE_IP:$RELEASE_NAME/$VERSION_FILE/
 # e.g.
 # cf-release/230.0.0-dev.84/release.tgz
 # bits-service-release/1.0.0-dev.90/manifest.yml
@@ -19,17 +19,15 @@ function setup_ssh {
   echo "$SSH_KEY" > $PWD/.ssh-key
   chmod 600 $PWD/.ssh-key
   mkdir -p ~/.ssh && chmod 700 ~/.ssh
-  local ip=$(echo $SSH_CONNECTION_STRING | cut -d "@" -f2 | tr -d '"')
-
-  ssh-keyscan -t rsa,dsa $ip >> ~/.ssh/known_hosts
+  ssh-keyscan -t rsa,dsa $ACCEPTANCE_IP >> ~/.ssh/known_hosts
 }
 
 function create-directory {
-  ssh -i "$PWD/.ssh-key" "$SSH_CONNECTION_STRING" "mkdir -p $1"
+  ssh -i "$PWD/.ssh-key" "root@$ACCEPTANCE_IP" "mkdir -p $1"
 }
 
 function copy-file {
-  scp -i "$PWD/.ssh-key" ${FILE} "$SSH_CONNECTION_STRING:$1"
+  scp -i "$PWD/.ssh-key" ${FILE} "root@$ACCEPTANCE_IP:$1"
 }
 
 main
