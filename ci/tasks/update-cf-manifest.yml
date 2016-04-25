@@ -4,10 +4,12 @@ platform: linux
 image: docker:///flintstonecf/ci
 
 params:
+  VERSION_FILE: ../cf-release-version/number
   MANIFEST_STUBS:
 
 inputs:
 - name: git-bits-service-release
+- name: cf-release-version
 
 outputs:
 - name: manifests

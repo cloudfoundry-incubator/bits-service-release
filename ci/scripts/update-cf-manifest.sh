@@ -2,4 +2,12 @@
 
 cd $(dirname $0)/../../
 
-spruce merge ./ci/manifests/cf.yml ./ci/manifests/tweaks.yml ${MANIFEST_STUBS} > ../manifests/manifest.yml
+if [ -e "$VERSION_FILE" ]; then
+  export VERSION=$(cat $VERSION_FILE)
+  echo "Using VERSION=\"$VERSION\""
+else
+  echo "The \$VERSION_FILE \"$VERSION_FILE\" does not exist"
+  exit 1
+fi
+
+spruce merge ./ci/manifests/cf.yml ./ci/manifests/tweaks.yml ${MANIFEST_STUBS} > ../manifests/manifest-${VERSION}.yml
