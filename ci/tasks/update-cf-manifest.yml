@@ -6,6 +6,7 @@ image: docker:///flintstonecf/ci
 params:
   VERSION_FILE: ../cf-release-version/number
   MANIFEST_STUBS:
+  IAAS: lite
 
 inputs:
 - name: git-bits-service-release

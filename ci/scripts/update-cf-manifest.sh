@@ -10,4 +10,4 @@ else
   exit 1
 fi
 
-spruce merge ./ci/manifests/cf.yml ./ci/manifests/tweaks.yml ${MANIFEST_STUBS} > ../manifests/manifest-${VERSION}.yml
+spruce merge ./ci/manifests/cf-${IAAS}.yml ./ci/manifests/tweaks.yml ${MANIFEST_STUBS} > ../manifests/manifest-${VERSION}.yml
