@@ -202,7 +202,7 @@ jobs:
   - {name: metron_agent, release: cf}
   networks:
   - name: elastic
-    static_ips: [<%= ENV.fetch('CF_PUBLIC_IP', '1.2.3.4') %>]
+    static_ips: ["<%= ENV.fetch('CF_PUBLIC_IP', '1.2.3.4') %>"]
   - name: cf_public
     default: [gateway, dns]
   properties:
@@ -341,7 +341,7 @@ jobs:
       db_scheme: postgresql
       port: 5524
       roles:
-      - {name: uaaadmin, password: <%= ENV.fetch('CF_PASSWORD', 'password') %>, tag: admin}
+      - {name: uaaadmin, password: "<%= ENV.fetch('CF_PASSWORD', 'password') %>", tag: admin}
 
 - name: router_z1
   instances: 1
@@ -380,7 +380,7 @@ jobs:
 
 properties:
   networks: {apps: cf_private}
-  app_domains: [<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>]
+  app_domains: ["<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"]
   cc:
     allow_app_ssh_access: false
     buildpacks:
@@ -458,7 +458,7 @@ properties:
     db_scheme: postgres
     port: 5524
     roles:
-    - {name: ccadmin, password: <%= ENV.fetch('CF_PASSWORD', 'password') %>, tag: admin}
+    - {name: ccadmin, password: "<%= ENV.fetch('CF_PASSWORD', 'password') %>", tag: admin}
   consul:
     agent:
       log_level: null
@@ -692,8 +692,8 @@ properties:
     - {name: uaadb, tag: uaa, citext: true}
     port: 5524
     roles:
-    - {name: ccadmin, password: <%= ENV.fetch('CF_PASSWORD', 'password') %>, tag: admin}
-    - {name: uaaadmin, password: <%= ENV.fetch('CF_PASSWORD', 'password') %>, tag: admin}
+    - {name: ccadmin, password: "<%= ENV.fetch('CF_PASSWORD', 'password') %>", tag: admin}
+    - {name: uaaadmin, password: "<%= ENV.fetch('CF_PASSWORD', 'password') %>", tag: admin}
   dea_next:
     advertise_interval_in_seconds: 5
     heartbeat_interval_in_seconds: 10
