@@ -293,12 +293,12 @@ jobs:
         registration_interval: 20s
         port: 8081
         uris:
-        - "doppler.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
+        - doppler.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
       - name: loggregator
         registration_interval: 20s
         port: 8080
         uris:
-          - "loggregator.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
+        - loggregator.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
 
 - name: uaa_z1
   instances: 1
@@ -318,10 +318,10 @@ jobs:
         registration_interval: 20s
         port: 8080
         uris:
-        - "uaa.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
-        - "*.uaa.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
-        - "login.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
-        - "*.login.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
+        - uaa.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
+        - "*.uaa.<%= ENV.fetch(\"CF_DOMAIN\", \"system.domain\") %>"
+        - login.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
+        - "*.login.<%= ENV.fetch(\"CF_DOMAIN\", \"system.domain\") %>"
     uaa:
       admin:
         client_secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
