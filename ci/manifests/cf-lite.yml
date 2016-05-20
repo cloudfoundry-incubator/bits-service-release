@@ -115,9 +115,7 @@ jobs:
       zone: z1
     router:
       servers:
-        z1:
-        - 10.244.0.22
-        z2: []
+      - 10.244.0.22
   resource_pool: router_z1
   templates:
   - name: haproxy
@@ -2828,8 +2826,6 @@ properties:
         number_of_workers: null
       global:
         timeout_in_seconds: 14400
-      model_deletion:
-        timeout_in_seconds: null
     logging_level: debug2
     maximum_app_disk_in_mb: 2048
     maximum_health_check_timeout: 180
@@ -2980,6 +2976,7 @@ properties:
       package: php-buildpack
     - name: binary_buildpack
       package: binary-buildpack
+    system_hostnames: null
     thresholds:
       api:
         alert_if_above_mb: null
@@ -2991,6 +2988,7 @@ properties:
         restart_if_consistently_above_mb: null
     user_buildpacks: []
     users_can_select_backend: true
+    volume_services_enabled: true
     webdav_config:
       ca_cert: |+
         -----BEGIN CERTIFICATE-----
@@ -3652,6 +3650,8 @@ properties:
   traffic_controller:
     disable_access_control: null
     outgoing_port: 8080
+    security_event_logging:
+      enabled: false
     zone: null
   uaa:
     admin:
@@ -3962,6 +3962,6 @@ update:
   canaries: 1
   canary_watch_time: 1000-180000
   max_in_flight: 50
-  serial: true
+  serial: false
   update_watch_time: 1000-180000
 
