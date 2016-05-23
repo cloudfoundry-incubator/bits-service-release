@@ -11,7 +11,7 @@ params:
   BOSH_PASSWORD:
   BOSH_TARGET:
   BITS_SERVICE_ENDPOINT:
-  RELEASE_NAME:
+  DEPLOYMENT_NAME:
 
 run:
   path: git-bits-service-release/ci/scripts/run-tests.sh
