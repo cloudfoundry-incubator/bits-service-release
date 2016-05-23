@@ -1,4 +1,4 @@
-metadata: (( merge )) 
+metadata: (( merge ))
 
 releases:
   - name: cf
@@ -22,7 +22,7 @@ jobs:
     update: {}
 
 properties:
-  domain: bosh-lite.com
+  system_domain: bosh-lite.com
   bits-service: (( merge ))
   blobstore:
     admin_users:
@@ -35,4 +35,3 @@ properties:
       private_key: (( metadata.blobstore.tls.private_key || "" ))
     secure_link:
       secret: blobstore-secret
-
