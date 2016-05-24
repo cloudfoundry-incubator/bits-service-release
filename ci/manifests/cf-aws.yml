@@ -32,7 +32,7 @@ networks:
 
 - name: elastic
   type: vip
-  cloud_properties: 
+  cloud_properties:
     availability_zone: eu-west-1b
 
 resource_pools:
@@ -378,7 +378,25 @@ jobs:
               status: passing
     dea_next: {zone: z1}
 
+- name: acceptance_tests
+  instances: 1
+  lifecycle: errand
+  networks:
+  - name: cf_private
+  resource_pool: small_z1
+  templates:
+  - name: acceptance-tests
+    release: cf
+
 properties:
+  acceptance_tests:
+    admin_password: <%= ENV.fetch('CF_PASSWORD', 'admin') %>
+    admin_user: <%= ENV.fetch('CF_USER', 'admin') %>
+    api: api.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
+    apps_domain: <%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
+    nodes: 1
+    skip_ssl_validation: true
+    use_http: true
   networks: {apps: cf_private}
   app_domains: ["<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"]
   cc:
