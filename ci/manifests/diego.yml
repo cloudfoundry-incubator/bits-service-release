@@ -3,7 +3,7 @@ compilation:
   network: diego1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: b7e651e2-3afe-471f-9bca-93048fa591f4
+director_uuid: 93c01d2d-a2a5-49d8-8d02-389fd223a9cf
 disk_pools:
 - cloud_properties: {}
   disk_size: 1024
