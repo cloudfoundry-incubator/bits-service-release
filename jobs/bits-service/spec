@@ -20,6 +20,9 @@ packages:
   - nginx
 
 properties:
+  system_domain:
+    description: "The system domain.  The public server will listen on host 'bits-service.system-domain.tld'"
+
   bits-service.buildpacks.directory_key:
     description: "Directory (bucket) used to store buildpack blobs."
     default: "buildpacks"

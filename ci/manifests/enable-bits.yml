@@ -51,6 +51,18 @@ jobs:
   templates:
   - name: bits-service
     release: bits-service
+  - name: route_registrar
+    release: cf
+  properties:
+    route_registrar:
+      routes:
+      - name: bits-service
+        port: 80
+        registration_interval: 20s
+        tags:
+          component: bits-service
+        uris:
+        - (( concat "bits-service." properties.system_domain ))
   update:
     max_in_flight: 1
     serial: true
