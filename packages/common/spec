@@ -1,4 +1,0 @@
----
-name: common
-files:
-- common/pid_utils.sh

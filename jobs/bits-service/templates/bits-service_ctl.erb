@@ -19,7 +19,7 @@ export HOME=/home/vcap # rake needs it to be set to run tasks
 export TMPDIR=/var/vcap/data/${NAME}/tmp
 export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
-source /var/vcap/packages/common/pid_utils.sh
+source /var/vcap/packages/bits-common/pid_utils.sh
 source ${JOB_DIR}/bin/blobstore_waiter.sh
 
 case $1 in

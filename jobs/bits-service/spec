@@ -16,7 +16,7 @@ templates:
 packages:
   - ruby-2.2.4
   - bits-service
-  - common
+  - bits-common
   - nginx
 
 properties:
