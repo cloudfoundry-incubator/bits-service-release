@@ -4,7 +4,7 @@ compilation:
   network: cf1
   reuse_compilation_vms: true
   workers: 6
-director_uuid: 553a6e62-1b01-4e9a-9cdc-ae95a65e6ab4
+director_uuid: 93c01d2d-a2a5-49d8-8d02-389fd223a9cf
 jobs:
 - default_networks:
   - name: cf1
