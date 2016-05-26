@@ -76,4 +76,5 @@ properties:
   cc:
     bits_service:
       enabled: true
-      endpoint: http://10.244.0.74
+      public_endpoint: (( concat "http://bits-service." properties.system_domain ))
+      private_endpoint: http://bits-service.service.cf.internal
