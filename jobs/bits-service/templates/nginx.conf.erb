@@ -30,9 +30,10 @@ http {
     server unix:/var/vcap/sys/run/bits-service/bits-service.sock;
   }
 
+  # Private endpoint
   server {
-    listen    80;
-    server_name  _;
+    listen 80;
+    server_name bits-service.service.cf.internal;
     server_name_in_redirect off;
 
     # resource downloads
@@ -135,6 +136,34 @@ http {
       access_log  /var/vcap/sys/log/nginx_bits/nginx_status.access.log main;
       allow 127.0.0.1;
       deny all;
+    }
+  }
+
+  # Public endpoint
+  server {
+    listen 80;
+    server_name bits-service.<%= p("system_domain") %>;
+    server_name_in_redirect off;
+
+    # resource downloads
+    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>|<%= p("bits-service.buildpack_cache.directory_key") %>)/\w{2}/\w{2}/.*" {
+      internal;
+      root /var/vcap/store/bits-service/;
+      proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
+      add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
+    }
+
+    location ~ ^/buildpack_cache/entries {
+      proxy_pass http://bits_service;
+      break;
+    }
+
+    location ~ ^/(buildpacks|droplets|packages) {
+      if ($request_method = GET ) {
+        proxy_pass http://bits_service;
+        break;
+      }
+      return 404;
     }
   }
 }
