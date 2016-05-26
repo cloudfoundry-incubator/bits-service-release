@@ -53,7 +53,13 @@ jobs:
     release: bits-service
   - name: route_registrar
     release: cf
+  - name: consul_agent
+    release: cf
   properties:
+    consul:
+      agent:
+        services:
+          bits-service: {}
     route_registrar:
       routes:
       - name: bits-service

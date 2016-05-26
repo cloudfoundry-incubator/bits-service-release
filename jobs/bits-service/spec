@@ -6,6 +6,7 @@ templates:
   nginx.conf.erb: config/nginx.conf
   bits_config.yml.erb: config/bits_config.yml
   blobstore_waiter.sh.erb: bin/blobstore_waiter.sh
+  dns_health_check.erb: bin/dns_health_check
 
   app_stash_ca_cert.pem.erb: config/certs/app_stash_ca_cert.pem
   buildpack_cache_ca_cert.pem.erb: config/certs/buildpack_cache_ca_cert.pem
