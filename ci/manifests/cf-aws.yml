@@ -239,7 +239,7 @@ jobs:
         -----END RSA PRIVATE KEY-----
     router:
       servers:
-        z1: [10.10.16.102]
+        - 10.10.16.102
 
 - name: hm9000_z1
   instances: 1
