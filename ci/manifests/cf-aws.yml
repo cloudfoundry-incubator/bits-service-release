@@ -333,7 +333,7 @@ jobs:
       scim:
         userids_enabled: true
         users:
-        - <%= ENV.fetch('CF_PASSWORD', 'user') %>|<%= ENV.fetch('CF_PASSWORD', 'password') %>|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose,routing.router_groups.read
+        - <%= ENV.fetch('CF_USER', 'user') %>|<%= ENV.fetch('CF_PASSWORD', 'password') %>|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose,routing.router_groups.read
     uaadb:
       address: 10.10.16.101
       databases:
