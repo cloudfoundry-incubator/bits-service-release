@@ -29,7 +29,7 @@ jobs:
           component: blobstore
         uris:
         - blobstore.bosh-lite.com
-  resource_pool: medium_z1
+  resource_pool: small_z1
   templates:
   - name: consul_agent
     release: cf
