@@ -172,7 +172,7 @@ jobs:
   - {name: metron_agent, release: cf}
   - {name: route_registrar, release: cf}
   - {name: consul_agent, release: cf}
-  - {name: buildpack_java, release: cf}
+  - {name: java-buildpack, release: cf}
   - {name: go-buildpack, release: cf}
   - {name: binary-buildpack, release: cf}
   - {name: nodejs-buildpack, release: cf}
