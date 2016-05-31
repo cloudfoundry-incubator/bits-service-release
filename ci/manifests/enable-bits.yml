@@ -7,8 +7,8 @@ releases:
   version: <%= ENV.fetch('RELEASE_VERSION', 'latest') %>
 jobs:
 - (( merge on name ))
-- instances: 1
-  name: blobstore_z1
+- name: blobstore_z1
+  instances: 1
   networks:
   - name: cf1
     static_ips: null
@@ -40,12 +40,9 @@ jobs:
   - name: route_registrar
     release: cf
   update: {}
-- instances: 1
-  name: bits_service_z1
-  networks:
-  - name: cf1
-    static_ips:
-    - 10.244.0.74
+- name: bits_service_z1
+  instances: 1
+  networks: []
   persistent_disk: 6064
   resource_pool: small_z1
   templates:

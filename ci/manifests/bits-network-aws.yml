@@ -1,0 +1,4 @@
+jobs:
+- name: bits_service_z1
+  networks:
+  - name: cf_private
