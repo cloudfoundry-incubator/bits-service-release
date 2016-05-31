@@ -149,6 +149,13 @@ jobs:
         uris:
         - "blobstore.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"
 
+- instances: 0
+  name: bits_service_z1
+  templates: []
+  resource_pool: small_z1
+  networks:
+  - name: cf_private
+
 - name: postgres_z1
   instances: 1
   persistent_disk: 1024
