@@ -9,9 +9,7 @@ jobs:
 - (( merge on name ))
 - name: blobstore_z1
   instances: 1
-  networks:
-  - name: cf1
-    static_ips: null
+  networks: []
   persistent_disk: 102400
   properties:
     consul:

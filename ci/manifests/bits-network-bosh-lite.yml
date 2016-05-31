@@ -4,3 +4,7 @@ jobs:
   - name: cf1
     static_ips:
     - 10.244.0.74
+- name: blobstore_z1
+  networks:
+  - name: cf1
+    static_ips: null
