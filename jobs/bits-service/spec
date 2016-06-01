@@ -15,7 +15,7 @@ templates:
   packages_ca_cert.pem.erb: config/certs/packages_ca_cert.pem
 
 packages:
-  - ruby-2.2.4
+  - ruby-2.3
   - bits-service
   - bits-common
   - nginx
