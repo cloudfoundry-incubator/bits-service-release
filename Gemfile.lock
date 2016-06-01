@@ -19,7 +19,7 @@ GEM
     mime-types (2.99)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
+    net-ssh (3.1.1)
     netrc (0.11.0)
     parser (2.3.0.7)
       ast (~> 2.2)
