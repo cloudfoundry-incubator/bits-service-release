@@ -1,5 +1,5 @@
 ---
-name: cf
+name: <%= ENV.fetch('CF_DEPLOYMENT_NAME', 'cf') %>
 director_uuid: <%= `bosh status --uuid` %>
 
 releases:
@@ -430,6 +430,7 @@ properties:
     - {name: staticfile_buildpack, package: staticfile-buildpack}
     - {name: binary_buildpack, package: binary-buildpack}
     internal_api_password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
+    internal_api_user: <%= ENV.fetch('CF_USER', 'admin') %>
     quota_definitions:
       default:
         memory_limit: 102400
@@ -913,6 +914,13 @@ properties:
         secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
       doppler:
         authorities: uaa.resource
+        secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
+      ssh-proxy:
+        authorized-grant-types: authorization_code
+        autoapprove: true
+        override: true
+        redirect-uri: /login
+        scope: openid,cloud_controller.read,cloud_controller.write,cloud_controller.admin
         secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
       login:
         authorities: oauth.login,scim.write,clients.read,notifications.write,critical_notifications.write,emails.write,scim.userids,password.write

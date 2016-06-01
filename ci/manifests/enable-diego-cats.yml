@@ -1,9 +1,9 @@
 properties:
   acceptance_tests:
-    admin_password: admin
-    admin_user: admin
-    api: api.bosh-lite.com
-    apps_domain: bosh-lite.com
+    admin_password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
+    admin_user: <%= ENV.fetch('CF_USER', 'admin') %>
+    api: (( concat "api." properties.system_domain ))
+    apps_domain: (( grab properties.system_domain ))
     skip_ssl_validation: true
     use_http: true
     backend: diego
