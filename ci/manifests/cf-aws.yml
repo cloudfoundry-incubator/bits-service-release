@@ -1,5 +1,5 @@
 ---
-name: <%= ENV.fetch('CF_DEPLOYMENT_NAME', 'cf') %>
+name: <%= ENV.fetch('CF_DEPLOYMENT_NAME') %>
 director_uuid: <%= `bosh status --uuid` %>
 
 releases:

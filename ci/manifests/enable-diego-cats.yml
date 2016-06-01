@@ -1,6 +1,6 @@
 properties:
   acceptance_tests:
-    admin_password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
+    admin_password: <%= ENV.fetch('CF_PASSWORD', 'admin') %>
     admin_user: <%= ENV.fetch('CF_USER', 'admin') %>
     api: (( concat "api." properties.system_domain ))
     apps_domain: (( grab properties.system_domain ))
