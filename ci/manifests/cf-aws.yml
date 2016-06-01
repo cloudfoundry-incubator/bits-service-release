@@ -6,30 +6,6 @@ releases:
 - {name: cf, version: latest}
 
 networks:
-- name: cf_private
-  type: manual
-  subnets:
-  - range: 10.10.16.0/24
-    gateway: 10.10.16.1
-    dns: [10.10.0.2]
-    reserved: ["10.10.16.2 - 10.10.16.3"]
-    static: ["10.10.16.100 - 10.10.16.105"]
-    cloud_properties:
-      subnet: subnet-56faf00f
-
-- name: cf_public
-  type: manual
-  subnets:
-  - range: 10.10.80.0/24
-    gateway: 10.10.80.1
-    dns: [10.10.0.2]
-    reserved: ["10.10.80.2 - 10.10.80.10"]
-    cloud_properties:
-      subnet: subnet-6a39ec0e
-      security_groups:
-        - sg-2ca8514b
-        - sg-4fa95028
-
 - name: elastic
   type: vip
   cloud_properties:
@@ -88,7 +64,7 @@ jobs:
   - {name: metron_agent, release: cf}
   networks:
   - name: cf_private
-    static_ips: [10.10.16.103]
+    static_ips: (( static_ips(2) ))
 
 - name: etcd_z1
   instances: 1
@@ -100,11 +76,11 @@ jobs:
   - {name: metron_agent, release: cf}
   networks:
   - name: cf_private
-    static_ips: [10.10.16.104]
+    static_ips: (( static_ips(3) ))
   properties:
     etcd_metrics_server:
       nats:
-        machines: [10.10.16.103]
+        machines: (( grab jobs.nats_z1.networks.cf_private.static_ips ))
         password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
         username: nats
 
@@ -117,7 +93,7 @@ jobs:
   - {name: consul_agent, release: cf}
   networks:
   - name: cf_private
-    static_ips: [10.10.16.105]
+    static_ips: (( static_ips(4) ))
   properties:
     consul:
       agent:
@@ -165,7 +141,7 @@ jobs:
   - {name: metron_agent, release: cf}
   networks:
   - name: cf_private
-    static_ips: [10.10.16.101]
+    static_ips: (( static_ips(5) ))
   update:
     serial: true
 
@@ -246,8 +222,7 @@ jobs:
         L5TDGqGV7x1d4xK7l9A+/ctivgbV1plnR1O/4mSFF1U=
         -----END RSA PRIVATE KEY-----
     router:
-      servers:
-        - 10.10.16.102
+      servers: (( grab jobs.router_z1.networks.cf_private.static_ips ))
 
 - name: hm9000_z1
   instances: 1
@@ -343,7 +318,7 @@ jobs:
         users:
         - <%= ENV.fetch('CF_USER', 'user') %>|<%= ENV.fetch('CF_PASSWORD', 'password') %>|scim.write,scim.read,openid,cloud_controller.admin,doppler.firehose,routing.router_groups.read
     uaadb:
-      address: 10.10.16.101
+      address: (( grab jobs.postgres_z1.networks.cf_private.static_ips[0] ))
       databases:
       - {name: uaadb, tag: uaa}
       db_scheme: postgresql
@@ -360,7 +335,7 @@ jobs:
   - {name: consul_agent, release: cf}
   networks:
   - name: cf_private
-    static_ips: [10.10.16.102]
+    static_ips:  (( static_ips(1) ))
   properties:
     dropsonde: {enabled: true}
 
@@ -478,7 +453,7 @@ properties:
     staging_upload_user: staging_upload_user
     dea_use_https: false
   ccdb:
-    address: 10.10.16.101
+    address: (( grab jobs.postgres_z1.networks.cf_private.static_ips[0] ))
     databases:
     - {name: ccdb, tag: cc}
     db_scheme: postgres
@@ -490,8 +465,7 @@ properties:
       log_level: null
       domain: cf.internal
       servers:
-        lan:
-        - 10.10.16.105
+        lan: (( grab jobs.consul_z1.networks.cf_private.static_ips ))
     encrypt_keys:
     - <%= ENV.fetch('CF_PASSWORD', 'password') %>
     ca_cert: |
@@ -733,7 +707,7 @@ properties:
   description: Cloud Foundry sponsored by Pivotal
   domain: <%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
   etcd:
-    machines: [10.10.16.104]
+    machines: (( grab jobs.etcd_z1.networks.cf_private.static_ips ))
     peer_require_ssl: false
     require_ssl: false
     advertise_urls_dns_suffix: etcd.service.cf.internal
@@ -884,7 +858,7 @@ properties:
     port: 4443
   loggregator:
     etcd:
-      machines: [10.10.16.104]
+      machines: (( grab jobs.etcd_z1.networks.cf_private.static_ips ))
   loggregator_endpoint:
     shared_secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
   metron_agent:
@@ -894,7 +868,7 @@ properties:
   metron_endpoint:
     shared_secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
   nats:
-    machines: [10.10.16.103]
+    machines: (( grab jobs.nats_z1.networks.cf_private.static_ips ))
     password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
     port: 4222
     user: nats
