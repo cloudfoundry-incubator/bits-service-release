@@ -184,6 +184,7 @@ jobs:
   templates:
   - {name: haproxy, release: cf}
   - {name: metron_agent, release: cf}
+  - {name: consul_agent, release: cf}
   networks:
   - name: elastic
     static_ips: ["<%= ENV.fetch('CF_PUBLIC_IP', '1.2.3.4') %>"]
