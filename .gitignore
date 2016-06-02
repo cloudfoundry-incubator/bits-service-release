@@ -10,6 +10,7 @@
 .final_builds/packages/**/*.tgz
 .gitreview
 .idea
+.tags*
 blobs
 deployments
 config/dev.yml
