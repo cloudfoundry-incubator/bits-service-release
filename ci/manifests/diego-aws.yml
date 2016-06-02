@@ -1630,6 +1630,8 @@ resource_pools:
 - cloud_properties:
     availability_zone: eu-west-1a
     instance_type: c3.large
+    ephemeral_disk:
+      size: 124000
   name: cell_z1
   network: diego1
   stemcell:
