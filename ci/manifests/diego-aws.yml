@@ -971,7 +971,7 @@ properties:
       log_level: debug
     executor:
       ca_certs_for_downloads: null
-      disk_capacity_mb: null
+      disk_capacity_mb: 75000
       drain_timeout_in_seconds: 0
       garden:
         address: 127.0.0.1:7777
@@ -987,7 +987,7 @@ properties:
           user: null
         timeout: null
       log_level: debug
-      memory_capacity_mb: null
+      memory_capacity_mb: 30000
       post_setup_hook: null
       post_setup_user: null
     file_server:
@@ -1605,7 +1605,7 @@ resource_pools:
     version: latest
 - cloud_properties:
     availability_zone: eu-west-1a
-    instance_type: m3.medium
+    instance_type: r3.xlarge
   name: brain_z1
   network: diego1
   stemcell:
@@ -1621,7 +1621,7 @@ resource_pools:
     version: latest
 - cloud_properties:
     availability_zone: eu-west-1a
-    instance_type: m3.medium
+    instance_type: m3.large
   name: database_z1
   network: diego1
   stemcell:

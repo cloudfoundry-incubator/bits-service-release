@@ -383,7 +383,9 @@ properties:
   networks: {apps: cf_private}
   app_domains: ["<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>"]
   cc:
-    allow_app_ssh_access: false
+    default_app_memory: 128
+    default_app_disk_in_mb: 512
+    allow_app_ssh_access: true
     buildpacks:
       blobstore_type: webdav
       webdav_config:
