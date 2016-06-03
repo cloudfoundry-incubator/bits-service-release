@@ -1,0 +1,17 @@
+---
+platform: linux
+
+image: docker:///flintstonecf/ci
+
+inputs:
+- name: git-bits-service-release
+
+params:
+  MANIFEST_PATH:
+  JOB_NAME:
+  BOSH_TARGET:
+  BOSH_USERNAME:
+  BOSH_PASSWORD:
+
+run:
+  path: git-bits-service-release/ci/scripts/restart-bosh-job.sh
