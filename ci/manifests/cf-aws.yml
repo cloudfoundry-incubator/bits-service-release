@@ -377,6 +377,7 @@ properties:
     host_key_fingerprint: a6:d1:08:0b:b0:cb:9b:5f:c4:ba:44:2a:97:26:19:8a
     oauth_client_id: ssh-proxy
   acceptance_tests:
+    default_timeout: 75
     admin_password: <%= ENV.fetch('CF_PASSWORD', 'admin') %>
     admin_user: <%= ENV.fetch('CF_USER', 'admin') %>
     api: api.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
