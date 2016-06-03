@@ -462,7 +462,7 @@ properties:
   ccdb:
     address: (( grab jobs.postgres_z1.networks.cf_private.static_ips[0] ))
     databases:
-    - {name: ccdb, tag: cc}
+    - {name: <%= ENV.fetch('CF_CCDB_NAME', 'ccdb') %>, tag: cc}
     db_scheme: postgres
     port: 5524
     roles:
@@ -695,7 +695,7 @@ properties:
         -----END CERTIFICATE-----
   databases:
     databases:
-    - {name: ccdb, tag: cc, citext: true}
+    - {name: <%= ENV.fetch('CF_CCDB_NAME', 'ccdb') %>, tag: cc, citext: true}
     - {name: uaadb, tag: uaa, citext: true}
     port: 5524
     roles:
