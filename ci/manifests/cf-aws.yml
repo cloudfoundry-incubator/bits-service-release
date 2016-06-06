@@ -39,6 +39,17 @@ resource_pools:
     availability_zone: eu-west-1b
     instance_type: m3.medium
 
+- name: api_z1
+  network: cf_private
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    availability_zone: eu-west-1a
+    instance_type: c3.large
+    ephemeral_disk:
+      size: 102400
+
 - name: runner_z1
   network: cf_private
   stemcell:
@@ -158,7 +169,7 @@ jobs:
 
 - name: api_z1
   instances: 1
-  resource_pool: large_z1
+  resource_pool: api_z1
   templates:
   - {name: cloud_controller_ng, release: cf}
   - {name: cloud_controller_worker, release: cf}
