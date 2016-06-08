@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+cd $(dirname $0)/../
+
+mkdir -p deployments
+
+spruce merge ./ci/manifests/cf-lite.yml ./ci/manifests/tweaks.yml \
+  ./ci/manifests/enable-bits.yml \
+  ./ci/manifests/bits-network-bosh-lite.yml \
+  ./templates/local.yml \
+  > deployments/cf-with-bits-service-enabled.yml
+
+bosh deployment deployments/cf-with-bits-service-enabled.yml
