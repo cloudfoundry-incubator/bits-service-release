@@ -159,11 +159,21 @@ http {
     }
 
     location ~ ^/(buildpacks|droplets|packages) {
-      if ($request_method = GET ) {
-        proxy_pass http://bits_service;
-        break;
+      set $allow 0;
+
+      if ($request_method = GET) {
+        set $allow 1;
       }
-      return 404;
+
+      if ($request_method = HEAD) {
+        set $allow 1;
+      }
+
+      if ($allow = 0) {
+        return 404;
+      }
+
+      proxy_pass http://bits_service;
     }
   }
 }
