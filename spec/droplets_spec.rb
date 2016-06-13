@@ -50,15 +50,6 @@ describe 'droplets resource' do
         expect(response.code).to eq 400
       end
     end
-
-    context 'when the POST is no multipart request' do
-      let(:upload_body) { Hash.new }
-
-      it 'returns HTTP status 415' do
-        response = make_post_request collection_path, upload_body
-        expect(response.code).to eq 415
-      end
-    end
   end
 
   describe 'GET /droplets/:guid', type: :integration do
