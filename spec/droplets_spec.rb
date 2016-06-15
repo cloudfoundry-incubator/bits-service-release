@@ -1,36 +1,28 @@
 require 'spec_helper'
 
 describe 'droplets resource' do
-  let(:guid) { SecureRandom.uuid }
-
-  let(:collection_path) { '/droplets' }
-
-  let(:resource_path) { "/droplets/#{existing_guid}" }
-
-  let(:existing_guid) do
-    response = make_post_request collection_path, upload_body
-    JSON.parse(response.body)['guid']
-  end
-
+  let(:guid) { "#{SecureRandom.uuid}/#{SecureRandom.uuid}" }
+  let(:resource_path) { "/droplets/#{guid}" }
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
-
+  let(:upload_body) { { droplet: zip_file } }
+  let(:blobstore_client) { backend_client(:droplets) }
+  let(:existing_guid) do
+    "#{SecureRandom.uuid}/#{SecureRandom.uuid}".tap do |guid|
+      make_put_request "/droplets/#{guid}", upload_body
+    end
+  end
   let(:zip_file) do
     File.new(zip_filepath)
   end
 
-  let(:upload_body) { { droplet: zip_file } }
-
-  let(:blobstore_client) { backend_client(:droplets) }
-
-  describe 'POST /droplets', type: :integration do
+  describe 'PUT /droplets/:guid', type: :integration do
     it 'returns HTTP status 201' do
-      response = make_post_request collection_path, upload_body
+      response = make_put_request resource_path, upload_body
       expect(response.code).to eq 201
     end
 
     it 'stores the blob in the backend' do
-      response = make_post_request collection_path, upload_body
-      guid = guid_from_response(response)
+      response = make_put_request resource_path, upload_body
       expect(blobstore_client.key_exist?(guid)).to eq(true)
     end
 
@@ -46,7 +38,7 @@ describe 'droplets resource' do
       let(:upload_body) { { buildpack: tempfile } }
 
       it 'returns HTTP status 4XX' do
-        response = make_post_request collection_path, upload_body
+        response = make_put_request resource_path, upload_body
         expect(response.code).to eq 400
       end
     end
@@ -54,6 +46,8 @@ describe 'droplets resource' do
 
   describe 'GET /droplets/:guid', type: :integration do
     context 'when the droplet exists' do
+      let(:guid) { existing_guid }
+
       it 'returns HTTP status 200' do
         response = make_get_request resource_path
         expect(response.code).to eq 200
@@ -66,7 +60,7 @@ describe 'droplets resource' do
     end
 
     context 'when the droplet does not exist' do
-      let(:resource_path) { '/droplets/not-existing' }
+      let(:resource_path) { '/droplets/not-existing/droplet' }
 
       it 'returns the correct error' do
         response = make_get_request resource_path
@@ -76,7 +70,10 @@ describe 'droplets resource' do
   end
 
   describe 'DELETE /droplets/:guid', type: :integration do
+
     context 'when the droplet exists' do
+      let(:guid) { existing_guid }
+
       it 'returns HTTP status 204' do
         response = make_delete_request resource_path
         expect(response.code).to eq 204
@@ -89,7 +86,7 @@ describe 'droplets resource' do
     end
 
     context 'when the droplet does not exist' do
-      let(:resource_path) { '/droplets/not-existing' }
+      let(:resource_path) { '/droplets/not-existing/droplet' }
 
       it 'has HTTP 404 as status code' do
         response = make_delete_request resource_path
