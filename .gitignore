@@ -26,3 +26,6 @@ bosh-lite/deployments/*
 bosh-lite/tmp/*
 pkg
 manifest.yml
+
+src/github.com/codegangsta/
+src/github.com/vito/

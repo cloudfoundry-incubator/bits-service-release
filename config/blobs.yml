@@ -27,3 +27,11 @@ ruby-2.3/rubygems-2.6.4.tgz:
   object_id: 5e1e754b-85ec-495c-806e-dccf6daec0aa
   sha: 8ef39e536af2ecd20b0e7a95765fa6a485087ac8
   size: 478582
+golang/go1.6.1.linux-amd64.tar.gz:
+  object_id: a735e999-7658-44e5-ac69-a037337aa52d
+  sha: c73492474dcc7a233772d27e948b74468d9f1849
+  size: 84824395
+cli/cli-linux-amd64-6.17.0.tgz:
+  object_id: 5d117da5-f89b-4f1f-918e-a11d018ddf35
+  sha: c552c8f4436a63c2034d47f66fd218426c632112
+  size: 6153376

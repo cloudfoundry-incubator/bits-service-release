@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <testsuite tests="3" failures="0" time="50.619735932">
+      <testcase name="Buildpacks uses a previously uploaded buildpack" classname="Buildpacks" time="26.033077588"></testcase>
+      <testcase name="Packages starts an app with a package previously uploaded" classname="Buildpacks" time="14.920922587"></testcase>
+      <testcase name="Verification/Droplets finds the previously created droplet" classname="Buildpacks" time="0.9078950990000001"></testcase>
+  </testsuite>
