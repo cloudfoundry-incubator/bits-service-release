@@ -436,38 +436,10 @@ properties:
     default_app_memory: 128
     default_app_disk_in_mb: 512
     allow_app_ssh_access: true
-    buildpacks:
-      blobstore_type: webdav
-      webdav_config:
-        password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        private_endpoint: https://blobstore.service.cf.internal
-        public_endpoint: https://blobstore.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
-        secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        username: blobstore-username
-    droplets:
-      blobstore_type: webdav
-      webdav_config:
-        password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        private_endpoint: https://blobstore.service.cf.internal
-        public_endpoint: https://blobstore.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
-        secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        username: blobstore-username
-    packages:
-      blobstore_type: webdav
-      webdav_config:
-        password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        private_endpoint: https://blobstore.service.cf.internal
-        public_endpoint: https://blobstore.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
-        secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        username: blobstore-username
-    resource_pool:
-      blobstore_type: webdav
-      webdav_config:
-        password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        private_endpoint: https://blobstore.service.cf.internal
-        public_endpoint: https://blobstore.<%= ENV.fetch('CF_DOMAIN', 'system.domain') %>
-        secret: <%= ENV.fetch('CF_PASSWORD', 'password') %>
-        username: blobstore-username
+    buildpacks: (( grab properties.bits-service.buildpacks ))
+    droplets: (( grab properties.bits-service.droplets ))
+    packages: (( grab properties.bits-service.packages ))
+    resource_pool: (( grab properties.bits-service.app_stash ))
     bulk_api_password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
     db_encryption_key: <%= ENV.fetch('CF_PASSWORD', 'password') %>
     default_running_security_groups: [public_networks, dns]
