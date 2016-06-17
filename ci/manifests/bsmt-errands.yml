@@ -1,0 +1,31 @@
+jobs:
+- name: bsmt_preparation
+  instances: 1
+  lifecycle: errand
+  networks: (( grab jobs.acceptance_tests.networks ))
+  resource_pool: (( grab jobs.acceptance_tests.resource_pool ))
+  templates:
+  - name: bits-service-migration-tests
+    release: bits-service
+  properties:
+    bits_service_migration_tests:
+      test_suite: preparation
+      persistent_app_org: BSMT-persistent-org
+      persistent_app_space: BSMT-persistent-space
+    acceptance_tests:
+      cf_push_timeout: 240
+- name: bsmt_verification
+  instances: 1
+  lifecycle: errand
+  networks: (( grab jobs.acceptance_tests.networks ))
+  resource_pool: (( grab jobs.acceptance_tests.resource_pool ))
+  templates:
+  - name: bits-service-migration-tests
+    release: bits-service
+  properties:
+    bits_service_migration_tests:
+      test_suite: verification
+      persistent_app_org: (( grab jobs.bsmt_preparation.properties.bits_service_migration_tests.persistent_app_org ))
+      persistent_app_space: (( grab jobs.bsmt_preparation.properties.bits_service_migration_tests.persistent_app_space ))
+    acceptance_tests:
+      cf_push_timeout: (( grab jobs.bsmt_preparation.properties.acceptance_tests.cf_push_timeout ))
