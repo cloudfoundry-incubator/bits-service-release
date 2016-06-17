@@ -30,7 +30,7 @@ properties:
         aws_secret_access_key: "<%= ENV['AWS_SECRET_ACCESS_KEY'] %>"
         region: "<%= ENV['BITS_AWS_REGION'] %>"
     packages:
-      package_directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
+      app_package_directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
       directory_key: <%= ENV['BITS_DIRECTORY_KEY'] %>
       fog_connection:
         provider: "AWS"
