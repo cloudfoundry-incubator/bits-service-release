@@ -4,10 +4,17 @@ require_relative './backend/local'
 require_relative './backend/webdav'
 
 module BackendHelpers
+  path_prefix = nil
   def backend_client(resource_type)
     resource_type = resource_type.to_s
+
+    if resource_type.to_sym == :buildpack_cache
+      resource_type = 'droplets'
+      path_prefix = 'buildpack_cache'
+    end
+
+    resource_type = resource_type.to_s
     directory_key = directory_key(resource_type)
-    path_prefix = resource_type.to_sym == :buildpack_cache ? 'buildpack_cache' : nil
 
     if blobstore_type(resource_type) == 'webdav'
       config = webdav_config(resource_type)

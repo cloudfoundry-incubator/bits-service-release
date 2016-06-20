@@ -9,7 +9,6 @@ templates:
   dns_health_check.erb: bin/dns_health_check
 
   app_stash_ca_cert.pem.erb: config/certs/app_stash_ca_cert.pem
-  buildpack_cache_ca_cert.pem.erb: config/certs/buildpack_cache_ca_cert.pem
   buildpacks_ca_cert.pem.erb: config/certs/buildpacks_ca_cert.pem
   droplets_ca_cert.pem.erb: config/certs/droplets_ca_cert.pem
   packages_ca_cert.pem.erb: config/certs/packages_ca_cert.pem
@@ -48,31 +47,6 @@ properties:
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
     default: null
-
-  bits-service.buildpack_cache.directory_key:
-    description: "Directory (bucket) used to store buildpack cache blobs."
-    default: "buildpack_cache"
-  bits-service.buildpack_cache.fog_connection:
-    description: "Fog connection properties."
-    default: null
-  bits-service.buildpack_cache.blobstore_type:
-    description: "The type of blobstore backing to use. Valid values: ['fog', 'webdav']"
-    default: "fog"
-  bits-service.buildpack_cache.webdav_config.public_endpoint:
-    description: "The location of the webdav server eg: https://blobstore.com"
-    default: ""
-  bits-service.buildpack_cache.webdav_config.private_endpoint:
-    description: "The location of the webdav server eg: https://blobstore.internal"
-    default: "https://blobstore.service.cf.internal"
-  bits-service.buildpack_cache.webdav_config.username:
-    description: "The basic auth user that CC uses to connect to the admin endpoint on webdav"
-    default: ""
-  bits-service.buildpack_cache.webdav_config.password:
-    description: "The basic auth password that CC uses to connect to the admin endpoint on webdav"
-    default: ""
-  bits-service.buildpack_cache.webdav_config.ca_cert:
-    description: "The ca cert to use when communicating with webdav"
-    default: ""
 
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."

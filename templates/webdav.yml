@@ -105,15 +105,6 @@ properties:
         public_endpoint: http://10.250.3.3
         private_endpoint: https://10.250.3.3
         ca_cert: (( metadata.blobstore.tls.ca_cert ))
-    buildpack_cache:
-      directory_key: buildpack_cache
-      blobstore_type: webdav
-      webdav_config:
-        username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
-        public_endpoint: http://10.250.3.3
-        private_endpoint: https://10.250.3.3
-        ca_cert: (( metadata.blobstore.tls.ca_cert ))
     droplets:
       directory_key: droplets
       blobstore_type: webdav

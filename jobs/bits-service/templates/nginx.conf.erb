@@ -37,7 +37,7 @@ http {
     server_name_in_redirect off;
 
     # resource downloads
-    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>|<%= p("bits-service.buildpack_cache.directory_key") %>)/\w{2}/\w{2}/.*" {
+    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>/buildpack_cache|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
       root /var/vcap/store/bits-service/;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
@@ -122,7 +122,7 @@ http {
     server_name_in_redirect off;
 
     # resource downloads
-    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>|<%= p("bits-service.buildpack_cache.directory_key") %>)/\w{2}/\w{2}/.*" {
+    location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
       root /var/vcap/store/bits-service/;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
