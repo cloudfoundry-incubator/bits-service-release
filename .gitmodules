@@ -21,3 +21,7 @@
 [submodule "src/bits-service"]
 	path = src/bits-service
 	url = https://github.com/cloudfoundry-incubator/bits-service.git
+[submodule "src/github.com/pivotal-golang/archiver"]
+	path = src/github.com/pivotal-golang/archiver
+	url = https://github.com/pivotal-golang/archiver
+	branch = master
