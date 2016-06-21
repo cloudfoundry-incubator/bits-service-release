@@ -1,15 +1,13 @@
 package preparation_test
 
 import (
+	"testing"
 	"time"
 
-	. "github.com/cloudfoundry-incubator/bits-service-migration-tests/helpers"
 	"github.com/cloudfoundry-incubator/cf-test-helpers/cf"
 	"github.com/cloudfoundry-incubator/cf-test-helpers/helpers"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-
-	"testing"
 )
 
 var (
@@ -36,7 +34,6 @@ func TestPreparation(t *testing.T) {
 	BeforeSuite(func() {
 		cf.AsUser(context.AdminUserContext(), context.ShortTimeout(), func() {
 			cf.Cf("delete-org", "-f", config.PersistentAppOrg).Wait(defaultTimeout)
-			cf.Cf("delete-buildpack", "-f", BuildpackName).Wait(defaultTimeout)
 		})
 
 		environment.Setup()

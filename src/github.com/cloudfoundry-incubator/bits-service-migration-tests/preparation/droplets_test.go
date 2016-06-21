@@ -3,7 +3,6 @@ package preparation_test
 import (
 	. "github.com/cloudfoundry-incubator/bits-service-migration-tests/helpers"
 	"github.com/cloudfoundry-incubator/cf-test-helpers/cf"
-
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gexec"
