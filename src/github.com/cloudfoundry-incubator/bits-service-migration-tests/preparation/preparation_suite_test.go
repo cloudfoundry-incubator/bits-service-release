@@ -1,6 +1,7 @@
 package preparation_test
 
 import (
+	"math/rand"
 	"testing"
 	"time"
 
@@ -37,6 +38,7 @@ func TestPreparation(t *testing.T) {
 		})
 
 		environment.Setup()
+		rand.Seed(time.Now().Unix())
 	})
 
 	RegisterFailHandler(Fail)
