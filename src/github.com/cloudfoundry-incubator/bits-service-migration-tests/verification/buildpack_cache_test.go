@@ -11,7 +11,7 @@ import (
 )
 
 var _ = Describe("BuildpackCache", func() {
-	FIt("uses the buildpack cache when restaging an app", func() {
+	It("uses the buildpack cache when restaging an app", func() {
 		restage := cf.Cf("restage", BuildpackCacheAppName).Wait(cfPushTimeout)
 		Expect(restage).To(Exit(0))
 

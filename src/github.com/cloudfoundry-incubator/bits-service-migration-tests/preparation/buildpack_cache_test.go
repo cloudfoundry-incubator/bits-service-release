@@ -96,7 +96,7 @@ EOF
 		})
 	})
 
-	FIt("creates a buildpack cache when uploading an app", func() {
+	It("creates a buildpack cache when uploading an app", func() {
 		Expect(cf.Cf("push", BuildpackCacheAppName,
 			"--no-start",
 			"-b", BuildpackCacheBuildpackName,
