@@ -29,7 +29,7 @@ echo "director_uuid: ${DIRECTOR_UUID}" > ${BITS_SERVICE_RELEASE_DIR}/deployments
 
 MANIFEST_FILE="${BITS_SERVICE_RELEASE_DIR}/deployments/bits-service-release.yml"
 
-spiff merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml "$@" >> "${MANIFEST_FILE}"
+spruce merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml "$@" >> "${MANIFEST_FILE}"
 
 TMP=${MANIFEST_FILE}.tmp
 ${SCRIPT_DIR}/manifest_parser.rb "${MANIFEST_FILE}" > "${MANIFEST_FILE}.tmp"

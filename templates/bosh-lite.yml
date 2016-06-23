@@ -1,14 +1,3 @@
-networks:
-- name: default
-  subnets:
-  - cloud_properties:
-      name: random
-    range: (( metadata.networks.range ))
-    reserved:
-    - (( metadata.networks.reserved ))
-    static:
-    - (( metadata.networks.static ))
-
 resource_pools:
   - name: common
     network: default
@@ -19,5 +8,3 @@ resource_pools:
       instance_type: m1.small
       availability_zone:
       key_name:
-
-metadata: (( merge ))

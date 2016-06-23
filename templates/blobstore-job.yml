@@ -1,19 +1,14 @@
-metadata: (( merge ))
-
 releases:
   - name: cf
     version: latest
 
-networks: (( merge ))
-
-resource_pools: (( merge ))
-
 jobs:
+  - (( prepend ))
   - name: blobstore
     templates:
     - name: blobstore
       release: cf
-    instances: (( metadata.blobstore.instances || 0 ))
+    instances: (( grab metadata.blobstore.instances ))
     resource_pool: common
     persistent_disk: 102400
     networks:
@@ -23,15 +18,14 @@ jobs:
 
 properties:
   system_domain: bosh-lite.com
-  bits-service: (( merge ))
   blobstore:
     admin_users:
-      - username: (( metadata.blobstore.username || "" ))
-        password: (( metadata.blobstore.password || "" ))
+      - username: (( grab metadata.blobstore.username || "" ))
+        password: (( grab metadata.blobstore.password || "" ))
     port: 80
     tls:
       port: 443
-      cert: (( metadata.blobstore.tls.cert || "" ))
-      private_key: (( metadata.blobstore.tls.private_key || "" ))
+      cert: (( grab metadata.blobstore.tls.cert || "" ))
+      private_key: (( grab metadata.blobstore.tls.private_key || "" ))
     secure_link:
       secret: blobstore-secret

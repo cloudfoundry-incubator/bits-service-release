@@ -3,6 +3,8 @@ metadata:
     instances: 1
     username: blobstore
     password: blobstore
+    public_endpoint: (( concat "http://blobstore." properties.system_domain ))
+    private_endpoint: "https://blobstore.service.cf.internal"
     tls:
       cert: |+
         -----BEGIN CERTIFICATE-----
@@ -89,10 +91,6 @@ metadata:
         47uCIp3q8TDuvQLzYLLw5J+J3Ctq+kBEHeY2dw6Q/k2EqwIqZ4bVXRdvCA==
         -----END CERTIFICATE-----
   release_name: bits-service-webdav
-  networks:
-    reserved: 10.250.3.1
-    range: 10.250.3.0./24
-    static: 10.250.3.2 - 10.250.3.20
 
 properties:
   bits-service:
@@ -100,35 +98,35 @@ properties:
       directory_key: buildpacks
       blobstore_type: webdav
       webdav_config:
-        username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
-        public_endpoint: http://10.250.3.3
-        private_endpoint: https://10.250.3.3
-        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+        username: (( grab metadata.blobstore.username ))
+        password: (( grab metadata.blobstore.password ))
+        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
+        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
+        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     droplets:
       directory_key: droplets
       blobstore_type: webdav
       webdav_config:
-        username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
-        public_endpoint: http://10.250.3.3
-        private_endpoint: https://10.250.3.3
-        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+        username: (( grab metadata.blobstore.username ))
+        password: (( grab metadata.blobstore.password ))
+        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
+        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
+        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     packages:
       directory_key: packages
       blobstore_type: webdav
       webdav_config:
-        username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
-        public_endpoint: http://10.250.3.3
-        private_endpoint: https://10.250.3.3
-        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+        username: (( grab metadata.blobstore.username ))
+        password: (( grab metadata.blobstore.password ))
+        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
+        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
+        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     app_stash:
       directory_key: app_stash
       blobstore_type: webdav
       webdav_config:
-        username: (( metadata.blobstore.username ))
-        password: (( metadata.blobstore.password ))
-        public_endpoint: http://10.250.3.3
-        private_endpoint: https://10.250.3.3
-        ca_cert: (( metadata.blobstore.tls.ca_cert ))
+        username: (( grab metadata.blobstore.username ))
+        password: (( grab metadata.blobstore.password ))
+        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
+        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
+        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))

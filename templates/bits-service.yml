@@ -1,17 +1,11 @@
-name: (( metadata.release_name ))
+name: (( grab metadata.release_name ))
 
 metadata:
-  <<: (( merge ))
   release_name: bits-service
 
 releases:
-  - <<: (( merge ))
   - name: bits-service
     version: latest
-
-networks: (( merge ))
-
-resource_pools: (( merge ))
 
 compilation:
   workers: 1
@@ -27,9 +21,8 @@ update:
   max_errors: 1
 
 jobs:
-- <<: (( merge ))
 - name: bits-service
-  templates: 
+  templates:
   - name: bits-service
     release: bits-service
   instances: 1
@@ -37,6 +30,3 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(0) ))
-
-properties:
-  <<: (( merge ))

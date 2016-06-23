@@ -1,9 +1,8 @@
 metadata:
   release_name: bits-service-local
-  networks:
-    reserved: 10.250.0.1
-    range: 10.250.0.0./24
-    static: 10.250.0.2 - 10.250.0.20
+  blobstore:
+    instances: 0
+
 properties:
   bits-service:
     buildpacks:
