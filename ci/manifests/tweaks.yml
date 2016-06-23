@@ -1,5 +1,0 @@
-director_uuid: <%= `bosh status --uuid` %>
-properties:
-  acceptance_tests:
-    default_timeout: 75
-    nodes: 5
