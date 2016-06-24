@@ -96,6 +96,7 @@ properties:
   bits-service:
     buildpacks:
       directory_key: buildpacks
+      buildpack_directory_key: (( grab properties.bits-service.buildpacks.directory_key ))
       blobstore_type: webdav
       webdav_config:
         username: (( grab metadata.blobstore.username ))
@@ -105,6 +106,7 @@ properties:
         ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     droplets:
       directory_key: droplets
+      droplet_directory_key: (( grab properties.bits-service.droplets.directory_key ))
       blobstore_type: webdav
       webdav_config:
         username: (( grab metadata.blobstore.username ))
@@ -114,6 +116,7 @@ properties:
         ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     packages:
       directory_key: packages
+      app_package_directory_key: (( grab properties.bits-service.packages.directory_key ))
       blobstore_type: webdav
       webdav_config:
         username: (( grab metadata.blobstore.username ))
@@ -123,6 +126,7 @@ properties:
         ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
     app_stash:
       directory_key: app_stash
+      resource_directory_key: (( grab properties.bits-service.app_stash.directory_key ))
       blobstore_type: webdav
       webdav_config:
         username: (( grab metadata.blobstore.username ))
