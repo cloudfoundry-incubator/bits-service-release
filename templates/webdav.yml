@@ -93,6 +93,15 @@ metadata:
   release_name: bits-service-webdav
 
 properties:
+  blobstore:
+    admin_users:
+    - password: (( grab metadata.blobstore.password ))
+      username: (( grab metadata.blobstore.username ))
+    tls:
+      ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
+      cert: (( grab metadata.blobstore.tls.cert ))
+      private_key: (( grab metadata.blobstore.tls.private_key ))
+
   bits-service:
     buildpacks:
       directory_key: buildpacks
