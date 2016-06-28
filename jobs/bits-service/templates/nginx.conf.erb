@@ -30,6 +30,10 @@ http {
     server unix:/var/vcap/sys/run/bits-service/bits-service.sock;
   }
 
+  upstream bits_url_signer {
+    server unix:/var/vcap/sys/run/bits_url_signer/signer.sock;
+  }
+
   # Private endpoint
   server {
     listen 80;
@@ -42,6 +46,13 @@ http {
       root /var/vcap/store/bits-service/;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
+    }
+
+    location /sign {
+      auth_basic "Blobstore Signing";
+      auth_basic_user_file signer_users;
+
+      proxy_pass http://bits_url_signer;
     }
 
     location ~ ^/buildpack_cache/entries {

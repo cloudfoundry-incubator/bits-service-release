@@ -9,7 +9,9 @@ go install github.com/vito/gosub
 {
   gosub list \
     -app github.com/cloudfoundry-incubator/bits-service-migration-tests/... \
-    -test github.com/cloudfoundry-incubator/bits-service-migration-tests/...
+    -test github.com/cloudfoundry-incubator/bits-service-migration-tests/... \
+    -app github.com/cloudfoundry/blobstore_url_signer/... \
+    -test github.com/cloudfoundry/blobstore_url_signer/...
 } > /tmp/packages
 
 cat /tmp/packages | xargs gosub sync -i src/bits-service
