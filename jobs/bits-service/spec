@@ -26,6 +26,10 @@ properties:
   system_domain:
     description: "The system domain.  The public server will listen on host 'bits-service.system-domain.tld'"
 
+  request_timeout_in_seconds:
+    description: "Timeout for requests in seconds."
+    default: 900
+
   bits-service.secret:
     description: "The secret used for signing URLs"
   bits-service.signer_users:

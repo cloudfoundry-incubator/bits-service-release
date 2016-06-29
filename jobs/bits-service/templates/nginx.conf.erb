@@ -40,6 +40,11 @@ http {
     server_name bits-service.service.cf.internal;
     server_name_in_redirect off;
 
+    <% if p("request_timeout_in_seconds").to_i > 0 %>
+      proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
+      proxy_read_timeout          <%= p("request_timeout_in_seconds") %>;
+    <% end %>
+
     # resource downloads
     location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>/buildpack_cache|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
@@ -131,6 +136,11 @@ http {
     listen 80;
     server_name bits-service.<%= p("system_domain") %>;
     server_name_in_redirect off;
+
+    <% if p("request_timeout_in_seconds").to_i > 0 %>
+      proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
+      proxy_read_timeout          <%= p("request_timeout_in_seconds") %>;
+    <% end %>
 
     # resource downloads
     location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
