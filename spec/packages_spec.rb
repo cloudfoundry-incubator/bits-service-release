@@ -23,7 +23,7 @@ describe 'packages resource' do
       end
 
       it 'stores the blob in the backend' do
-        response = make_put_request resource_path, upload_body
+        make_put_request resource_path, upload_body
         expect(blobstore_client.key_exist?(guid)).to eq(true)
       end
 
@@ -45,7 +45,7 @@ describe 'packages resource' do
         end
 
         it 'returns the guid and the package exists' do
-          response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+          make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(blobstore_client.key_exist?(guid)).to eq(true)
         end
 

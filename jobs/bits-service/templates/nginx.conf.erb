@@ -30,10 +30,6 @@ http {
     server unix:/var/vcap/sys/run/bits-service/bits-service.sock;
   }
 
-  upstream bits_url_signer {
-    server unix:/var/vcap/sys/run/bits_url_signer/signer.sock;
-  }
-
   # Private endpoint
   server {
     listen 80;
@@ -45,19 +41,19 @@ http {
       proxy_read_timeout          <%= p("request_timeout_in_seconds") %>;
     <% end %>
 
-    # resource downloads
+    location /sign/ {
+      auth_basic "Bits Service Signing";
+      auth_basic_user_file signing_users;
+
+      proxy_pass http://bits_service;
+    }
+
+    # local resource downloads
     location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>/buildpack_cache|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
       root /var/vcap/store/bits-service/;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
-    }
-
-    location /sign {
-      auth_basic "Blobstore Signing";
-      auth_basic_user_file signer_users;
-
-      proxy_pass http://bits_url_signer;
     }
 
     location ~ ^/buildpack_cache/entries {
@@ -134,7 +130,7 @@ http {
   # Public endpoint
   server {
     listen 80;
-    server_name bits-service.<%= p("system_domain") %>;
+    server_name <%= p("bits-service.public_endpoint") %>;
     server_name_in_redirect off;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>
@@ -142,7 +138,7 @@ http {
       proxy_read_timeout          <%= p("request_timeout_in_seconds") %>;
     <% end %>
 
-    # resource downloads
+    # local resource downloads
     location ~ "/(<%= p("bits-service.buildpacks.directory_key") %>|<%= p("bits-service.droplets.directory_key") %>|<%= p("bits-service.packages.directory_key") %>)/\w{2}/\w{2}/.*" {
       internal;
       root /var/vcap/store/bits-service/;
@@ -150,9 +146,29 @@ http {
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
     }
 
-    location ~ ^/buildpack_cache/entries {
+    location /signed/ {
+      if ( $request_method !~ ^(GET|HEAD)$ ) {
+        return 405;
+      }
+
+      secure_link $arg_md5,$arg_expires;
+      secure_link_md5 "$secure_link_expires$uri <%= p("bits-service.secret") %>";
+
+      if ($secure_link = "") {
+        return 403;
+      }
+
+      if ($secure_link = "0") {
+        return 410;
+      }
+
+      rewrite ^\/signed(.*)$ $1 break; # Remove "/signed" prefix from URI
+
       proxy_pass http://bits_service;
-      break;
+
+      # root /var/vcap/store/bits-service/;
+      proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
+      add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
     }
 
     location ~ ^/(buildpacks|droplets|packages) {

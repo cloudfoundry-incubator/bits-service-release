@@ -4,4 +4,8 @@ module EnvironmentHelpers
       return "http://#{endpoint}" unless endpoint.start_with?('http')
     end
   end
+
+  def private_endpoint
+    bits_service_endpoint
+  end
 end

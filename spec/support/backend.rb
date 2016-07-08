@@ -4,7 +4,6 @@ require_relative './backend/local'
 require_relative './backend/webdav'
 
 module BackendHelpers
-  path_prefix = nil
   def backend_client(resource_type)
     resource_type = resource_type.to_s
 

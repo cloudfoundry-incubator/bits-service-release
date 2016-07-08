@@ -29,7 +29,3 @@
 	path = src/github.com/cloudfoundry-incubator/bits-service-migration-tests
 	url = https://github.com/cloudfoundry-incubator/bits-service-migration-tests
 	branch = master
-[submodule "src/github.com/cloudfoundry/blobstore_url_signer"]
-	path = src/github.com/cloudfoundry/blobstore_url_signer
-	url = https://github.com/cloudfoundry/blobstore_url_signer
-	branch = master

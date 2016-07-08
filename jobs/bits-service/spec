@@ -5,11 +5,10 @@ templates:
   nginx_ctl.erb:           bin/nginx_ctl
   blobstore_waiter.sh.erb: bin/blobstore_waiter.sh
   dns_health_check.erb:    bin/dns_health_check
-  signer_ctl.sh.erb:       bin/signer_ctl
 
   nginx.conf.erb:             config/nginx.conf
   bits_config.yml.erb:        config/bits_config.yml
-  signer_users.erb:           config/signer_users
+  signing_users.erb:          config/signing_users
   app_stash_ca_cert.pem.erb:  config/certs/app_stash_ca_cert.pem
   buildpacks_ca_cert.pem.erb: config/certs/buildpacks_ca_cert.pem
   droplets_ca_cert.pem.erb:   config/certs/droplets_ca_cert.pem
@@ -20,23 +19,22 @@ packages:
   - bits-service
   - bits-common
   - nginx
-  - bits_url_signer
 
 properties:
-  system_domain:
-    description: "The system domain.  The public server will listen on host 'bits-service.system-domain.tld'"
-
   request_timeout_in_seconds:
     description: "Timeout for requests in seconds."
     default: 900
 
+  bits-service.public_endpoint:
+    description: Public endpoint for the Bits Service. Does not include URI scheme.
+
   bits-service.secret:
     description: "The secret used for signing URLs"
-  bits-service.signer_users:
+  bits-service.signing_users:
     description: |
-     List of Username and Password pairs that have access to the sign urls. Cloud Controller must use one of these to access the bits-service via HTTP Basic Auth.
+     List of Username and Password pairs that are allowed to sign urls. Cloud Controller must use one of these to access the /sign endpoint via HTTP Basic Auth.
      Example:
-       signer_users:
+       signing_users:
        - username: user1
          password: password1
        - username: user2

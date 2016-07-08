@@ -1,6 +1,6 @@
 module HttpHelpers
-  def make_get_request(path)
-    try_catch { RestClient::Request.execute(url: url(path), method: :get, verify_ssl: false) }
+  def make_get_request(path, args={})
+    try_catch { RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: false }.merge(args)) }
   end
 
   def make_delete_request(path)
@@ -23,7 +23,7 @@ module HttpHelpers
 
   def try_catch
     yield
-  rescue StandardError => e
+  rescue RestClient::Exception => e
     e.response
   end
 end

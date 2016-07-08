@@ -22,7 +22,7 @@ describe 'droplets resource' do
     end
 
     it 'stores the blob in the backend' do
-      response = make_put_request resource_path, upload_body
+      make_put_request resource_path, upload_body
       expect(blobstore_client.key_exist?(guid)).to eq(true)
     end
 
@@ -70,7 +70,6 @@ describe 'droplets resource' do
   end
 
   describe 'DELETE /droplets/:guid', type: :integration do
-
     context 'when the droplet exists' do
       let(:guid) { existing_guid }
 

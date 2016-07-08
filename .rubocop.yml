@@ -4,6 +4,7 @@ AllCops:
     - '**/Gemfile'
     - '**/Rakefile'
   Exclude:
+    - src/**/*
     - vendor/**/*
     - db/migrations/**/*
 

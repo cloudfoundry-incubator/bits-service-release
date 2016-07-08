@@ -9,9 +9,3 @@ check process nginx_bits
   start program "/var/vcap/jobs/bits-service/bin/nginx_ctl start"
   stop program "/var/vcap/jobs/bits-service/bin/nginx_ctl stop"
   group vcap
-
-check process bits_url_signer
-  with pidfile /var/vcap/sys/run/bits_url_signer/bits_url_signer.pid
-  start program "/var/vcap/jobs/bits-service/bin/signer_ctl start"
-  stop program "/var/vcap/jobs/bits-service/bin/signer_ctl stop"
-  group vcap

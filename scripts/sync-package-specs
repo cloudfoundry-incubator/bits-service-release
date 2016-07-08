@@ -36,7 +36,6 @@ function sync_package() {
 }
 
 sync_package bits-service-migration-tests -test github.com/cloudfoundry-incubator/bits-service-migration-tests/...
-sync_package bits_url_signer -app github.com/cloudfoundry/blobstore_url_signer/...
 
 wait
 
