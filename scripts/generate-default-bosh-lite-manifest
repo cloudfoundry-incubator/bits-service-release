@@ -1,5 +1,0 @@
-#!/bin/bash
-
-cd $(dirname $0)/..
-
-./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/local.yml
