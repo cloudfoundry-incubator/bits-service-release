@@ -30,7 +30,9 @@ DIRECTOR_UUID=$(echo "$BOSH_STATUS" | grep UUID | awk '{print $2}')
 echo "director_uuid: ${DIRECTOR_UUID}" > ${MANIFEST_FILE}
 
 # Write spruced manifest templates into manifest
-spruce merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml "$@" >> "${MANIFEST_FILE}"
+spruce merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml \
+  ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service-signing-properties.yml \
+  "$@" >> "${MANIFEST_FILE}"
 
 # Apply ERB templates
 TMP=${MANIFEST_FILE}.tmp

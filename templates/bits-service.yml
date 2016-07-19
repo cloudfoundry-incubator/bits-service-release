@@ -30,10 +30,3 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(0) ))
-
-properties:
-  bits-service:
-    secret: 12345
-    signing_users:
-    - username: admin
-      password: admin
