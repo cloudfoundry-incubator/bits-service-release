@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 cd $(dirname $0)/..
 
@@ -6,5 +6,8 @@ cd $(dirname $0)/..
                                  ./templates/bosh-lite.yml \
                                  ./templates/body-size-stub.yml \
                                  $@
+
+export BOSH_USE_BUNDLER=true
+bosh deployment deployments/bits-service-release.yml
 
 echo Now you can deploy and run \'bundle exec rake spec\'.

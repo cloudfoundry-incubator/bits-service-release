@@ -1,42 +1,20 @@
-#!/bin/bash
+#!/bin/bash -e
 
-[ "$#" -eq 0 ] && echo "Requies at least 1 stub" && exit 1
+[ "$#" -eq 0 ] && echo "Requires at least 1 stub" && exit 1
 
 cd $(dirname $0)/..
-export BOSH_USE_BUNDLER=true
 
-BOSH_RELEASES_DIR=${BOSH_RELEASES_DIR:-~/workspace}
-SCRIPT_DIR=$(dirname $0)
-BITS_SERVICE_RELEASE_DIR=${BITS_SERVICE_RELEASE_DIR:-$SCRIPT_DIR/..}
-MANIFEST_FILE="${BITS_SERVICE_RELEASE_DIR}/deployments/bits-service-release.yml"
+mkdir -p deployments
+MANIFEST_FILE=deployments/bits-service-release.yml
 
-if [[ ! -d "${BITS_SERVICE_RELEASE_DIR}" ]]; then
-  echo "Cannot find bits-service-release at '${BITS_SERVICE_RELEASE_DIR}'; override with \$BITS_SERVICE_RELEASE_DIR variable"
-  exit 1
-fi
-
-# Verify that we use *bosh-lite* as target
-BOSH_STATUS=$(bosh status)
-EXPECTED_DIRECTOR_NAME="Bosh Lite Director"
-if [[ "$(echo "$BOSH_STATUS" | grep Name)" != *"$EXPECTED_DIRECTOR_NAME"* ]]; then
-  echo "Can only target $EXPECTED_DIRECTOR_NAME. Please use 'bosh target' before running this script."
-  exit 1
-fi
-
-mkdir -p "${BITS_SERVICE_RELEASE_DIR}/deployments"
-
-# Write director UUID into manifest
-DIRECTOR_UUID=$(echo "$BOSH_STATUS" | grep UUID | awk '{print $2}')
-echo "director_uuid: ${DIRECTOR_UUID}" > ${MANIFEST_FILE}
-
-# Write spruced manifest templates into manifest
-spruce merge ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service.yml \
-  ${BITS_SERVICE_RELEASE_DIR}/templates/bits-service-signing-properties.yml \
-  "$@" >> "${MANIFEST_FILE}"
+spruce merge \
+    templates/director_uuid.yml \
+    templates/bits-service.yml \
+    templates/bits-service-signing-properties.yml \
+    "$@" \
+  > ${MANIFEST_FILE}
 
 # Apply ERB templates
 TMP=${MANIFEST_FILE}.tmp
-${SCRIPT_DIR}/manifest_parser.rb "${MANIFEST_FILE}" > "${MANIFEST_FILE}.tmp"
+scripts/manifest_parser.rb "${MANIFEST_FILE}" > "${MANIFEST_FILE}.tmp"
 mv ${TMP} ${MANIFEST_FILE}
-
-bosh deployment "${MANIFEST_FILE}"
