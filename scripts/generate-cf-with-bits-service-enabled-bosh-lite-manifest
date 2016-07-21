@@ -1,13 +1,25 @@
 #!/bin/bash -e
 
+BLOBSTORE_TYPE=${1}
+
+if [ -z "$BLOBSTORE_TYPE" ]
+then
+  >&2 echo "Please provide a BLOBSTORE_TYPE {local,s3,webdav}"
+  exit 1
+fi
+
 cd $(dirname $0)/../
 
 mkdir -p deployments
 
-spruce merge ../bits-service-ci/manifests/cf-lite.yml ../bits-service-ci/manifests/tweaks.yml \
+spruce merge ../cf-release/bosh-lite/deployments/cf.yml \
+  ../bits-service-ci/manifests/bits-service.yml \
+  ./templates/cc-blobstore-properties.yml \
+  ./templates/bits-service-signing-properties.yml \
+  ../bits-service-ci/manifests/tweaks.yml \
   ../bits-service-ci/manifests/enable-bits.yml \
   ../bits-service-ci/manifests/bits-network-bosh-lite.yml \
-  ./templates/local.yml \
+  ./templates/${BLOBSTORE_TYPE}.yml \
   > deployments/cf-with-bits-service-enabled.yml
 
 bosh deployment deployments/cf-with-bits-service-enabled.yml
