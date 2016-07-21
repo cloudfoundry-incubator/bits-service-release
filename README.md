@@ -8,7 +8,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying [Bits Service
 ```
 git clone git@github.com:cloudfoundry-incubator/bits-service-release.git
 cd bits-service-release/
-git submodule update --init
+./scripts/update
 ```
 
 ### Create a deployment manifest
