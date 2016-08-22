@@ -22,9 +22,9 @@ properties:
     admin_users:
       - username: (( grab metadata.blobstore.username || "" ))
         password: (( grab metadata.blobstore.password || "" ))
-    port: 80
+    port: 8080
     tls:
-      port: 443
+      port: 4443
       cert: (( grab metadata.blobstore.tls.cert || "" ))
       private_key: (( grab metadata.blobstore.tls.private_key || "" ))
     secure_link:
