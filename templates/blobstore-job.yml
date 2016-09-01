@@ -17,7 +17,7 @@ jobs:
     update: {}
 
 properties:
-  system_domain: bosh-lite.com
+  system_domain: (( concat jobs.blobstore.networks.default.static_ips[0] ".xip.io" ))
   blobstore:
     admin_users:
       - username: (( grab metadata.blobstore.username || "" ))

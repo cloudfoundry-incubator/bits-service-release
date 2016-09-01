@@ -3,8 +3,8 @@ metadata:
     instances: 1
     username: blobstore
     password: blobstore
-    public_endpoint: (( concat "http://blobstore." properties.system_domain ))
-    private_endpoint: "https://blobstore.service.cf.internal"
+    public_endpoint: (( concat "http://blobstore." properties.system_domain  ":" properties.blobstore.port))
+    private_endpoint: (( concat "https://" jobs.blobstore.networks.default.static_ips[0] ".xip.io:4443" ))
     tls:
       ca_cert: |+
         -----BEGIN CERTIFICATE-----
