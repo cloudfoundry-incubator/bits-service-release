@@ -81,6 +81,7 @@ metadata:
   release_name: bits-service-webdav
 
 properties:
+  system_domain: (( concat jobs.blobstore.networks.default.static_ips[0] ".xip.io" ))
   blobstore:
     admin_users:
     - password: (( grab metadata.blobstore.password ))
