@@ -8,7 +8,7 @@ metadata:
     username: blobstore
     password: blobstore
     public_endpoint: (( concat "http://blobstore." properties.system_domain  ":" properties.blobstore.port))
-    private_endpoint: "blobstore.service.cf.internal:4443"
+    private_endpoint: "https://blobstore.service.cf.internal:4443"
     tls:
       ca_cert: |+
         -----BEGIN CERTIFICATE-----
