@@ -4,6 +4,7 @@ templates:
   bits-service_ctl.erb:    bin/bits-service_ctl
   nginx_ctl.erb:           bin/nginx_ctl
   blobstore_waiter.sh.erb: bin/blobstore_waiter.sh
+  syslog_utils.sh.erb:     bin/syslog_utils.sh
   dns_health_check.erb:    bin/dns_health_check
 
   nginx.conf.erb:             config/nginx.conf

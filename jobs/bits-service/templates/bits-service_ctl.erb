@@ -21,6 +21,8 @@ export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
 source /var/vcap/packages/bits-common/pid_utils.sh
 source ${JOB_DIR}/bin/blobstore_waiter.sh
+source ${JOB_DIR}/bin/syslog_utils.sh
+tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
 
 case $1 in
 
