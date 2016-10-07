@@ -24,15 +24,15 @@ context 'URL Signing', type: :integration do
       })
     end
 
-    it 'returns HTTP status code 201' do
+    it 'returns HTTP success' do
       expect(sign_response.code).to eq 200
     end
 
     it 'returns a signed URL' do
       signed_url = sign_response.body.to_s
 
-      expect(signed_url).to match(/.*md5=.*/)
-      expect(signed_url).to match(/.*expires=.*/)
+      expect(signed_url).to match(/.*md5=.*/).or match(/X-Amz-Signature=/)
+      expect(signed_url).to match(/.*expires=.*/).or match(/X-Amz-Expires=/)
     end
 
     context 'when the signing credentials are incorrect' do
