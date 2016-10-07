@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+cd $(dirname $0)/..
+
+# grab-AWS-env
+lpass show "Shared-Flintstone"/ci-config --notes > config.yml
+
+export AWS_ACCESS_KEY_ID=$(grep -e '^s3-blobstore-access-key-id' config.yml | sed -e 's/s3-blobstore-access-key-id: //')
+export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:?AWS_ACCESS_KEY_ID is missing}
+
+export AWS_SECRET_ACCESS_KEY=$(grep -e '^s3-blobstore-secret-access-key' config.yml | sed -e 's/s3-blobstore-secret-access-key: //')
+export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:?AWS_SECRET_ACCESS_KEY is missing}
+
+export BITS_DIRECTORY_KEY=$(grep -e '^s3-blobstore-bucket-name' config.yml | sed -e 's/s3-blobstore-bucket-name: //')
+export BITS_DIRECTORY_KEY=${BITS_DIRECTORY_KEY:?BITS_DIRECTORY_KEY is missing}
+
+export BITS_AWS_REGION=$(grep -e '^s3-blobstore-region' config.yml | sed -e 's/s3-blobstore-region: //')
+export BITS_AWS_REGION=${BITS_AWS_REGION:?BITS_AWS_REGION is missing}
+
+./scripts/generate-test-bosh-lite-manifest \
+  ./templates/s3.yml \
+  ../bits-service-ci/manifests/bits-release-network-s3.yml
+
+rm config.yml
