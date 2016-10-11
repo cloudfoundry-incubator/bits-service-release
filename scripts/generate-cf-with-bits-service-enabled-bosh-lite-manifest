@@ -2,8 +2,7 @@
 
 BLOBSTORE_TYPE=${1}
 
-if [ -z "$BLOBSTORE_TYPE" ]
-then
+if [ -z "$BLOBSTORE_TYPE" ]; then
   >&2 echo "Please provide a BLOBSTORE_TYPE {local,s3,webdav}"
   exit 1
 fi
@@ -12,7 +11,14 @@ cd $(dirname $0)/../
 
 mkdir -p deployments
 
-spruce merge ../cf-release/bosh-lite/deployments/cf.yml \
+cf_yml=../cf-release/bosh-lite/deployments/cf.yml
+
+if [ ! -f "$cf_yml" ]; then
+  echo "Could not find $cf_yml. Consider running ../cf-release/scripts/generate-bosh-lite-dev-manifest to create it."
+  exit 1
+fi
+
+spruce merge "$cf_yml" \
   ../bits-service-ci/manifests/bits-service.yml \
   ./templates/cc-blobstore-properties.yml \
   ./templates/bits-service-signing-properties.yml \
