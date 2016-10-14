@@ -40,7 +40,7 @@ module BackendHelpers
         config['local_root'],
         directory_key,
         path_prefix,
-        bits_service_endpoint
+        private_endpoint_ip
       )
     else
       raise "Unknown blobstore provider: #{config['provider']}"

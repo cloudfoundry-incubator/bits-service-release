@@ -6,7 +6,7 @@ context 'URL Signing', type: :integration do
   let(:upload_body) { { package: zip_file } }
   let(:guid) { SecureRandom.uuid }
   let(:path) { "/packages/#{guid}" }
-  let(:sign_url) { "#{private_endpoint}/sign#{path}" }
+  let(:sign_url) { "http://#{private_endpoint_ip}/sign#{path}" }
 
   before do
     response = make_put_request(path, upload_body)
@@ -73,7 +73,8 @@ context 'URL Signing', type: :integration do
         response = make_get_request('', {
           url: signed_url,
           method: :get,
-          verify_ssl: false
+          verify_ssl: false,
+          headers: {}
         })
         expect(response.code).to eq 403
       end

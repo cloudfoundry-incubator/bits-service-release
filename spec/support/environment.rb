@@ -1,11 +1,13 @@
 module EnvironmentHelpers
-  def bits_service_endpoint
-    ENV.fetch('BITS_SERVICE_ENDPOINT').tap do |endpoint|
-      return "http://#{endpoint}" unless endpoint.start_with?('http')
-    end
+  def private_endpoint
+    URI(ENV.fetch('BITS_SERVICE_PRIVATE_ENDPOINT'))
+  rescue KeyError
+    raise 'BITS_SERVICE_PRIVATE_ENDPOINT not set; please set it to point to a bits-service instance, e.g. bits-service.service.cf.internal.'
   end
 
-  def private_endpoint
-    bits_service_endpoint
+  def private_endpoint_ip
+    ENV.fetch('BITS_SERVICE_PRIVATE_ENDPOINT_IP')
+  rescue KeyError
+    raise 'BITS_SERVICE_PRIVATE_ENDPOINT_IP not set; please set it the IP address of the bits-service job.'
   end
 end

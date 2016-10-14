@@ -22,7 +22,7 @@ module ManifestHelpers
   end
 
   def public_endpoint
-    manifest['properties']['bits-service']['public_endpoint']
+    URI(manifest['properties']['bits-service']['public_endpoint'])
   end
 
   def signing_user

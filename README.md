@@ -2,6 +2,8 @@
 
 A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-service](https://github.com/cloudfoundry-incubator/bits-service).
 
+# Deployment
+
 ## Deploy a CF on BOSH Lite with bits-service enabled
 
 **Important**: We assume that you already deployed a CF to bosh-lite, with the deployment manifest in `cf-release/bosh-lite/deployments/cf.yml`.
@@ -34,9 +36,22 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 
   When prompted for the name of the bits-service release, accept the default `bits-service`.
 
-# Test
+# Run Tests
 
+Configure test execution:
+
+```sh
+export BITS_SERVICE_PRIVATE_ENDPOINT=http://bits-service.service.cf.internal
+export BITS_SERVICE_PUBLIC_ENDPOINT=http://bits-service.bosh-lite.com
+export BITS_SERVICE_PRIVATE_ENDPOINT_IP=10.244.0.74
+export BITS_SERVICE_MANIFEST=./deployments/bits-service-release.yml
+export GOPATH=$PWD
 ```
+
+Then run:
+
+```sh
+bundle install
 bundle exec rake
 ```
 

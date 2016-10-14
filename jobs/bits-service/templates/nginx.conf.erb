@@ -130,7 +130,7 @@ http {
   # Public endpoint
   server {
     listen 80;
-    server_name <%= p("bits-service.public_endpoint") %>;
+    server_name <%= p("bits-service.public_endpoint").sub(%r{^http://}, '') %>;
     server_name_in_redirect off;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>
@@ -170,23 +170,11 @@ http {
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
     }
+  }
 
-    location ~ ^/(buildpacks|droplets|packages) {
-      set $allow 0;
-
-      if ($request_method = GET) {
-        set $allow 1;
-      }
-
-      if ($request_method = HEAD) {
-        set $allow 1;
-      }
-
-      if ($allow = 0) {
-        return 404;
-      }
-
-      proxy_pass http://bits_service;
-    }
+  # catch-all
+  server {
+    listen      80	default_server;
+    return      400;
   }
 }

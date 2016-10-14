@@ -7,7 +7,8 @@ module Backend
         @root_path = root_path
         @directory_key = directory_key
         @path_prefix = path_prefix
-        @job_ip = URI.parse(job_ip).host
+        raise 'job_ip must not be a http(s) endpoint' if job_ip.start_with?('http')
+        @job_ip = job_ip
       end
 
       def key_exist?(guid)

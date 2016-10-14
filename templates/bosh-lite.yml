@@ -11,4 +11,4 @@ resource_pools:
 
 properties:
   bits-service:
-    public_endpoint: (( concat jobs.bits-service.networks.default.static_ips[0] ".xip.io" ))
+    public_endpoint: (( concat "http://" jobs.bits-service.networks.default.static_ips[0] ".xip.io" ))
