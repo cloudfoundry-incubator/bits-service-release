@@ -26,6 +26,7 @@ spruce merge "$cf_yml" \
   ../bits-service-ci/manifests/enable-bits.yml \
   ../bits-service-ci/manifests/bits-network-bosh-lite.yml \
   ./templates/${BLOBSTORE_TYPE}.yml \
+  ./templates/body-size-stub.yml \
   > deployments/cf-with-bits-service-enabled.yml
 
 bosh deployment deployments/cf-with-bits-service-enabled.yml
