@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# TODO: (pego) rename properly (also this file)
 describe 'Bits-Release' do
   context 'HTTP Frontend' do
     context 'Max Body Size' do
@@ -11,6 +12,8 @@ describe 'Bits-Release' do
       end
 
       it 'limits the size of the uploaded bits' do
+        # Note: this is actually an invalid request, because there is no POST for buildpacks
+        # The reason this is working, is that nginx checks the body size before matching paths.
         upload_body = { buildpack: bits_to_upload }
         response = make_post_request '/buildpacks', upload_body
         expect(response.code).to eq 413
