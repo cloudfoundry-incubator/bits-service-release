@@ -49,23 +49,5 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient.get("#{public_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
-
-    context 'passing header "host: <private_endpoint>"' do
-      it 'responds with 404 from router, because router does not know the internal endpoint as a route' do
-        expect { RestClient.get("#{public_endpoint}/packages/#{guid}", { host: private_endpoint.hostname }) }.to raise_error do |error|
-          expect(error).to be_a(RestClient::ResourceNotFound)
-          expect(error.response.headers).to include(x_cf_routererror: 'unknown_route')
-        end
-      end
-    end
-
-    context 'passing (arbitrary) header "host: example.com"' do
-      it 'responds with 404 from router, because router does not know example.com as a route' do
-        expect { RestClient.get("#{public_endpoint}/packages/#{guid}", { host: 'example.com' }) }.to raise_error do |error|
-          expect(error).to be_a(RestClient::ResourceNotFound)
-          expect(error.response.headers).to include(x_cf_routererror: 'unknown_route')
-        end
-      end
-    end
   end
 end
