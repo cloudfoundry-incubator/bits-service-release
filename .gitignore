@@ -30,3 +30,4 @@ bin/*
 src/github.com/codegangsta/
 src/github.com/vito/
 .envrc
+.vscode
