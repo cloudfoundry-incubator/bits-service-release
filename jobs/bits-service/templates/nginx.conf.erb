@@ -33,7 +33,7 @@ http {
   # Private endpoint
   server {
     listen 80;
-    server_name bits-service.service.cf.internal;
+    server_name <%= p("bits-service.private_endpoint").sub(%r{^http://}, '') %>;
     server_name_in_redirect off;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>

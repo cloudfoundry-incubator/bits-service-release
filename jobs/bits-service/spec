@@ -29,6 +29,9 @@ properties:
   bits-service.public_endpoint:
     description: Public endpoint for the Bits Service. Does not include URI scheme.
 
+  bits-service.private_endpoint:
+    description: Private endpoint for the Bits Service. Does not include URI scheme.
+
   bits-service.secret:
     description: "The secret used for signing URLs"
   bits-service.signing_users:

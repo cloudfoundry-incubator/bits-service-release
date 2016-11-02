@@ -25,6 +25,10 @@ module ManifestHelpers
     URI(manifest['properties']['bits-service']['public_endpoint'])
   end
 
+  def private_endpoint
+    URI(manifest['properties']['bits-service']['private_endpoint'])
+  end
+
   def signing_user
     manifest['properties']['bits-service']['signing_users'][0]
   end

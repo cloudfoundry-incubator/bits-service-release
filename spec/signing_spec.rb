@@ -6,7 +6,7 @@ context 'URL Signing', type: :integration do
   let(:upload_body) { { package: zip_file } }
   let(:guid) { SecureRandom.uuid }
   let(:path) { "/packages/#{guid}" }
-  let(:sign_url) { "http://#{private_endpoint_ip}/sign#{path}" }
+  let(:sign_url) { "#{private_endpoint}/sign#{path}" }
 
   before do
     response = make_put_request(path, upload_body)
