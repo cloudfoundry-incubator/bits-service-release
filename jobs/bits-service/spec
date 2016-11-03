@@ -157,7 +157,13 @@ properties:
 
   bits-service.nginx.access_log_destination:
     description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/nginx.access.log"
+    default: "/var/vcap/sys/log/nginx_bits/access.log"
+  bits-service.nginx.public_access_log_destination:
+    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/public_access.log"
+  bits-service.nginx.private_access_log_destination:
+    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/private_access.log"
   bits-service.nginx.access_log_format:
     description: "Nginx log format string to use when writing to the access log."
     default: >
@@ -165,7 +171,13 @@ properties:
       $proxy_add_x_forwarded_for vcap_request_id:$upstream_http_x_vcap_request_id response_time:$upstream_response_time
   bits-service.nginx.error_log_destination:
     description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/nginx.error.log"
+    default: "/var/vcap/sys/log/nginx_bits/error.log"
+  bits-service.nginx.public_error_log_destination:
+    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/public_error.log"
+  bits-service.nginx.private_error_log_destination:
+    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
+    default: "/var/vcap/sys/log/nginx_bits/private_error.log"
   bits-service.nginx.error_log_level:
     description: "The lowest severity nginx log level to capture in the error log."
     default: error

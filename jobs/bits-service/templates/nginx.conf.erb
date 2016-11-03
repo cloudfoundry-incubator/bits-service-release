@@ -36,6 +36,8 @@ http {
     server_name <%= p("bits-service.private_endpoint").sub(%r{^http://}, '') %>;
     server_name_in_redirect off;
 
+    access_log  <%= p("bits-service.nginx.private_access_log_destination") %> main;
+
     <% if p("request_timeout_in_seconds").to_i > 0 %>
       proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
       proxy_read_timeout          <%= p("request_timeout_in_seconds") %>;
@@ -132,6 +134,8 @@ http {
     listen 80;
     server_name <%= p("bits-service.public_endpoint").sub(%r{^http://}, '') %>;
     server_name_in_redirect off;
+
+    access_log  <%= p("bits-service.nginx.public_access_log_destination") %> main;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>
       proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
