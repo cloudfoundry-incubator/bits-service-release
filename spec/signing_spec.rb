@@ -4,17 +4,17 @@ describe 'URL Signing', type: :integration do
   let(:path) { "/packages/#{SecureRandom.uuid}" }
 
   context 'method: PUT' do
-    let(:path) { "/packages/#{SecureRandom.uuid}" }
-    xit 'return a signed URL that can be used to upload a package' do
-      puts "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}"
+    it 'return a signed URL that can be used to upload a package' do
+      response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put")
+      signed_put_url = response.body.to_s
+
+      response = RestClient.put(signed_put_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
+      expect(response.code).to eq 200
+
       response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}")
-      signed_url = response.body.to_s
+      signed_get_url = response.body.to_s
 
-      puts signed_url
-      response = RestClient.put(signed_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
-      expect(response.code).to eq 201
-
-      response = RestClient.get(signed_url)
+      response = RestClient.get(signed_get_url)
       expect(response.code).to eq 200
     end
   end
