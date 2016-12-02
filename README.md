@@ -41,11 +41,11 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 Configure test execution:
 
 ```sh
-export BITS_SERVICE_PRIVATE_ENDPOINT=http://bits-service.service.cf.internal
-export BITS_SERVICE_PUBLIC_ENDPOINT=http://bits-service.bosh-lite.com
 export BITS_SERVICE_PRIVATE_ENDPOINT_IP=10.244.0.74
 export BITS_SERVICE_MANIFEST=./deployments/bits-service-release.yml
 export GOPATH=$PWD
+
+./scripts/add-route
 ```
 
 Then run:
