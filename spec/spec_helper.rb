@@ -13,6 +13,9 @@ RSpec.configure do |conf|
   include BackendHelpers
   include ResponseHelpers
   include FileHelpers
+
+  conf.filter_run focus: true
+  conf.run_all_when_everything_filtered = true
 end
 
 RSpec::Matchers.define :be_a_404 do |expected|
