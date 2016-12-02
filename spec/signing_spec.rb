@@ -11,7 +11,7 @@ describe 'URL Signing', type: :integration do
       signed_url = response.body.to_s
 
       puts signed_url
-      response = RestClient.put(signed_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__))  })
+      response = RestClient.put(signed_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
       expect(response.code).to eq 201
 
       response = RestClient.get(signed_url)
@@ -38,7 +38,7 @@ describe 'URL Signing', type: :integration do
 
       context 'when the signing credentials are incorrect' do
         it 'returns HTTP status code 401' do
-          expect{
+          expect {
             RestClient.get("http://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}/sign#{path}")
           }.to raise_error RestClient::Unauthorized
         end
@@ -65,5 +65,4 @@ describe 'URL Signing', type: :integration do
       end
     end
   end
-
 end
