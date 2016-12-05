@@ -201,7 +201,6 @@ http {
       # on any error, delete uploaded files
       upload_cleanup 400-505;
 
-      # root /var/vcap/store/bits-service/;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
 
