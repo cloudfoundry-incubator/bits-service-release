@@ -28,8 +28,7 @@ describe 'accessing the bits-service', type: :integration do
     end
 
     context 'passing header "host: <public_endpoint>"' do
-      # pending due to: See https://www.pivotaltracker.com/story/show/126851165
-      xit 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
+      it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
         expect { RestClient.get("http://#{private_endpoint_ip}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
@@ -37,8 +36,7 @@ describe 'accessing the bits-service', type: :integration do
 
   context 'by private endpoint' do
     context 'passing header "host: <public_endpoint>"' do
-      # pending due to: See https://www.pivotaltracker.com/story/show/126851165
-      xit 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
+      it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
         expect { RestClient.get("#{private_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
@@ -61,15 +59,13 @@ describe 'accessing the bits-service', type: :integration do
 
   context 'by public endpoint' do
     context 'not passing a host header' do
-      # pending due to: See https://www.pivotaltracker.com/story/show/126851165
-      xit 'responds with 404, because URL is used as Host header and the public host does not allow unsigned access to packages' do
+      it 'responds with 404, because URL is used as Host header and the public host does not allow unsigned access to packages' do
         expect { RestClient.get("#{public_endpoint}/packages/#{guid}", {}) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
 
     context 'passing header "host: <public_endpoint>"' do
-      # pending due to: See https://www.pivotaltracker.com/story/show/126851165
-      xit 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
+      it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
         expect { RestClient.get("#{public_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
