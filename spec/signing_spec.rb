@@ -9,7 +9,7 @@ describe 'URL Signing', type: :integration do
       signed_put_url = response.body.to_s
 
       response = RestClient.put(signed_put_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
-      expect(response.code).to eq 200
+      expect(response.code).to be_between(200, 201)
 
       response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}")
       signed_get_url = response.body.to_s
