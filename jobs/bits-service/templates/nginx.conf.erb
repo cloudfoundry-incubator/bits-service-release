@@ -207,28 +207,6 @@ http {
 
       break;
     }
-
-    # TODO: Remove, once https://github.com/cloudfoundry-incubator/bits-service-client
-    #       knows how to request signed URLs from bits-service.
-    #       Re-adding this block is only to make the CI/CD pipeline green again
-    #       and avoid introducing masked problems while making changes.
-    location ~ ^/(buildpacks|droplets|packages) {
-      set $allow 0;
-
-      if ($request_method = GET) {
-        set $allow 1;
-      }
-
-      if ($request_method = HEAD) {
-        set $allow 1;
-      }
-
-      if ($allow = 0) {
-        return 404;
-      }
-
-      proxy_pass http://bits_service;
-    }
   }
 
   # catch-all
