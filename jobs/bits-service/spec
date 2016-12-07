@@ -2,13 +2,10 @@
 name: bits-service
 templates:
   bits-service_ctl.erb:    bin/bits-service_ctl
-  nginx_ctl.erb:           bin/nginx_ctl
   blobstore_waiter.sh.erb: bin/blobstore_waiter.sh
   syslog_utils.sh.erb:     bin/syslog_utils.sh
   dns_health_check.erb:    bin/dns_health_check
 
-  nginx.conf.erb:             config/nginx.conf
-  location_stub.conf.erb:     config/location_stub.conf
   bits_config.yml.erb:        config/bits_config.yml
   signing_users.erb:          config/signing_users
   app_stash_ca_cert.pem.erb:  config/certs/app_stash_ca_cert.pem
@@ -24,11 +21,8 @@ templates:
   statsd_pipe:                bin/statsd_pipe
 
 packages:
-  - ruby-2.3_bits
-  - bits-service
+  - bitsgo
   - bits-common
-  - nginx_bits
-  - socat
 
 properties:
   request_timeout_in_seconds:
@@ -182,39 +176,6 @@ properties:
   bits-service.logging.max_retries:
     default: 1
     description: "Number of times to retry if a write to the log file fails. See Steno logger for details."
-
-  bits-service.nginx.access_log_destination:
-    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/access.log"
-  bits-service.nginx.public_access_log_destination:
-    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/public_access.log"
-  bits-service.nginx.private_access_log_destination:
-    description: "Nginx access log destination. Can be used to route access logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/private_access.log"
-  bits-service.nginx.access_log_format:
-    description: "Nginx log format string to use when writing to the access log."
-    default: >
-      $host - [$time_local] "$request" $status $bytes_sent "$http_referer" "$http_user_agent"
-      $proxy_add_x_forwarded_for vcap_request_id:$upstream_http_x_vcap_request_id response_time:$upstream_response_time
-  bits-service.nginx.error_log_destination:
-    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/error.log"
-  bits-service.nginx.public_error_log_destination:
-    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/public_error.log"
-  bits-service.nginx.private_error_log_destination:
-    description: "Nginx error log destination. Can be used to route error logs to a file, syslog, or a memory buffer."
-    default: "/var/vcap/sys/log/nginx_bits/private_error.log"
-  bits-service.nginx.error_log_level:
-    description: "The lowest severity nginx log level to capture in the error log."
-    default: error
-  bits-service.nginx.metrics_public_log_destination:
-    description: "Nginx metrics log destination."
-    default: "/var/vcap/sys/log/nginx_bits/metrics_public.log"
-  bits-service.nginx.metrics_private_log_destination:
-    description: "Nginx metrics log destination."
-    default: "/var/vcap/sys/log/nginx_bits/metrics_private.log"
 
   bits-service.cc_updates.cc_url:
     description: "CloudController endpoint for sending package status updates"
