@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+cd $(dirname $0)/..
+
+./scripts/generate-test-bosh-lite-manifest \
+  ./templates/local.yml \
+  ../bits-service-ci/manifests/bits-release-network-local.yml
