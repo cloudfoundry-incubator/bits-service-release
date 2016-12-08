@@ -19,12 +19,13 @@ if [ ! -f "$cf_yml" ]; then
 fi
 
 spruce merge "$cf_yml" \
-  ../bits-service-ci/manifests/bits-service.yml \
+  ./templates/bits-service-from-ci.yml \
   ./templates/cc-blobstore-properties.yml \
   ./templates/bits-service-signing-properties.yml \
-  ../bits-service-ci/manifests/tweaks.yml \
-  ../bits-service-ci/manifests/enable-bits.yml \
-  ../bits-service-ci/manifests/bits-network-bosh-lite.yml \
+  ./templates/director_uuid.yml \
+  ./templates/acceptance_test_properties.yml \
+  ./templates/enable-bits.yml \
+  ./templates/bits-network-bosh-lite.yml \
   ./templates/${BLOBSTORE_TYPE}.yml \
   > deployments/cf-with-bits-service-enabled.yml
 

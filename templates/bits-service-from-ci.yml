@@ -1,0 +1,32 @@
+releases:
+- name: bits-service
+  version: <%= ENV.fetch('RELEASE_VERSION', 'latest') %>
+
+jobs:
+- name: bits_service_z1
+  instances: 1
+  persistent_disk: 6064
+  templates:
+  - name: bits-service
+    release: bits-service
+  - name: route_registrar
+    release: cf
+  - name: consul_agent
+    release: cf
+  properties:
+    consul:
+      agent:
+        services:
+          bits-service: {}
+    route_registrar:
+      routes:
+      - name: bits-service
+        port: 80
+        registration_interval: 20s
+        tags:
+          component: bits-service
+        uris:
+        - (( concat "bits-service." properties.system_domain ))
+  resource_pool: medium_z1
+  networks:
+  - name: cf1

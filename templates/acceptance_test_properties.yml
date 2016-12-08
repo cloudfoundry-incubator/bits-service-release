@@ -1,0 +1,4 @@
+properties:
+  acceptance_tests:
+    default_timeout: 75
+    nodes: 5
