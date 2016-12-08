@@ -1,0 +1,8 @@
+networks:
+- name: default
+  subnets:
+  - cloud_properties:
+      name: random
+    reserved: [10.250.0.1]
+    range: "10.250.0.0./24"
+    static: ["10.250.0.2 - 10.250.0.20"]

@@ -20,6 +20,6 @@ export BITS_AWS_REGION=${BITS_AWS_REGION:?BITS_AWS_REGION is missing}
 
 ./scripts/generate-test-bosh-lite-manifest \
   ./templates/s3.yml \
-  ../bits-service-ci/manifests/bits-release-network-s3.yml
+  ./templates/bits-release-network-s3.yml
 
 rm config.yml
