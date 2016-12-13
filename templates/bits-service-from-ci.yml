@@ -3,6 +3,7 @@ releases:
   version: <%= ENV.fetch('RELEASE_VERSION', 'latest') %>
 
 jobs:
+- (( insert before "api_z1" ))
 - name: bits_service_z1
   instances: 1
   persistent_disk: 6064
