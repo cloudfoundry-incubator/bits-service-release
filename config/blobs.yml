@@ -10,7 +10,12 @@ ruby-2.3/rubygems-2.6.4.tgz:
   size: 478582
   object_id: 5e1e754b-85ec-495c-806e-dccf6daec0aa
   sha: 8ef39e536af2ecd20b0e7a95765fa6a485087ac8
-socat/socat-1.7.3.0.tar.gz:
-  size: 601022
-  object_id: 2d806b05-9bcc-4229-61ad-7cc97b0dcead
-  sha: c09ec6539647cebe8fccdfcf0f1ace1243231ec3
+  size: 478582
+golang/go1.7.4.linux-amd64.tar.gz:
+  size: 84021919
+  object_id: 783849db-2186-488f-459f-28d2f22d7b64
+  sha: 2e5baf03d1590e048c84d1d5b4b6f2540efaaea1
+cli/cli-linux-amd64-6.17.0.tgz:
+  object_id: 5d117da5-f89b-4f1f-918e-a11d018ddf35
+  sha: c552c8f4436a63c2034d47f66fd218426c632112
+  size: 6153376
