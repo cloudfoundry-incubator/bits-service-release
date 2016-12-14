@@ -2,10 +2,9 @@
 
 export LANG=en_US.UTF-8
 
-export NAME=bits-service
+export NAME=bitsgo
 
 export JOB_DIR=/var/vcap/jobs/${NAME}
-export PATH=/var/vcap/packages/ruby-2.3_bits/bin:$PATH
 
 PACKAGE_DIR=/var/vcap/packages/${NAME}
 
@@ -14,8 +13,6 @@ LOG_DIR=/var/vcap/sys/log/${NAME}
 PIDFILE=${RUN_DIR}/${NAME}.pid
 STORE_DIR=/var/vcap/store/bits-service
 
-export BUNDLE_GEMFILE=$PACKAGE_DIR/${NAME}/Gemfile
-export HOME=/home/vcap # rake needs it to be set to run tasks
 export TMPDIR=/var/vcap/data/${NAME}/tmp
 export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
@@ -41,14 +38,7 @@ case $1 in
 
     wait_for_blobstore
 
-    cd $PACKAGE_DIR/${NAME}
-
-    bundle exec puma -d --pidfile $PIDFILE \
-      -e production \
-      -b unix:/var/vcap/sys/run/bits-service/bits-service.sock \
-      --redirect-stdout $LOG_DIR/bits-service.stdout.log \
-      --redirect-stderr $LOG_DIR/bits-service.stderr.log \
-      --redirect-append
+    $PACKAGE_DIR/${NAME} >> /var/vcap/sys/log/${NAME}/bitsgo.log 2>&1
 
     ;;
   stop)
