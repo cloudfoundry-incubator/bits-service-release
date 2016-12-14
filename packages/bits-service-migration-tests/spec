@@ -2,7 +2,7 @@
 name: bits-service-migration-tests
 
 dependencies:
- - golang1.6
+ - golang1.7
 
 files:
   - github.com/cloudfoundry-incubator/bits-service-migration-tests/assets/**/*
