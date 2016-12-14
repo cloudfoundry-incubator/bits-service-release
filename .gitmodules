@@ -41,3 +41,6 @@
 [submodule "src/github.com/pkg/errors"]
 	path = src/github.com/pkg/errors
 	url = https://github.com/pkg/errors.git
+[submodule "src/github.com/urfave/negroni"]
+	path = src/github.com/urfave/negroni
+	url = https://github.com/urfave/negroni.git
