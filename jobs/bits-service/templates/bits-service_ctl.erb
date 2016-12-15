@@ -1,20 +1,15 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 export LANG=en_US.UTF-8
 
-export NAME=bitsgo
+export NAME=bits-service
 
 export JOB_DIR=/var/vcap/jobs/${NAME}
-
-PACKAGE_DIR=/var/vcap/packages/${NAME}
 
 RUN_DIR=/var/vcap/sys/run/${NAME}
 LOG_DIR=/var/vcap/sys/log/${NAME}
 PIDFILE=${RUN_DIR}/${NAME}.pid
 STORE_DIR=/var/vcap/store/bits-service
-
-export TMPDIR=/var/vcap/data/${NAME}/tmp
-export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
 source ${JOB_DIR}/bin/syslog_utils.sh
 mkdir -p $LOG_DIR
@@ -22,23 +17,22 @@ tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
 
 source /var/vcap/packages/bits-common/pid_utils.sh
 source ${JOB_DIR}/bin/blobstore_waiter.sh
-mkdir -p $RUN_DIR
-mkdir -p $TMPDIR
-mkdir -p $STORE_DIR
 
 case $1 in
 
   start)
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+    mkdir -p $STORE_DIR
 
     chown vcap:vcap $RUN_DIR
     chown vcap:vcap $LOG_DIR
-    chown vcap:vcap $TMPDIR
 
     pid_guard $PIDFILE "Bits Service"
 
     wait_for_blobstore
 
-    $PACKAGE_DIR/${NAME} >> /var/vcap/sys/log/${NAME}/bitsgo.log 2>&1
+    /var/vcap/packages/bitsgo/bitsgo -c $JOB_DIR/config/bits_config.yml >> /var/vcap/sys/log/${NAME}/bitsgo.log 2>&1
 
     ;;
   stop)
