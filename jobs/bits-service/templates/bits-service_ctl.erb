@@ -32,7 +32,8 @@ case $1 in
 
     wait_for_blobstore
 
-    /var/vcap/packages/bitsgo/bitsgo -c $JOB_DIR/config/bits_config.yml >> /var/vcap/sys/log/${NAME}/bitsgo.log 2>&1
+    /var/vcap/packages/bitsgo/bitsgo -c $JOB_DIR/config/bits_config.yml >> /var/vcap/sys/log/${NAME}/bitsgo.log 2>&1 &
+    echo $! > $PIDFILE
 
     ;;
   stop)
