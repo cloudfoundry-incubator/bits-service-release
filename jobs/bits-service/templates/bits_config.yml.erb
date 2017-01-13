@@ -1,59 +1,67 @@
 buildpacks:
-  directory_key: <%= p("bits-service.buildpacks.directory_key") %>
-  blobstore_type: <%= p("bits-service.buildpacks.blobstore_type") %>
-  webdav_config:
-    public_endpoint: <%= p("bits-service.buildpacks.webdav_config.public_endpoint") %>
-    private_endpoint: <%= p("bits-service.buildpacks.webdav_config.private_endpoint") %>
-    username: <%= p("bits-service.buildpacks.webdav_config.username") %>
-    password: <%= p("bits-service.buildpacks.webdav_config.password") %>
-    <% if_p("bits-service.buildpacks.webdav_config.ca_cert") do %>
-    ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/buildpacks_ca_cert.pem"
-    <% end %>
-  fog_connection: <%= p("bits-service.buildpacks.fog_connection", {}).to_json %>
+  blobstore_type: <%= p("bits-service.buildpacks.fog_connection.provider") %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "local" %>
+  local_config:
+    path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.buildpacks.directory_key") %>
+  <% end %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "aws" %>
+  s3_config:
+    bucket: <%= p("bits-service.buildpacks.directory_key") %>
+    access_key_id: <%= p("bits-service.buildpacks.fog_connection.aws_access_key_id") %>
+    secret_access_key: <%= p("bits-service.buildpacks.fog_connection.aws_secret_access_key") %>
+    region: <%= p("bits-service.droplets.fog_connection.region") %>
+  <% end %>
+
 droplets:
-  directory_key: <%= p("bits-service.droplets.directory_key") %>
-  blobstore_type: <%= p("bits-service.droplets.blobstore_type") %>
-  webdav_config:
-    public_endpoint: <%= p("bits-service.droplets.webdav_config.public_endpoint") %>
-    private_endpoint: <%= p("bits-service.droplets.webdav_config.private_endpoint") %>
-    username: <%= p("bits-service.droplets.webdav_config.username") %>
-    password: <%= p("bits-service.droplets.webdav_config.password") %>
-    <% if_p("bits-service.droplets.webdav_config.ca_cert") do %>
-    ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/droplets_ca_cert.pem"
-    <% end %>
-  fog_connection: <%= p("bits-service.droplets.fog_connection", {}).to_json %>
+  blobstore_type: <%= p("bits-service.droplets.fog_connection.provider") %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "local" %>
+  local_config:
+    path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.droplets.directory_key") %>
+  <% end %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "aws" %>
+  s3_config:
+    bucket: <%= p("bits-service.droplets.directory_key") %>
+    access_key_id: <%= p("bits-service.droplets.fog_connection.aws_access_key_id") %>
+    secret_access_key: <%= p("bits-service.droplets.fog_connection.aws_secret_access_key") %>
+    region: <%= p("bits-service.droplets.fog_connection.region") %>
+  <% end %>
+
 packages:
-  directory_key: <%= p("bits-service.packages.directory_key") %>
-  blobstore_type: <%= p("bits-service.packages.blobstore_type") %>
-  webdav_config:
-    public_endpoint: <%= p("bits-service.packages.webdav_config.public_endpoint") %>
-    private_endpoint: <%= p("bits-service.packages.webdav_config.private_endpoint") %>
-    username: <%= p("bits-service.packages.webdav_config.username") %>
-    password: <%= p("bits-service.packages.webdav_config.password") %>
-    <% if_p("bits-service.packages.webdav_config.ca_cert") do %>
-    ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/packages_ca_cert.pem"
-    <% end %>
-  fog_connection: <%= p("bits-service.packages.fog_connection", {}).to_json %>
+  blobstore_type: <%= p("bits-service.packages.fog_connection.provider") %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "local" %>
+  local_config:
+    path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.packages.directory_key") %>
+  <% end %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "aws" %>
+  s3_config:
+    bucket: <%= p("bits-service.packages.directory_key") %>
+    access_key_id: <%= p("bits-service.packages.fog_connection.aws_access_key_id") %>
+    secret_access_key: <%= p("bits-service.packages.fog_connection.aws_secret_access_key") %>
+    region: <%= p("bits-service.droplets.fog_connection.region") %>
+  <% end %>
+
 app_stash:
-  directory_key: <%= p("bits-service.app_stash.directory_key") %>
-  blobstore_type: <%= p("bits-service.app_stash.blobstore_type") %>
-  webdav_config:
-    public_endpoint: <%= p("bits-service.app_stash.webdav_config.public_endpoint") %>
-    private_endpoint: <%= p("bits-service.app_stash.webdav_config.private_endpoint") %>
-    username: <%= p("bits-service.app_stash.webdav_config.username") %>
-    password: <%= p("bits-service.app_stash.webdav_config.password") %>
-    <% if_p("bits-service.app_stash.webdav_config.ca_cert") do %>
-    ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/app_stash_ca_cert.pem"
-    <% end %>
-  fog_connection: <%= p("bits-service.app_stash.fog_connection", {}).to_json %>
-nginx:
-  use_nginx: true
+  blobstore_type: <%= p("bits-service.app_stash.fog_connection.provider") %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "local" %>
+  local_config:
+    path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.app_stash.directory_key") %>
+  <% end %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "aws" %>
+  s3_config:
+    bucket: <%= p("bits-service.app_stash.directory_key") %>
+    access_key_id: <%= p("bits-service.app_stash.fog_connection.aws_access_key_id") %>
+    secret_access_key: <%= p("bits-service.app_stash.fog_connection.aws_secret_access_key") %>
+    region: <%= p("bits-service.droplets.fog_connection.region") %>
+  <% end %>
+
 logging:
   file: /var/vcap/sys/log/bits-service/bits-service.log
   syslog: vcap.bits-service
   level: <%= p("bits-service.logging.level") %>
   max_retries: <%= p("bits-service.logging.max_retries") %>
+private_endpoint: <%= p("bits-service.private_endpoint") %>
 public_endpoint: <%= p("bits-service.public_endpoint") %>
+port: 80
 secret: <%= p("bits-service.secret") %>
 skip_cert_verify: true
 <% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do %>
@@ -63,3 +71,8 @@ cc_updates:
   client_cert: "/var/vcap/jobs/bits-service/config/certs/mutual_client_cert.pem"
   client_key: "/var/vcap/jobs/bits-service/config/certs/mutual_client_key.pem"
 <% end %>
+signing_users:
+  <% p('bits-service.signing_users').each do |user| %>
+  - username: <%= user['username'] %>
+    password: <%= user['password'] %>
+  <% end %>
