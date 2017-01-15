@@ -2,9 +2,18 @@
 
 require 'yaml'
 
+def load_manifest()
+  puts "Using ENV['BITS_SERVICE_MANIFEST']=#{ENV.fetch('BITS_SERVICE_MANIFEST')}:\n"
+  yaml = YAML.load_file(ENV.fetch('BITS_SERVICE_MANIFEST'))
+  puts yaml
+  yaml
+end
+
 module ManifestHelpers
+  @@manifest = load_manifest
+
   def manifest
-    @manifest ||= YAML.load_file(ENV.fetch('BITS_SERVICE_MANIFEST'))
+    @@manifest
   end
 
   def bits_service_config
