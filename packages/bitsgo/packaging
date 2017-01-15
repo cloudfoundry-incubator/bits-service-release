@@ -8,7 +8,6 @@ export PATH=$GOPATH/bin:$PATH
 mkdir src
 mkdir bin
 cp -a github.com src
-cp -a gopkg.in src
 cd src/github.com/petergtz/bitsgo
 go install
 cp $GOPATH/bin/bitsgo ${BOSH_INSTALL_TARGET}
