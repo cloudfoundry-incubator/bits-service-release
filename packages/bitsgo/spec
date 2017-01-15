@@ -6,4 +6,3 @@ dependencies:
 
 files:
   - github.com/**/*
-  - gopkg.in/**/*
