@@ -29,18 +29,3 @@
 [submodule "src/github.com/petergtz/bitsgo"]
 	path = src/github.com/petergtz/bitsgo
 	url = git://github.com/petergtz/bitsgo.git
-[submodule "src/github.com/gorilla/mux"]
-	path = src/github.com/gorilla/mux
-	url = https://github.com/gorilla/mux.git
-[submodule "src/github.com/gorilla/context"]
-	path = src/github.com/gorilla/context
-	url = https://github.com/gorilla/context.git
-[submodule "src/github.com/aws/aws-sdk-go"]
-	path = src/github.com/aws/aws-sdk-go
-	url = https://github.com/aws/aws-sdk-go.git
-[submodule "src/github.com/pkg/errors"]
-	path = src/github.com/pkg/errors
-	url = https://github.com/pkg/errors.git
-[submodule "src/github.com/urfave/negroni"]
-	path = src/github.com/urfave/negroni
-	url = https://github.com/urfave/negroni.git
