@@ -34,7 +34,7 @@ describe 'buildpack cache resource', type: :integration do
     context 'when the request body is invalid', action: false do
       it 'returns HTTP status 415' do
         response = make_put_request(path, {})
-        expect(response.code).to eq(415)
+        expect(response.code).to eq(400)
       end
     end
 
