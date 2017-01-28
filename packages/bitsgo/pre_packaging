@@ -1,5 +1,7 @@
 set -e -x
 
+export GOPATH=$TMPDIR
+mkdir $GOPATH/src
 cd ${BUILD_DIR}/github.com/petergtz/bitsgo
 
 glide install
