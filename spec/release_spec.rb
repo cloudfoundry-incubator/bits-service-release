@@ -16,8 +16,8 @@ describe 'Bits-Release' do
       it 'limits the size of the uploaded bits' do
         # Note: this is actually an invalid request, because there is no POST for root path
         # The reason this is working, is that nginx checks the body size before matching paths.
-        upload_body = { upload: bits_to_upload }
-        response = make_post_request '/', upload_body
+        upload_body = { buildpack: bits_to_upload }
+        response = make_put_request '/buildpacks/some-buildpack', bits_to_upload
         expect(response.code).to eq 413
       end
     end
