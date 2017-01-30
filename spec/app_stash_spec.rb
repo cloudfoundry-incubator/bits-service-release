@@ -3,6 +3,15 @@
 require 'spec_helper'
 require 'shared_examples'
 
+require 'support/environment'
+require 'support/manifest'
+
+
+RSpec.configure {
+  include EnvironmentHelpers
+  include ManifestHelpers
+}
+
 describe 'app_stash endpoint' do
   let(:blobstore_client) { backend_client(:app_stash) }
 
