@@ -3,6 +3,15 @@
 require 'spec_helper'
 require 'shared_examples'
 
+require 'support/environment'
+require 'support/manifest'
+
+
+RSpec.configure {
+  include EnvironmentHelpers
+  include ManifestHelpers
+}
+
 describe 'buildpack cache resource', type: :integration do
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
   let(:zip_file) do

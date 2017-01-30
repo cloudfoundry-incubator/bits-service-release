@@ -6,6 +6,15 @@ require 'json'
 require 'support/cf.rb'
 require "rspec/json_expectations"
 
+require 'support/environment'
+require 'support/manifest'
+
+
+RSpec.configure {
+  include EnvironmentHelpers
+  include ManifestHelpers
+}
+
 describe 'packages resource' do
   let(:resource_path) { "/packages/#{guid}" }
   let(:upload_body) { { package: zip_file } }
