@@ -5,4 +5,4 @@ properties:
       public_endpoint: (( concat "http://bits-service." properties.system_domain ))
       private_endpoint: http://bits-service.service.cf.internal
       username: admin
-      password: <%= ENV.fetch('CF_PASSWORD', 'password') %>
+      password: <%= ENV.fetch('CF_PASSWORD', 'admin') %>
