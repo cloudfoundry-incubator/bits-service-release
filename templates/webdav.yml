@@ -3,6 +3,8 @@ metadata:
     instances: 1
     username: blobstore
     password: blobstore
+    # The endpoints are in fact not used by the blobstore properties, but instead
+    # by the cc properties to reach the blobstore
     public_endpoint: (( concat "http://blobstore." properties.system_domain  ":" properties.blobstore.port))
     private_endpoint: (( concat "https://" jobs.blobstore.networks.default.static_ips[0] ".xip.io:4443" ))
     tls:
@@ -96,7 +98,7 @@ properties:
       directory_key: buildpacks
       buildpack_directory_key: (( grab properties.bits-service.buildpacks.directory_key ))
       blobstore_type: webdav
-      webdav_config:
+      webdav_config: &webdav_config
         username: (( grab metadata.blobstore.username ))
         password: (( grab metadata.blobstore.password ))
         public_endpoint: (( grab metadata.blobstore.public_endpoint ))
@@ -106,29 +108,14 @@ properties:
       directory_key: droplets
       droplet_directory_key: (( grab properties.bits-service.droplets.directory_key ))
       blobstore_type: webdav
-      webdav_config:
-        username: (( grab metadata.blobstore.username ))
-        password: (( grab metadata.blobstore.password ))
-        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
-        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
-        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
+      webdav_config: *webdav_config
     packages:
       directory_key: packages
       app_package_directory_key: (( grab properties.bits-service.packages.directory_key ))
       blobstore_type: webdav
-      webdav_config:
-        username: (( grab metadata.blobstore.username ))
-        password: (( grab metadata.blobstore.password ))
-        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
-        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
-        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
+      webdav_config: *webdav_config
     app_stash:
       directory_key: app_stash
       resource_directory_key: (( grab properties.bits-service.app_stash.directory_key ))
       blobstore_type: webdav
-      webdav_config:
-        username: (( grab metadata.blobstore.username ))
-        password: (( grab metadata.blobstore.password ))
-        public_endpoint: (( grab metadata.blobstore.public_endpoint ))
-        private_endpoint: (( grab metadata.blobstore.private_endpoint ))
-        ca_cert: (( grab metadata.blobstore.tls.ca_cert ))
+      webdav_config: *webdav_config
