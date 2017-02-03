@@ -18,15 +18,29 @@ if [ ! -f "$cf_yml" ]; then
   exit 1
 fi
 
-spruce merge "$cf_yml" \
-  ./templates/bits-service-from-ci.yml \
-  ./templates/cc-blobstore-properties.yml \
-  ./templates/bits-service-signing-properties.yml \
-  ./templates/director_uuid.yml \
-  ./templates/acceptance_test_properties.yml \
-  ./templates/enable-bits.yml \
-  ./templates/bits-network-bosh-lite.yml \
-  ./templates/${BLOBSTORE_TYPE}.yml \
-  > deployments/cf-with-bits-service-enabled.yml
+if [ "${BLOBSTORE_TYPE}" == "webdav" ]; then
+  spruce merge "$cf_yml" \
+    ./templates/bits-service-from-ci.yml \
+    ./templates/cc-blobstore-properties.yml \
+    ./templates/bits-service-signing-properties.yml \
+    ./templates/director_uuid.yml \
+    ./templates/acceptance_test_properties.yml \
+    ./templates/enable-bits.yml \
+    ./templates/bits-network-bosh-lite.yml \
+    ./templates/webdav.yml \
+    ./templates/webdav-blobstore-support.yml \
+    > deployments/cf-with-bits-service-enabled.yml
+else
+  spruce merge "$cf_yml" \
+    ./templates/bits-service-from-ci.yml \
+    ./templates/cc-blobstore-properties.yml \
+    ./templates/bits-service-signing-properties.yml \
+    ./templates/director_uuid.yml \
+    ./templates/acceptance_test_properties.yml \
+    ./templates/enable-bits.yml \
+    ./templates/bits-network-bosh-lite.yml \
+    ./templates/${BLOBSTORE_TYPE}.yml \
+    > deployments/cf-with-bits-service-enabled.yml
+fi
 
 bosh deployment deployments/cf-with-bits-service-enabled.yml
