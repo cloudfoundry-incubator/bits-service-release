@@ -1,0 +1,14 @@
+hash: 22538b0d42faf07333573875cc98b377f5c5efd117300f5619f31e414812dd90
+updated: 2017-02-07T21:44:03.205884265+01:00
+imports: []
+testImports:
+- name: github.com/nu7hatch/gouuid
+  version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+- name: golang.org/x/sys
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  subpackages:
+  - unix
+- name: gopkg.in/alexcesaro/statsd.v2
+  version: 7fea3f0d2fab1ad973e641e51dba45443a311a90
+- name: gopkg.in/yaml.v2
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0

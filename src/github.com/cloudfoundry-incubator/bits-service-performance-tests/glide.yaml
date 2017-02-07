@@ -1,0 +1,14 @@
+package: github.com/cloudfoundry-incubator/bits-service-performance-tests
+import: []
+testImport:
+# TODO: uncomment to use new test helpers instead of the old ones from the non-vendored directory
+# - package: github.com/cloudfoundry-incubator/cf-test-helpers
+#   subpackages:
+#   - cf
+#   - generator
+#   - helpers
+# - package: github.com/onsi/ginkgo
+# - package: github.com/onsi/gomega
+#   subpackages:
+#   - gexec
+- package: gopkg.in/alexcesaro/statsd.v2
