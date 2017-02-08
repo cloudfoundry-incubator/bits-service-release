@@ -6,9 +6,12 @@ import (
 	statsd "gopkg.in/alexcesaro/statsd.v2"
 
 	"github.com/cloudfoundry-incubator/cf-test-helpers/helpers"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
+	"github.com/onsi/ginkgo"
+	"github.com/onsi/gomega"
 	"testing"
 )
 
@@ -47,6 +50,6 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		environment.Teardown()
 	})
 
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "BitsServicePerformanceTests Suite")
+	gomega.RegisterFailHandler(ginkgo.Fail)
+	ginkgo.RunSpecs(t, "BitsServicePerformanceTests Suite")
 }
