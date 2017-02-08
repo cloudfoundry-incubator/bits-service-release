@@ -21,6 +21,6 @@ var _ = Describe("Pushing an app", func() {
 			cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
 			To(Exit(0))
 
-		statsdClient.Timing("cf-push", time.Since(startTime).Seconds()*1000)
+		statsdClient.Timing(metricsPrefix+"cf-push", time.Since(startTime).Seconds()*1000)
 	})
 })

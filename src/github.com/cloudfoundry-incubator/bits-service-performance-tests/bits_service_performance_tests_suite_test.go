@@ -12,6 +12,7 @@ import (
 
 	"github.com/onsi/ginkgo"
 	"github.com/onsi/gomega"
+	"os"
 	"testing"
 )
 
@@ -21,6 +22,7 @@ var (
 	defaultTimeout time.Duration = 30 * time.Second
 	cfPushTimeout  time.Duration = 5 * time.Minute
 	statsdClient   *statsd.Client
+	metricsPrefix  string
 )
 
 func TestBitsServicePerformanceTests(t *testing.T) {
@@ -32,6 +34,12 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 
 	if config.CfPushTimeout > 0 {
 		cfPushTimeout = config.CfPushTimeout * time.Second
+	}
+
+	metricsPrefix = os.Getenv("PERFORMANCE_TEST_METRICS_PREFIX")
+
+	if metricsPrefix != "" {
+		metricsPrefix += "."
 	}
 
 	context = helpers.NewContext(config)
