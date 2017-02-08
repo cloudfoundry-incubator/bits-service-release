@@ -40,3 +40,11 @@ export CONFIG=integration_config.json
 ```bash
 ginkgo -v --progress
 ```
+
+# Metrics
+
+Some tests report statistics to a statsd server. You can use `netcat` to verify that these metrics are actually sent:
+
+```bash
+nc -ulv 8125
+```
