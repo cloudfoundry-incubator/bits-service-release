@@ -18,7 +18,7 @@ var _ = Describe("Pushing an app", func() {
 
 		appName := generator.PrefixedRandomName("APP")
 		Expect(
-			cf.Cf("push", appName, "-p", "assets/dora", "-d", config.AppsDomain).Wait(cfPushTimeout)).
+			cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
 			To(Exit(0))
 
 		statsdClient.Timing("cf-push", time.Since(startTime).Seconds()*1000)
