@@ -14,13 +14,15 @@ import (
 
 var _ = Describe("Pushing an app", func() {
 	It("stops the time for pushing an app", func() {
-		startTime := time.Now()
+		for index := 0; index < loopCount; index++ {
+			startTime := time.Now()
 
-		appName := generator.PrefixedRandomName("APP")
-		Expect(
-			cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
-			To(Exit(0))
+			appName := generator.PrefixedRandomName("APP")
+			Expect(
+				cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
+				To(Exit(0))
 
-		statsdClient.Timing(metricsPrefix+"cf-push", time.Since(startTime).Seconds()*1000)
+			statsdClient.Timing(metricsPrefix+"cf-push", time.Since(startTime).Seconds()*1000)
+		}
 	})
 })
