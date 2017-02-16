@@ -14,8 +14,10 @@ http {
   server_tokens off;
 
   log_format main  '<%= p("bits-service.nginx.access_log_format").chomp %>';
+  log_format metrics '"$time_local" - "$request" - $status - $request_time - $bytes_sent';
 
-  access_log  <%= p("bits-service.nginx.access_log_destination") %> main;
+  access_log <%= p("bits-service.nginx.access_log_destination") %> main;
+  access_log <%= p("bits-service.nginx.metrics_log_destination") %> metrics;
 
   sendfile             on;  #enable use of sendfile()
   tcp_nopush           on;

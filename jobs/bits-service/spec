@@ -181,3 +181,6 @@ properties:
   bits-service.nginx.error_log_level:
     description: "The lowest severity nginx log level to capture in the error log."
     default: error
+  bits-service.nginx.metrics_log_destination:
+    description: "Nginx metrics log destination."
+    default: "/var/vcap/sys/log/nginx_bits/metrics.log"
