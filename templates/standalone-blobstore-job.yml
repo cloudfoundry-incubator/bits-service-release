@@ -20,8 +20,8 @@ instance_groups:
     update: {}
 
 properties:
+  system_domain: (( concat instance_groups.blobstore.networks.static.static_ips.0 ".xip.io" ))
   blobstore:
-    system_domain: (( concat instance_groups.blobstore.networks.static.static_ips.0 ".xip.io" ))
     admin_users:
       - username: blobstore_username
         password: blobstore_password
