@@ -1,0 +1,15 @@
+name: (( concat "bits-service-" $BLOBSTORE_TYPE ))
+
+director_uuid: (( grab $BOSH_DIRECTOR_UUID))
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: latest
+
+update:
+  canaries: 1
+  canary_watch_time: 30000
+  update_watch_time: 30000
+  max_in_flight: 4
+  max_errors: 1

@@ -1,0 +1,27 @@
+releases:
+  - (( merge ))
+  - { name: bits-service, version: latest }
+
+instance_groups:
+- name: bits-service
+  azs: [ az1 ]
+  instances: 1
+  jobs:
+  - { name: bits-service, release: bits-service }
+  vm_type: bits_service_vm
+  stemcell: default
+  networks:
+    - name: network1
+    - name: static
+      static_ips:
+        - (( grab $BITS_SERVICE_JOB_IP ))
+      default: [dns, gateway]
+
+properties:
+  bits-service:
+    private_endpoint: (( concat "http://internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    public_endpoint: (( concat "http://" instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    secret: 12345
+    signing_users:
+    - username: admin
+      password: admin

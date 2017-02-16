@@ -1,0 +1,27 @@
+properties:
+  bits-service:
+    buildpacks:
+      directory_key: &buildpack_directory_key buildpacks
+      buildpack_directory_key: *buildpack_directory_key
+      blobstore_type: webdav
+      webdav_config: &webdav_config
+        username: (( grab properties.blobstore.admin_users.0.username ))
+        password: (( grab properties.blobstore.admin_users.0.password ))
+        public_endpoint: (( concat "http://blobstore." instance_groups.blobstore.networks.static.static_ips.0  ".xip.io:" properties.blobstore.port))
+        private_endpoint: (( concat "https://" instance_groups.blobstore.networks.static.static_ips.0 ".xip.io:4443" ))
+        ca_cert: (( grab properties.blobstore.tls.ca_cert ))
+    droplets:
+      directory_key: &droplet_directory_key droplets
+      droplet_directory_key: *droplet_directory_key
+      blobstore_type: webdav
+      webdav_config: *webdav_config
+    packages:
+      directory_key: &package_directory_key packages
+      app_package_directory_key: *package_directory_key
+      blobstore_type: webdav
+      webdav_config: *webdav_config
+    app_stash:
+      directory_key: &app_stash_directory_key app_stash
+      resource_directory_key: *app_stash_directory_key
+      blobstore_type: webdav
+      webdav_config: *webdav_config

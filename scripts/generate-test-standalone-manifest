@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+cd $(dirname $0)/..
+
+mkdir -p deployments
+MANIFEST_FILE=deployments/bits-service-release.yml
+
+export BLOBSTORE_TYPE="$1"; shift
+export BOSH_DIRECTOR_UUID=$(bosh status --uuid)
+
+if [ -z "$BLOBSTORE_TYPE" ]; then
+  >&2 echo "Usage: generate-test-standalone-manifest <blobstore-type> <iaas>"
+  exit 1
+fi
+
+echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
+
+spruce merge \
+    templates/standalone-basic-structure.yml \
+    templates/standalone-blobstore-job.yml \
+    templates/standalone-bits-service-job.yml \
+    templates/standalone-properties-${BLOBSTORE_TYPE}.yml \
+    templates/body-size-stub.yml \
+    "$@" \
+  > ${MANIFEST_FILE}
+
+echo "Manifest written to ${MANIFEST_FILE}"
