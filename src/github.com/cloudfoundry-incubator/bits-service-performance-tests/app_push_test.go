@@ -22,7 +22,11 @@ var _ = Describe("Pushing an app", func() {
 				cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
 				To(Exit(0))
 
-			statsdClient.Timing(metricsPrefix+"cf-push", time.Since(startTime).Seconds()*1000)
+			statsdClient.Timing(asSparseMetric("cf-push"), time.Since(startTime).Seconds()*1000)
 		}
 	})
 })
+
+func asSparseMetric(metricName string) string {
+	return metricsPrefix + metricName + ".sparse-avg"
+}
