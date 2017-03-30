@@ -4,7 +4,7 @@ set -x
 
 old_ips="10.244.0.0/19"
 ips="10.250.0.0/16"
-gw="192.168.59.4"
+gw="192.168.50.4"
 
 echo "Adding the following route entry to your local route table to enable direct container access: $ips via $gw. Your sudo password may be required." > /dev/null
 
