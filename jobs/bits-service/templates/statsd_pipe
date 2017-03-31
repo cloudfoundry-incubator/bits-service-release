@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Pipe ngingx metrics into statsd
+#
+# If the request
+#
+#   PUT /droplets/7100a3b3-1eeb-49b1-ad52-747a1071a854 HTTP/1.1
+#
+# took 0.120s, we'd like to send a `timing` metric to statsd:
+#
+#   droplets-time:0.120|s
+#
+# The size in bytes is reported as separate `gauge` metric:
+#
+#   droplets-size:348|g
+#
+# Metric types are defined per https://github.com/etsy/statsd/blob/master/docs/metric_types.md
+#
+
+if [ $# -ne 1 ]; then
+  echo "Error: Missing Argument."
+  echo "Usage: statsd_pipe METRICS_LOG_FILE"
+  exit 1
+fi
+
+#
+# Grab the resource type from a request given as $1, e.g.
+#
+# PUT /droplets/7100a3b3-1eeb-49b1-ad52-747a1071a854/ HTTP/1.1
+#
+resource_type() {
+  # for '\K' (zero-width look-behind assertion) see http://unix.stackexchange.com/a/13472
+  grep -oP '^\w+ \/\K\w+' <<< "$1"
+}
+
+tail -f $1 | while read in; do
+  IFS=\; read -a fields <<<"$in"
+
+  request="${fields[0]}"
+  resource_type=$(resource_type "$request")
+  time="${fields[1]}"
+  bytes_sent="${fields[2]}"
+
+  echo "$resource_type-time:$time|s"       | nc -u -w0 127.0.0.1 8125
+  echo "$resource_type-size:$bytes_sent|g" | nc -u -w0 127.0.0.1 8125
+done

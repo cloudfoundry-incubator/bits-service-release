@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e -x
+
+JOB_DIR=/var/vcap/jobs/bits-service
+RUN_DIR=/var/vcap/sys/run/nginx_bits
+LOG_DIR=/var/vcap/sys/log/nginx_bits
+PIDFILE=$RUN_DIR/statsd_pipe.pid
+
+source /var/vcap/packages/bits-common/pid_utils.sh
+
+case $1 in
+  start)
+    pid_guard $PIDFILE "statsd_pipe"
+
+    mkdir -p $RUN_DIR
+    mkdir -p $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    exec $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_log_destination") %>'
+    ;;
+  stop)
+    # force kill immediately; drain script should have already run
+    kill_and_wait $PIDFILE
+    ;;
+  *)
+    echo "Usage: statsd_pipe_ctl {start|stop}"
+    ;;
+esac
