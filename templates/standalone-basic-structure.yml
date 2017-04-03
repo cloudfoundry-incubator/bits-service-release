@@ -13,3 +13,9 @@ update:
   update_watch_time: 30000
   max_in_flight: 4
   max_errors: 1
+
+resource_pools:
+- env:
+    bosh:
+      # c1oudc0w is a default password for vcap user
+      password: "$6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0"
