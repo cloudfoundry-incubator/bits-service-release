@@ -18,6 +18,10 @@ instance_groups:
           - (( grab $BLOBSTORE_JOB_IP ))
         default: [dns, gateway]
     update: {}
+    env:
+      bosh:
+        keep_root_password: true
+        password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
 
 properties:
   system_domain: (( concat instance_groups.blobstore.networks.static.static_ips.0 ".xip.io" ))
