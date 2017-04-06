@@ -16,6 +16,13 @@ instance_groups:
       static_ips:
         - (( grab $BITS_SERVICE_JOB_IP ))
       default: [dns, gateway]
+  env:
+    bosh:
+      keep_root_password: true
+      # https://github.com/cloudfoundry/bosh-softlayer-cpi-release/blob/master/docs/concourse_sample_v2_schema.yml#L65-L67
+      # http://www.starkandwayne.com/blog/hardening-the-vcap-users-password-on-bosh-vms/
+      # mkpasswd --method=sha-512 --salt="4gDD3aV0rdqlrKC" c1oudc0w
+      password: $6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0
 
 properties:
   bits-service:
