@@ -11,6 +11,7 @@ jobs:
   - name: bits-service
     release: bits-service
   - name: route_registrar
+    consumes: { nats: nil }
     release: cf
   - name: consul_agent
     release: cf
