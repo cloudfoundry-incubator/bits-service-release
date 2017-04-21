@@ -120,11 +120,38 @@ Expected result, 28 request to blobstore, too. But now you should see the ip fro
 
 # Issues Found
 
-### 503 error code: 150003
-for run in {1..10}; do cf scale my-awesome-app -i 10 && cf scale my-awesome-app -i 15 && cf scale my-awesome-app -i 20 && cf scale my-awesome-app -i 1 && cf scale my-awesome-app -i 5 && cf scale my-awesome-app -i 10 &&cf scale my-awesome-app -i 1; done
-
+### Issue: http 503 error code: 150003
+If the scaleing operation is executed 10 times, 
+```
+for run in {1..10}; do CF_TRACE=true cf scale my-awesome-app -i 10 && cf scale my-awesome-app -i 15 && cf scale my-awesome-app -i 20 && cf scale my-awesome-app -i 1 && cf scale my-awesome-app -i 5 && cf scale my-awesome-app -i 10 &&cf scale my-awesome-app -i 1; done
+```
+then this error occurs.
+```
 FAILED
 Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
+```
+
+**Verifaction:**
+
+Repaet this test with CC1 and CC2 bits-service _ENABLED_.  
+_Result:_  the error does not occur.
+
+Repaet this test with CC1 and CC2 bits-service _DISABLED_.  
+_Result:_  the error occur 2 times.  
+
+```
+FAILED
+Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
+FAILED
+Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
+```
+
+**Remark**  
+Seems to be the bits-service will fix this issue for the CC.
+The error "150003" is known and documented for the api v2.
+[Here you is the documentation of v2 api errors](https://docs.cloudfoundry.org/running/troubleshooting/v2-errors.html). 
+
+**Summary:** No effect to our rolling enablement test.
 
 ## Notes
 
