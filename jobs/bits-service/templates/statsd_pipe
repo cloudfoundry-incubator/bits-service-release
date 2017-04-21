@@ -33,14 +33,15 @@ resource_type() {
   grep -oP '^\w+ \/\K\w+' <<< "$1"
 }
 
-tail -f $1 | while read in; do
+tail -n0 -f $1 | while read in; do
   IFS=\; read -a fields <<<"$in"
 
   request="${fields[0]}"
   resource_type=$(resource_type "$request")
-  time="${fields[1]}"
+  # multiply by 1000 to get ms, the only format possible with statsd timings
+  time=$(echo ${fields[1]} 1000 | awk '{printf "%.0f\n",$1*$2}')
   bytes_sent="${fields[2]}"
 
-  echo "$resource_type-time:$time|s"       | nc -u -w0 127.0.0.1 8125
+  echo "$resource_type-time:$time|ms" | nc -u -w0 127.0.0.1 8125
   echo "$resource_type-size:$bytes_sent|g" | nc -u -w0 127.0.0.1 8125
 done
