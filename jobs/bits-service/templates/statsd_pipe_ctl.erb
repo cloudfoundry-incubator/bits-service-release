@@ -11,14 +11,17 @@ source /var/vcap/packages/bits-common/pid_utils.sh
 
 case $1 in
   start)
-    pid_guard $PIDFILE "statsd_pipe"
-
     mkdir -p $RUN_DIR
     mkdir -p $LOG_DIR
 
-    echo $$ > $PIDFILE
+    chown vcap:vcap $RUN_DIR
+    chown vcap:vcap $LOG_DIR
 
-    exec $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_log_destination") %>'
+    pid_guard $PIDFILE "statsd_pipe"
+
+    $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_log_destination") %>' &
+    echo $! > $PIDFILE
+
     ;;
   stop)
     # force kill immediately; drain script should have already run
