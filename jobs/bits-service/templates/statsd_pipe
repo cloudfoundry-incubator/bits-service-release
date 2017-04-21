@@ -33,7 +33,7 @@ resource_type() {
   grep -oP '^\w+ \/\K\w+' <<< "$1"
 }
 
-tail -n0 -f $1 | while read in; do
+tail -n0 --retry -F $1 2>/dev/null | while read in; do
   IFS=\; read -a fields <<<"$in"
 
   request="${fields[0]}"
