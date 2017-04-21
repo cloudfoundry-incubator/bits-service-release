@@ -3,6 +3,7 @@ require 'rspec/collection_matchers'
 require 'rest-client'
 require 'pry'
 require 'pry-nav'
+require 'securerandom'
 
 require_relative 'support/backend'
 require_relative 'support/response'
@@ -24,8 +25,5 @@ end
 RSpec::Matchers.define :be_a_404 do |expected|
   match do |response| # actual
     expect(response.code).to eq 404
-    json = JSON.parse(response.body)
-    expect(json['code']).to eq(10000)
-    expect(json['description']).to match(/Unknown request/)
   end
 end
