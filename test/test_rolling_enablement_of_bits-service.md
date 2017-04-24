@@ -14,7 +14,7 @@ The mixed configuration of CCs with and without bits-service seems to work. Only
 
 ### Prerequisites
 
-To execute this test it is necessary to use a shared blobstore. We use a webdav blobstore, because we have easy access to blobstore's request logs.
+To execute this test it is necessary to use a shared blobstore. We use a webdav blobstore, because we have easy access to blobstore's logs.
 
 In further examples we will assume the following IP addresses:
 
@@ -54,22 +54,13 @@ In further examples we will assume the following IP addresses:
 
     Log in to blobstore.
     ```console
-    bash@localhost$ bosh ssh blobstore_z1`
+    bash@localhost$ bosh ssh blobstore_z1
     ```
 
     Start tailing and filtering blobstore access log.
     ```console
     bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
-      | grep --line-buffered "HEAD /admin/droplets" \
-      >> /var/vcap/sys/log/blobstore/output
-    ```
-
-    In another terminal on the blobstore VM check the filtered output. The file should be empty.
-    ```console
-    bash@api_z1/1$ truncate -s 0 /var/vcap/sys/log/blobstore/output
-    bash@api_z1/1$ wc -l /var/vcap/sys/log/blobstore/output
-
-    0 /var/vcap/sys/log/blobstore/output
+      | grep --line-buffered "HEAD /admin/droplets"
     ```
 
 4. Scale the app using each of the CCs.
@@ -85,11 +76,7 @@ In further examples we will assume the following IP addresses:
       -H "Authorization: $(cf oauth-token)"
     ```
 
-5. Now check blobstore request log in the second terminal.
-    ```console
-    bash@api_z1/1$ tail /var/vcap/sys/log/blobstore/output
-    ```
-    You should see the IP address of both CCs in the filtered output file.
+5. Now go back to blobstore access log. You should see the IP address of both CCs.
 
 6. Enable the bits service for one CC and repeat the steps.
     ```console
@@ -112,16 +99,7 @@ In further examples we will assume the following IP addresses:
     Start tailing and filtering blobstore access log.
     ```console
     bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
-      | grep --line-buffered "HEAD /admin/droplets" \
-      >> /var/vcap/sys/log/blobstore/output
-    ```
-
-    In another terminal on the blobstore VM check the filtered output. After `truncate` the file should be empty.
-    ```console
-    bash@api_z1/1$ truncate -s 0 /var/vcap/sys/log/blobstore/output
-    bash@api_z1/1$ wc -l /var/vcap/sys/log/blobstore/output
-
-    0 /var/vcap/sys/log/blobstore/output
+      | grep --line-buffered "HEAD /admin/droplets"
     ```
 
 8. Scale the app using each of the CCs.
@@ -137,40 +115,14 @@ In further examples we will assume the following IP addresses:
       -H "Authorization: $(cf oauth-token)"
     ```
 
-9. Check blobstore request log in the second terminal.
-    ```console
-    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
-      | grep --line-buffered "HEAD /admin/droplets" \
-      >> /var/vcap/sys/log/blobstore/output
-    ```
-
-    Now you should see the IP from CC1 and from the bits-service in the filtered output file.
+9. Go back to blobstore access log again.
+    Now you should see the IP address of CC1 and bits-service.
     ```
     10.244.0.154 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.8.2.4, ruby 2.3.3 (2016-11-21))"
     10.244.0.74 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.7.1, ruby 2.3.1 (2016-04-26))"
     ```
 
 ## Notes
-
-### Count the requests for droplets
-
-This filters for the droplet requests and redirect it to the output file.  
-```bash
-tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
-  | grep --line-buffered "HEAD /admin/droplets" \
-  >> /var/vcap/sys/log/blobstore/output
-```
-
-Now count the lines of the *output* file to see how much request are arrive the blobstore.
-```bash
-wc -l /var/vcap/sys/log/blobstore/output
-```
-
-Cleanup the output file, if needed.
-```bash
-truncate -s 0 /var/vcap/sys/log/blobstore/output
-```  
-and hit enter in the window where the tail is running.
 
 ### Scaling cf apps for the test
 
@@ -195,26 +147,6 @@ curl -X PUT \
   "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
   -d '{"instances":3}' \
   -H "Authorization: $(cf oauth-token)"
-```
-
-Expected output when only one instance of CC has bits-service enabled.
-```bash
-cat /var/vcap/sys/log/blobstore/output | grep "10.244.0.154\|10.244.0.74"
-```
-
-```
-10.244.0.154 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.8.2.4, ruby 2.3.3 (2016-11-21))"
-10.244.0.74 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.7.1, ruby 2.3.1 (2016-04-26))"
-```
-This is a check for how much each machine accesses the blobstore.
-
-```bash
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154\|10.244.0.74")"
-result: 28
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154")"
-result: 4
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.74")"
-result: 24
 ```
 
 ### Create a dummy-app
