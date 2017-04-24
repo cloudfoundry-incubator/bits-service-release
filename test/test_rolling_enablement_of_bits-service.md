@@ -2,45 +2,69 @@
 
 ## Test description
 
-* Create a deployment with 2 CCs and one bits-service instance
-* Shared blobstore like S3 or webdav (to see potential misalignments between CC and bits-service)
-* One run with bits-service disabled for all CC
-* Second run with one CC has bits-service disabled (CC1), and the other one have it enabled (CC2)
+* Create a deployment with two CloudControllers (CCs) and one bits-service instance
+* Use shared blobstore like S3 or webdav (to see potential misalignments between CC and bits-service)
+* Run once with bits-service disabled for both CCs
+* Run again with one CC having bits-service disabled (CC1), and the other one having it enabled (CC2)
 
 ## Results
-The mixed setup of CC with and without bits-service seems to work. I found only one [issue](#issues-found).
+The mixed configuration of CCs with and without bits-service seems to work. Only one potential [issue](#issues-found) was found so far. It is related to resource shortage which may occur due to the selected testing method and does not directly relate to bits-service or cloud controllers.
 
 ## How to test
 
 ### Prerequisites
 
-To execute this test it is necessary to use a shared blobstore. We use a webdav blobstore, because we have easy access to the logs to see where the blobstore request come from.
+To execute this test it is necessary to use a shared blobstore. We use a webdav blobstore, because we have easy access to blobstore's request logs.
+
+In further examples we will assume the following IP addresses:
+
+| VM | IP |
+|----|----|
+|CC1 (api_z1/0)|10.244.0.138|
+|CC2 (api_z1/1)|10.244.0.154|
+|bits-service|10.244.0.74|
 
 ### Steps
 
-1. Deploy two CloudControllers with one bits-service instance, but bits-service has to be disabled for both CC instances.  
-    deployment manifest:
-    ```yml
-    cc:
-      bits_service:
-        enabled: false
+1. Deploy CloudFoundry with two CCs and one bits-service instance, but bits-service has to be disabled for both CC instances.
 
+    Deployment manifest snippet:
+    ```yml
     jobs:
     - default_networks:
       - name: cf1
       instances: 2
       name: api_z1
+
+    properties:
+      cc:
+        bits_service:
+          enabled: false
     ```
 
-2. Push an app, for example `cf push my-awesome-app`. Follow this instructions to create a dummy app. [Create dummy app](#create-the-dummy-app).
+2. Push an app, for example `cf push my-awesome-app`.
+    Follow this instructions to create a dummy app. [Create dummy app](#create-the-dummy-app).
 
-3. Check the blobstore request without bits-service enabled.  
-    Log in to blobstore `bosh ssh blobstore_z1`
+    Store app GUID in a shell variable.
+    ```bash
+    APP_ID=$(cf app my-awesome-app --guid)
+    ```
+
+3. Check the blobstore request without bits-service enabled.
+
+    Log in to blobstore.
     ```console
-    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log | grep --line-buffered "HEAD /admin/droplets" >> /var/vcap/sys/log/blobstore/output
+    bash@localhost$ bosh ssh blobstore_z1`
     ```
 
-    Open a second terminal on the blobstore to check the filtered output. The file should be empty.
+    Start tailing and filtering blobstore access log.
+    ```console
+    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
+      | grep --line-buffered "HEAD /admin/droplets" \
+      >> /var/vcap/sys/log/blobstore/output
+    ```
+
+    In another terminal on the blobstore VM check the filtered output. The file should be empty.
     ```console
     bash@api_z1/1$ truncate -s 0 /var/vcap/sys/log/blobstore/output
     bash@api_z1/1$ wc -l /var/vcap/sys/log/blobstore/output
@@ -48,27 +72,28 @@ To execute this test it is necessary to use a shared blobstore. We use a webdav 
     0 /var/vcap/sys/log/blobstore/output
     ```
 
-4. Scale the app and see what has happened for CC without bits-service
+4. Scale the app using each of the CCs.
     ```bash
-    cf scale my-awesome-app -i 10 && \
-    cf scale my-awesome-app -i 15 && \
-    cf scale my-awesome-app -i 20 && \
-    cf scale my-awesome-app -i 1 && \
-    cf scale my-awesome-app -i 5 && \
-    cf scale my-awesome-app -i 10 && \
-    cf scale my-awesome-app -i 1
+    curl -X PUT \
+      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      -d '{"instances":2}' \
+      -H "Authorization: $(cf oauth-token)"
+
+    curl -X PUT \
+      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      -d '{"instances":3}' \
+      -H "Authorization: $(cf oauth-token)"
     ```
 
-5. Now check blobstore request in the second terminal.
+5. Now check blobstore request log in the second terminal.
     ```console
-    bash@api_z1/1$ wc -l /var/vcap/sys/log/blobstore/output
+    bash@api_z1/1$ tail /var/vcap/sys/log/blobstore/output
     ```
-
-    Expected result is 28 requests to blobstore. Additionally you should see the IP address from CC1 and CC2 in the log file of the blobstore `output`.
+    You should see the IP address of both CCs in the filtered output file.
 
 6. Enable the bits service for one CC and repeat the steps.
     ```console
-    bash$ bosh ssh api_z1/1
+    bash@localhost$ bosh ssh api_z1/1
 
     bash@api_z1/1$ sudo -i
 
@@ -77,13 +102,21 @@ To execute this test it is necessary to use a shared blobstore. We use a webdav 
     bash@api_z1/1$ monit restart cloud_controller_ng
     ```
 
-7. Check the result with bits service enabled  
-    Log in to blobstore `bosh ssh blobstore_z1`
+7. Check the result with bits service enabled.
+
+    Log in to blobstore.
     ```console
-    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log | grep --line-buffered "HEAD /admin/droplets" >> /var/vcap/sys/log/blobstore/output
+    bash@localhost$ bosh ssh blobstore_z1`
     ```
 
-    Open a second terminal on the blobstore to check the filtered output. After the the truncate the file should be empty.
+    Start tailing and filtering blobstore access log.
+    ```console
+    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
+      | grep --line-buffered "HEAD /admin/droplets" \
+      >> /var/vcap/sys/log/blobstore/output
+    ```
+
+    In another terminal on the blobstore VM check the filtered output. After `truncate` the file should be empty.
     ```console
     bash@api_z1/1$ truncate -s 0 /var/vcap/sys/log/blobstore/output
     bash@api_z1/1$ wc -l /var/vcap/sys/log/blobstore/output
@@ -91,29 +124,114 @@ To execute this test it is necessary to use a shared blobstore. We use a webdav 
     0 /var/vcap/sys/log/blobstore/output
     ```
 
-8. Scale the app again and see whats happened for mixed setup with one CC without bits-service and one CC with bits-service enabled.
+8. Scale the app using each of the CCs.
     ```bash
-    cf scale my-awesome-app -i 10 && \
-    cf scale my-awesome-app -i 15 && \
-    cf scale my-awesome-app -i 20 && \
-    cf scale my-awesome-app -i 1 && \
-    cf scale my-awesome-app -i 5 && \
-    cf scale my-awesome-app -i 10 && \
-    cf scale my-awesome-app -i 1
+    curl -X PUT \
+      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      -d '{"instances":4}' \
+      -H "Authorization: $(cf oauth-token)"
+
+    curl -X PUT \
+      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      -d '{"instances":5}' \
+      -H "Authorization: $(cf oauth-token)"
     ```
 
-9. Now check the output for bits-service enabled.  
+9. Check blobstore request log in the second terminal.
     ```console
-    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log | grep --line-buffered "HEAD /admin/droplets" >> /var/vcap/sys/log/blobstore/output
+    bash@api_z1/1$ tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
+      | grep --line-buffered "HEAD /admin/droplets" \
+      >> /var/vcap/sys/log/blobstore/output
     ```
 
-    Expected result, 28 request to blobstore, too. But now you should see the ip from CC1 and from the bitsservice in the log file of the blobstore.
-
+    Now you should see the IP from CC1 and from the bits-service in the filtered output file.
     ```
     10.244.0.154 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.8.2.4, ruby 2.3.3 (2016-11-21))"
     10.244.0.74 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.7.1, ruby 2.3.1 (2016-04-26))"
     ```
 
+## Notes
+
+### Count the requests for droplets
+
+This filters for the droplet requests and redirect it to the output file.  
+```bash
+tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log \
+  | grep --line-buffered "HEAD /admin/droplets" \
+  >> /var/vcap/sys/log/blobstore/output
+```
+
+Now count the lines of the *output* file to see how much request are arrive the blobstore.
+```bash
+wc -l /var/vcap/sys/log/blobstore/output
+```
+
+Cleanup the output file, if needed.
+```bash
+truncate -s 0 /var/vcap/sys/log/blobstore/output
+```  
+and hit enter in the window where the tail is running.
+
+### Scaling cf apps for the test
+
+This section describes how to scale a cf-app for our test's purposes.
+
+We issue scaling requests directly to CCs to prevent any kind of load balancing on the side of ha_proxy.
+Make sure the number of instances increases by 1 on each consecutive request to get the desired result.
+You may also set it to 0 and 1 in turns. Lowering number of instances does not trigger blobstore access.
+
+Make sure you are targeting the CF API in you test environment and is logged in.
+We rely on this to get OAuth token for the direct scaling requests.
+
+```bash
+APP_ID=$(cf app my-awesome-app --guid)
+
+curl -X PUT \
+  "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+  -d '{"instances":2}' \
+  -H "Authorization: $(cf oauth-token)"
+
+curl -X PUT \
+  "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+  -d '{"instances":3}' \
+  -H "Authorization: $(cf oauth-token)"
+```
+
+Expected output when only one instance of CC has bits-service enabled.
+```bash
+cat /var/vcap/sys/log/blobstore/output | grep "10.244.0.154\|10.244.0.74"
+```
+
+```
+10.244.0.154 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.8.2.4, ruby 2.3.3 (2016-11-21))"
+10.244.0.74 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.7.1, ruby 2.3.1 (2016-04-26))"
+```
+This is a check for how much each machine accesses the blobstore.
+
+```bash
+cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154\|10.244.0.74")"
+result: 28
+cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154")"
+result: 4
+cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.74")"
+result: 24
+```
+
+### Create a dummy-app
+
+```bash
+mkdir -p my-awesome-app && cd my-awesome-app
+touch Staticfile
+echo '<!DOCTYPE html><html><body> hello blobstore test app 1</body></html>' > index.html
+cf push my-awesome-app
+```
+
+### vim
+
+search pattern for enabling bits-service:
+```vim
+%s/bits_service:\n  enabled: false/bits_service:\r  enabled: true\r  public_endpoint: http:\/\/bits-service.bosh-lite.com \r  private_endpoint: http:\/\/bits-service.service.cf.internal\r  username: admin\r  password: admin/
+```
 ## Issues Found
 
 ### HTTP Status code 503, error code: 150003
@@ -160,74 +278,3 @@ The error "150003" is known and documented for the API v2.
 
 #### Summary
 No effect to our rolling enablement test.
-
-## Notes
-
-### Count the requests for droplets
-
-This filters for the droplet requests and redirect it to the output file.  
-```bash
-tail -F -n0 /var/vcap/sys/log/blobstore/internal_access.log | grep --line-buffered "HEAD /admin/droplets" >> /var/vcap/sys/log/blobstore/output
-```
-
-Now count the lines of the *output* file to see how much request are arrive the blobstore.
-```bash
-wc -l /var/vcap/sys/log/blobstore/output
-```
-
-Cleanup the output file, if needed.
-```bash
-truncate -s 0 /var/vcap/sys/log/blobstore/output
-```  
-and hit enter in the window where the tail is running.
-
-### Staging for test
-
-This section describes how to scale a cf-app for our test's purposes.
-The scale chain starts from 1 to 10 -> 15 -> 20, then back to 1 and scale up again to 5 -> 10 and then reset to 1 instance.
-
-```bash
-cf scale my-awesome-app -i 10 && \
-cf scale my-awesome-app -i 15 && \
-cf scale my-awesome-app -i 20 && \
-cf scale my-awesome-app -i 1 && \
-cf scale my-awesome-app -i 5 && \
-cf scale my-awesome-app -i 10 && \
-cf scale my-awesome-app -i 1
-```
-
-Expected output when only one instance of CC has bits-service enabled.
-```bash
-cat /var/vcap/sys/log/blobstore/output | grep "10.244.0.154\|10.244.0.74"
-```
-
-```
-10.244.0.154 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.8.2.4, ruby 2.3.3 (2016-11-21))"
-10.244.0.74 - blobstore [20/Apr/2017:11:31:57 +0000] "HEAD /admin/droplets/cd/ce/cdcec42e-0bc4-472c-9c85-2f9c3d1cf9bd/9996f66ec63b00f1d09d3aca917b872334cdde6c HTTP/1.1" 200 0 "-" "HTTPClient/1.0 (2.7.1, ruby 2.3.1 (2016-04-26))"
-```
-This is a check for how much each machine accesses the blobstore.
-
-```bash
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154\|10.244.0.74")"
-result: 28
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.154")"
-result: 4
-cat /var/vcap/sys/log/blobstore/output | echo "result: $(grep -c "10.244.0.74")"
-result: 24
-```
-
-### Create a dummy-app
-
-```bash
-mkdir -p my-awesome-app && cd my-awesome-app
-touch Staticfile
-echo '<!DOCTYPE html><html><body> hello blobstore test app 1</body></html>' > index.html
-cf push my-awesome-app
-```
-
-### vim
-
-search pattern for enabling bits-service:
-```vim
-%s/bits_service:\n  enabled: false/bits_service:\r  enabled: true\r  public_endpoint: http:\/\/bits-service.bosh-lite.com \r  private_endpoint: http:\/\/bits-service.service.cf.internal\r  username: admin\r  password: admin/
-```
