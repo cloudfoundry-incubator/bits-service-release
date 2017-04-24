@@ -71,7 +71,7 @@ In further examples we will assume the following IP addresses:
       -H "Authorization: $(cf oauth-token)"
 
     curl -X PUT \
-      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      "http://10.244.0.154:9022/v2/apps/${APP_ID}?async=true" \
       -d '{"instances":3}' \
       -H "Authorization: $(cf oauth-token)"
     ```
@@ -93,7 +93,7 @@ In further examples we will assume the following IP addresses:
 
     Log in to blobstore.
     ```console
-    bash@localhost$ bosh ssh blobstore_z1`
+    bash@localhost$ bosh ssh blobstore_z1
     ```
 
     Start tailing and filtering blobstore access log.
@@ -110,7 +110,7 @@ In further examples we will assume the following IP addresses:
       -H "Authorization: $(cf oauth-token)"
 
     curl -X PUT \
-      "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+      "http://10.244.0.154:9022/v2/apps/${APP_ID}?async=true" \
       -d '{"instances":5}' \
       -H "Authorization: $(cf oauth-token)"
     ```
@@ -144,7 +144,7 @@ curl -X PUT \
   -H "Authorization: $(cf oauth-token)"
 
 curl -X PUT \
-  "http://10.244.0.138:9022/v2/apps/${APP_ID}?async=true" \
+  "http://10.244.0.154:9022/v2/apps/${APP_ID}?async=true" \
   -d '{"instances":3}' \
   -H "Authorization: $(cf oauth-token)"
 ```
@@ -160,7 +160,7 @@ cf push my-awesome-app
 
 ### vim
 
-search pattern for enabling bits-service:
+Search pattern for enabling bits-service:
 ```vim
 %s/bits_service:\n  enabled: false/bits_service:\r  enabled: true\r  public_endpoint: http:\/\/bits-service.bosh-lite.com \r  private_endpoint: http:\/\/bits-service.service.cf.internal\r  username: admin\r  password: admin/
 ```
