@@ -29,8 +29,10 @@ fi
 # PUT /droplets/7100a3b3-1eeb-49b1-ad52-747a1071a854/ HTTP/1.1
 #
 resource_type() {
-  # for '\K' (zero-width look-behind assertion) see http://unix.stackexchange.com/a/13472
-  grep -oP '^\w+ \/\K\w+' <<< "$1"
+  local uri_regexp='^([A-Z]+) \/([a-z_]+)\/'
+  [[ "$1" =~ ${uri_regexp} ]];
+
+  echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
 }
 
 tail -n0 --retry -F $1 2>/dev/null | while read in; do
@@ -42,6 +44,10 @@ tail -n0 --retry -F $1 2>/dev/null | while read in; do
   time=$(echo ${fields[1]} 1000 | awk '{printf "%.0f\n",$1*$2}')
   bytes_sent="${fields[2]}"
 
-  echo "$resource_type-time:$time|ms" | nc -u -w0 127.0.0.1 8125
-  echo "$resource_type-size:$bytes_sent|g" | nc -u -w0 127.0.0.1 8125
+  # note that nc behaves differently when actually feeding it with a file compared to piping directly from echo
+  # feeding with a file makes -w0 actually work, whereas with piping using echo, it doesn't.'
+  echo "$resource_type-time:$time|ms" > /tmp/bits-service-metric
+  nc -u -w0 127.0.0.1 8125 < /tmp/bits-service-metric
+  echo "$resource_type-time:$time|ms" > /tmp/bits-service-metric
+  nc -u -w0 127.0.0.1 8125 < /tmp/bits-service-metric
 done
