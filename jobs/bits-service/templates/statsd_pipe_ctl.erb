@@ -8,6 +8,8 @@ LOG_DIR=/var/vcap/sys/log/nginx_bits
 PIDFILE=$RUN_DIR/statsd_pipe.pid
 
 source /var/vcap/packages/bits-common/pid_utils.sh
+source ${JOB_DIR}/bin/syslog_utils.sh
+tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
 
 case $1 in
   start)
@@ -19,7 +21,7 @@ case $1 in
 
     pid_guard $PIDFILE "statsd_pipe"
 
-    $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_log_destination") %>' &
+    $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_log_destination") %>' 2>&1 &
     echo $! > $PIDFILE
 
     ;;
