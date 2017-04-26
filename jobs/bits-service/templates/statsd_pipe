@@ -46,8 +46,8 @@ tail -n0 --retry -F $1 2>/dev/null | while read in; do
 
   # note that nc behaves differently when actually feeding it with a file compared to piping directly from echo
   # feeding with a file makes -w0 actually work, whereas with piping using echo, it doesn't.'
-  echo "$resource_type-time:$time|ms" > /tmp/bits-service-metric
+  echo "$resource_type-time.sparse-avg:$time|ms" > /tmp/bits-service-metric
   nc -u -w0 127.0.0.1 8125 < /tmp/bits-service-metric
-  echo "$resource_type-time:$time|ms" > /tmp/bits-service-metric
+  echo "$resource_type-size:$bytes_sent|g" > /tmp/bits-service-metric
   nc -u -w0 127.0.0.1 8125 < /tmp/bits-service-metric
 done
