@@ -8,7 +8,7 @@
 * Run again with one CC having bits-service disabled (CC1), and the other one having it enabled (CC2)
 
 ## Results
-The mixed configuration of CCs with and without bits-service seems to work. Only one potential [issue](#issues-found) was found so far. It is related to resource shortage which may occur due to the selected testing method and does not directly relate to bits-service or cloud controllers.
+The mixed configuration of CCs with and without bits-service does work.
 
 ## How to test
 
@@ -164,49 +164,3 @@ Search pattern for enabling bits-service:
 ```vim
 %s/bits_service:\n  enabled: false/bits_service:\r  enabled: true\r  public_endpoint: http:\/\/bits-service.bosh-lite.com \r  private_endpoint: http:\/\/bits-service.service.cf.internal\r  username: admin\r  password: admin/
 ```
-## Issues Found
-
-### HTTP Status code 503, error code: 150003
-
-When the scaling operation is executed 10 times in a row,
-```bash
-for run in {1..10}; do
-  CF_TRACE=true \
-  cf scale my-awesome-app -i 10 && \
-  cf scale my-awesome-app -i 15 && \
-  cf scale my-awesome-app -i 20 && \
-  cf scale my-awesome-app -i 1 && \
-  cf scale my-awesome-app -i 5 && \
-  cf scale my-awesome-app -i 10 && \
-  cf scale my-awesome-app -i 1
-done
-```
-then this error occurs.
-```
-FAILED
-Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
-```
-
-#### Verification
-
-Repeat this test with CC1 and CC2 bits-service _ENABLED_.  
-_Result:_  the error does not occur.
-
-Repeat this test with CC1 and CC2 bits-service _DISABLED_.  
-_Result:_  the error occurs 2 times.  
-
-```
-FAILED
-Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
-FAILED
-Server error, status code: 503, error code: 150003, message: One or more instances could not be started because of insufficient running resources.
-```
-
-#### Remarks
-
-Seems that bits-service will fix this issue for CC.
-The error "150003" is known and documented for the API v2.
-[Documentation of v2 api errors](https://docs.cloudfoundry.org/running/troubleshooting/v2-errors.html).
-
-#### Summary
-No effect to our rolling enablement test.
