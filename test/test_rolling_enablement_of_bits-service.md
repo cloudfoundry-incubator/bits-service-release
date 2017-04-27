@@ -43,7 +43,7 @@ In further examples we will assume the following IP addresses:
     ```
 
 2. Push an app, for example `cf push my-awesome-app`.
-    Follow this instructions to create a dummy app. [Create dummy app](#create-the-dummy-app).
+    Follow this instructions to create a dummy app. [Create dummy app](#create-a-dummy-app).
 
     Store app GUID in a shell variable.
     ```bash
