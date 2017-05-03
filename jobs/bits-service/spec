@@ -6,9 +6,6 @@ templates:
   blobstore_waiter.sh.erb: bin/blobstore_waiter.sh
   syslog_utils.sh.erb:     bin/syslog_utils.sh
   dns_health_check.erb:    bin/dns_health_check
-  statsd_pipe_ctl.erb:     bin/statsd_pipe_ctl
-  statsd_pipe:             bin/statsd_pipe
-  statsd_monitor:          bin/statsd_monitor
 
   nginx.conf.erb:             config/nginx.conf
   bits_config.yml.erb:        config/bits_config.yml
