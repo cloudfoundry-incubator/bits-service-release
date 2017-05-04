@@ -4,5 +4,5 @@ properties:
       enabled: true
       public_endpoint: (( concat "http://bits-service." properties.system_domain ))
       private_endpoint: http://bits-service.service.cf.internal
-      username: admin
-      password: <%= ENV.fetch('CF_PASSWORD', 'admin') %>
+      username: (( grab properties.bits-service.signing_users.0.username ))
+      password: (( grab properties.bits-service.signing_users.0.password ))
