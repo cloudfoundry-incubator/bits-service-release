@@ -8,6 +8,7 @@ templates:
   dns_health_check.erb:    bin/dns_health_check
 
   nginx.conf.erb:             config/nginx.conf
+  location_stub.conf.erb:     config/location_stub.conf
   bits_config.yml.erb:        config/bits_config.yml
   signing_users.erb:          config/signing_users
   app_stash_ca_cert.pem.erb:  config/certs/app_stash_ca_cert.pem
@@ -68,6 +69,9 @@ properties:
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
     default: null
+  bits-service.buildpacks.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
 
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
@@ -93,6 +97,9 @@ properties:
   bits-service.droplets.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
     default: ""
+  bits-service.droplets.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
 
   bits-service.packages.directory_key:
     description: "Directory (bucket) used to store package blobs."
@@ -118,6 +125,9 @@ properties:
   bits-service.packages.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
     default: ""
+  bits-service.packages.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
 
   bits-service.app_stash.directory_key:
     description: "Directory (bucket) used to store app stash blobs."
@@ -143,6 +153,13 @@ properties:
   bits-service.app_stash.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
     default: ""
+  bits-service.app_stash.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
+
+  bits-service.buildpack_cache.max_body_size:
+    default: "1536M"
+    description: "Maximum body size for nginx"
 
   bits-service.max_body_size:
     default: "1536M"

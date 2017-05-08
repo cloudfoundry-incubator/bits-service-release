@@ -1,4 +1,8 @@
+require 'support/environment'
+
 module HttpHelpers
+  include EnvironmentHelpers
+
   def make_get_request(path, args={})
     try_catch { RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: false }.merge(args)) }
   end
