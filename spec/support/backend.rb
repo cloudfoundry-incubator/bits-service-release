@@ -3,7 +3,11 @@ require_relative './backend/s3'
 require_relative './backend/local'
 require_relative './backend/webdav'
 
+require_relative 'environment'
+
 module BackendHelpers
+  include EnvironmentHelpers
+
   def backend_client(resource_type)
     resource_type = resource_type.to_s
 

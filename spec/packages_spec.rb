@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'packages resource' do
   let(:guid) { SecureRandom.uuid }
@@ -6,9 +7,7 @@ describe 'packages resource' do
   let(:upload_body) { { package: zip_file } }
   let(:blobstore_client) { backend_client(:packages) }
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
-  let(:zip_file) do
-    File.new(zip_filepath)
-  end
+  let(:zip_file) { File.new(zip_filepath) }
   let(:existing_guid) do
     SecureRandom.uuid.tap do |guid|
       make_put_request "/packages/#{guid}", upload_body
@@ -35,6 +34,8 @@ describe 'packages resource' do
           expect(response.code).to eq 400
         end
       end
+
+      include_examples 'when blobstore disk is full', :packages
     end
 
     context 'when package is duplicated' do

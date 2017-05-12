@@ -1,3 +1,7 @@
+instance_groups:
+- name: bits-service
+  persistent_disk_type: tiny
+
 properties:
   bits-service:
     buildpacks:

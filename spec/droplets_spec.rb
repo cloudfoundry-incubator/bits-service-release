@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'droplets resource' do
   let(:guid) { "#{SecureRandom.uuid}/#{SecureRandom.uuid}" }
@@ -25,6 +26,8 @@ describe 'droplets resource' do
       make_put_request resource_path, upload_body
       expect(blobstore_client.key_exist?(guid)).to eq(true)
     end
+
+    include_examples 'when blobstore disk is full', :droplets
 
     context 'when the request body is invalid' do
       let(:tempfile) {

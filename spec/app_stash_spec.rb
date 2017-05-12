@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'app_stash endpoint' do
   let(:blobstore_client) { backend_client(:app_stash) }
@@ -44,6 +45,27 @@ describe 'app_stash endpoint' do
         response = make_post_request endpoint, request_body
         expect(response.code).to eq 400
       end
+    end
+
+    context 'when the files are really new and space needs to be allocated' do
+      let(:tmp_dir) { Dir.mktmpdir }
+      let(:filepath) { File.join(tmp_dir, 'file') }
+      let(:zip_path) { File.join(tmp_dir, 'file.zip') }
+      let(:request_body) do
+        { application: File.new(zip_path) }
+      end
+
+      before do
+        write_random_to_file(filepath)
+        `zip #{zip_path} #{filepath}`
+      end
+
+      after do
+        File.unlink zip_path
+        File.unlink filepath
+      end
+
+      include_examples 'when blobstore disk is full', :app_stash
     end
   end
 
