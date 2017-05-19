@@ -7,7 +7,7 @@ describe 'Bits-Release' do
       let(:tmp_dir) { Dir.mktmpdir }
       let(:filepath) { File.join(tmp_dir, 'large-file.zip') }
       let(:bits_to_upload) do
-        write_to_file(filepath, size_in_bytes: 2048 * 1024 + 1024) #2M + 1K
+        write_to_file(filepath, size_in_bytes: 2048 * 1024 + 1024) # 2M + 1K
         File.new(filepath)
       end
 

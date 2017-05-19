@@ -49,7 +49,6 @@ describe 'URL Signing', type: :integration do
       context 'when the signature is valid' do
         it 'resolves the signed_url and handles the request' do
           signed_url = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}").body.to_s
-          puts signed_url
           response = RestClient.get(signed_url)
 
           expect(response.code).to eq 200

@@ -4,7 +4,7 @@ diffs = `git diff --cached`.split('diff --git').select { |log| log =~ /Subprojec
 
 locations = {}
 diffs.each do |diff|
-  /a\/(?<loc>.+?)\sb.*index\s(?<shas>\S+)/m.match diff do |matches|
+  %r{a\/(?<loc>.+?)\sb.*index\s(?<shas>\S+)}m.match diff do |matches|
     locations[matches[:loc]] = matches[:shas]
   end
 end

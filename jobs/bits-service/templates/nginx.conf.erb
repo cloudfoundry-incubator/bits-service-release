@@ -13,6 +13,8 @@ http {
   default_type  text/html;
   server_tokens off;
 
+  # rewrite_log on;
+
   log_format main  '<%= p("bits-service.nginx.access_log_format").chomp %>';
   log_format metrics '$request;$request_time;$bytes_sent';
 
@@ -62,6 +64,7 @@ http {
     }
 
     location /buildpack_cache/entries {
+      # add_header X-debug-private-buildpack_cache "Hit" always;
       if ($request_method != PUT ) {
         proxy_pass http://bits_service;
         break;
@@ -70,6 +73,7 @@ http {
       client_max_body_size <%= p("bits-service.buildpack_cache.max_body_size") %>;
     }
     location /buildpacks {
+      # add_header X-debug-private-buildpacks "Hit" always;
       if ($content_type !~ "multipart/form-data") {
         proxy_pass http://bits_service;
       }
@@ -77,6 +81,7 @@ http {
       client_max_body_size <%= p("bits-service.buildpacks.max_body_size") %>;
     }
     location /packages {
+      # add_header X-debug-private-packages "Hit" always;
       if ($content_type !~ "multipart/form-data") {
         proxy_pass http://bits_service;
       }
@@ -84,6 +89,7 @@ http {
       client_max_body_size <%= p("bits-service.packages.max_body_size") %>;
     }
     location /droplets {
+      # add_header X-debug-private-droplets "Hit" always;
       if ($content_type !~ "multipart/form-data") {
         proxy_pass http://bits_service;
       }
@@ -91,6 +97,7 @@ http {
       client_max_body_size <%= p("bits-service.droplets.max_body_size") %>;
     }
     location /app_stash/entries {
+      # add_header X-debug-private-app_stash "Hit" always;
       if ($content_type !~ "multipart/form-data") {
         proxy_pass http://bits_service;
       }
@@ -139,10 +146,12 @@ http {
 
     # Pass altered request body to a backend
     location @bits_service {
+      # add_header X-debug-message "hit bits_service" always;
       proxy_pass http://unix:/var/vcap/sys/run/bits-service/bits-service.sock;
     }
 
-    location /signed/ {
+    location /signed/buildpack_cache/entries {
+      # add_header X-debug-public-buildpack_cache "Hit" always;
       dav_methods PUT;
       create_full_put_path on;
 
@@ -163,12 +172,115 @@ http {
 
       rewrite ^\/signed(.*)$ $1; # Remove "/signed" prefix from URI
 
-      if ( $request_method !~ ^(PUT)$ ) {
+      if ( $request_method != PUT ) {
         proxy_pass http://bits_service;
       }
       # PUT
-
       include "location_stub.conf";
+      client_max_body_size <%= p("bits-service.buildpack_cache.max_body_size") %>;
+
+      proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
+      add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
+
+      break;
+    }
+    location /signed/buildpacks {
+      # add_header X-debug-public-buildpacks "Hit" always;
+      dav_methods PUT;
+      create_full_put_path on;
+
+      if ( $request_method !~ ^(GET|HEAD|PUT)$ ) {
+        return 405;
+      }
+
+      secure_link $arg_md5,$arg_expires;
+      secure_link_md5 "$secure_link_expires$uri <%= p("bits-service.secret") %>";
+
+      if ($secure_link = "") {
+        return 403;
+      }
+
+      if ($secure_link = "0") {
+        return 410;
+      }
+
+      rewrite ^\/signed(.*)$ $1; # Remove "/signed" prefix from URI
+
+      if ( $request_method != PUT ) {
+        proxy_pass http://bits_service;
+      }
+      # PUT
+      include "location_stub.conf";
+      client_max_body_size <%= p("bits-service.buildpacks.max_body_size") %>;
+
+      proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
+      add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
+
+      break;
+    }
+    location /signed/packages {
+      # add_header X-debug-public-packages "Hit" always;
+      dav_methods PUT;
+      create_full_put_path on;
+
+      if ( $request_method !~ ^(GET|HEAD|PUT)$ ) {
+        return 405;
+      }
+
+      secure_link $arg_md5,$arg_expires;
+      secure_link_md5 "$secure_link_expires$uri <%= p("bits-service.secret") %>";
+
+      if ($secure_link = "") {
+        return 403;
+      }
+
+      if ($secure_link = "0") {
+        return 410;
+      }
+
+      rewrite ^\/signed(.*)$ $1; # Remove "/signed" prefix from URI
+
+      if ( $request_method != PUT ) {
+        proxy_pass http://bits_service;
+      }
+      # PUT
+      add_header X-debug-message-1 "Hit bits-service public packages location" always;
+      include "location_stub.conf";
+      client_max_body_size <%= p("bits-service.packages.max_body_size") %>;
+
+      proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
+      add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
+
+      break;
+    }
+    location /signed/droplets {
+      # add_header X-debug-public-droplets "Hit" always;
+      dav_methods PUT;
+      create_full_put_path on;
+
+      if ( $request_method !~ ^(GET|HEAD|PUT)$ ) {
+        return 405;
+      }
+
+      secure_link $arg_md5,$arg_expires;
+      secure_link_md5 "$secure_link_expires$uri <%= p("bits-service.secret") %>";
+
+      if ($secure_link = "") {
+        return 403;
+      }
+
+      if ($secure_link = "0") {
+        return 410;
+      }
+
+      rewrite ^\/signed(.*)$ $1; # Remove "/signed" prefix from URI
+
+      if ( $request_method != PUT ) {
+        proxy_pass http://bits_service;
+      }
+      # PUT
+      include "location_stub.conf";
+      client_max_body_size <%= p("bits-service.droplets.max_body_size") %>;
 
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
