@@ -5,13 +5,8 @@ cd $(dirname $0)/..
 mkdir -p deployments
 MANIFEST_FILE=deployments/bits-service-release.yml
 
-export BLOBSTORE_TYPE="$1"; shift
+export BLOBSTORE_TYPE="${1:?Missing parameter indicating blobstore type}"; shift
 export BOSH_DIRECTOR_UUID=$(bosh status --uuid)
-
-if [ -z "$BLOBSTORE_TYPE" ]; then
-  >&2 echo "Usage: generate-test-standalone-manifest <blobstore-type> <iaas>"
-  exit 1
-fi
 
 echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
 

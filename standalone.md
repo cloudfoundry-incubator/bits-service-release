@@ -1,52 +1,33 @@
-# WIP
+# How to deploy a standalone bits-service
 
-_This is just a temporary place for putting instructions on how to deploy a standalone bits-service._
+In order to run tests against a standalone bits-service (deployed without Cloud Foundry), the following steps are necessary:
 
-For different backends:
+1. Configure environment:
 
-```
-./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/s3.yml
-./scripts/generate-bosh-manifest ./templates/bosh-lite.yml ./templates/local.yml
-./scripts/generate-bosh-manifest ./blobstore-job.yml ./templates/bosh-lite.yml ./templates/webdav.yml
-```
+  * When targeting an local blobstore, the following environment variables are required to be set:
 
-### Add Route
+    ```
+    export BITS_SERVICE_JOB_IP=10.250.0.2
+    export BLOBSTORE_JOB_IP=10.250.0.2
+    ```
 
-If the bits-service has an IP that is not in the 10.244.*.* range, add a route to the VM:
+    The `BLOBSTORE_JOB_IP` is redundant for a bits-service with local blobstore, but specifying a dummy values keeps manifest generation simple.
 
-```
-# OSX:
-sudo route add -net 10.250.0.0/16 192.168.50.4
+  * When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
 
-# Linux:
-sudo ip route add 10.250.0.0/16 via 192.168.50.4
-```
+    ```
+    export BITS_DIRECTORY_KEY=
+    export AWS_ACCESS_KEY_ID=
+    export AWS_SECRET_ACCESS_KEY=
+    export BITS_AWS_REGION=
+    ```
 
-# Tests
-
-* When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
+1. Generate manifest with tests stubs:
 
   ```
-  export BITS_DIRECTORY_KEY=
-  export AWS_ACCESS_KEY_ID=
-  export AWS_SECRET_ACCESS_KEY=
-  export BITS_AWS_REGION=
+  ./scripts/generate-test-bosh-lite-manifest local # (or s3, or webdav)
   ```
 
-* Generate manifest with tests stubs:
+1. Deploy the release using the generated manifest
 
-  ```
-  ./scripts/generate-test-bosh-lite-manifest ./templates/local.yml # (or s3.yml, or webdav.yml)
-  ```
-
-* Deploy release using the generated manifest
-
-* Tell specs where to find the bits-service endpoint. For a bosh-lite deployment, this is:
-
-  ```
-  export BITS_SERVICE_ENDPOINT=10.250.0.2 # for local backend
-  export BITS_SERVICE_ENDPOINT=10.250.1.2 # for S3 backend
-  export BITS_SERVICE_ENDPOINT=10.250.3.2 # for WebDav backend
-  ```
-
-  Outside bosh-lite you will need to update the endpoint.
+1. Refer to the README.md on how to run tests.
