@@ -74,7 +74,7 @@ describe 'Upload limits for resources' do
     let(:file_size_big) { 7.5 * 1024 * 1024 }
 
     include_examples 'limited file upload'
-    include_examples 'limited signed file upload'
+    include_examples 'limited signed file upload' if blobstore_provider(:buildpack_cache) == 'local'
   end
 
   context 'buildpacks' do
@@ -85,7 +85,7 @@ describe 'Upload limits for resources' do
     let(:file_size_big) { 4.5 * 1024 * 1024 }
 
     include_examples 'limited file upload'
-    include_examples 'limited signed file upload'
+    include_examples 'limited signed file upload' if blobstore_provider(:buildpacks) == 'local'
   end
 
   context 'packages' do
@@ -96,7 +96,7 @@ describe 'Upload limits for resources' do
     let(:file_size_big) { 6.5 * 1024 * 1024 }
 
     include_examples 'limited file upload'
-    include_examples 'limited signed file upload'
+    include_examples 'limited signed file upload' if blobstore_provider(:packages) == 'local'
   end
 
   context 'droplets' do
@@ -107,7 +107,7 @@ describe 'Upload limits for resources' do
     let(:file_size_big) { 5.5 * 1024 * 1024 }
 
     include_examples 'limited file upload'
-    include_examples 'limited signed file upload'
+    include_examples 'limited signed file upload' if blobstore_provider(:droplets) == 'local'
   end
 
   context 'app_stash/entries' do

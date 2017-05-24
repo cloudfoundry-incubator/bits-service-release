@@ -4,15 +4,6 @@ In order to run tests against a standalone bits-service (deployed without Cloud 
 
 1. Configure environment:
 
-  * When targeting an local blobstore, the following environment variables are required to be set:
-
-    ```
-    export BITS_SERVICE_JOB_IP=10.250.0.2
-    export BLOBSTORE_JOB_IP=10.250.0.2
-    ```
-
-    The `BLOBSTORE_JOB_IP` is redundant for a bits-service with local blobstore, but specifying a dummy values keeps manifest generation simple.
-
   * When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
 
     ```
@@ -24,8 +15,19 @@ In order to run tests against a standalone bits-service (deployed without Cloud 
 
 1. Generate manifest with tests stubs:
 
+  * For local:
   ```
-  ./scripts/generate-test-bosh-lite-manifest local # (or s3, or webdav)
+  ./scripts/generate-test-bosh-lite-manifest-local
+  ```
+
+  * For webdav:
+  ```
+  ./scripts/generate-test-bosh-lite-manifest-webdev
+  ```
+
+  * For S3:
+  ```
+  ./scripts/generate-test-bosh-lite-manifest-s3
   ```
 
 1. Deploy the release using the generated manifest

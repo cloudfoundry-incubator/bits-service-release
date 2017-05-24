@@ -60,3 +60,13 @@ If you run into errors like `Net::SSH::HostKeyMismatch`, you need to remove the 
 # CI Pipeline
 
 The pipeline is publicly visible at [flintstone.ci.cf-app.com](https://flintstone.ci.cf-app.com). The sources are located at [bits-service-ci](https://github.com/cloudfoundry-incubator/bits-service-ci).
+
+# Troubleshooting
+## Failed TCP connection problem
+If you run into connection errors like this one: `
+Failed to open TCP connection to 10.250.0.2.xip.io:80 (getaddrinfo: nodename nor servname provided, or not known)`
+
+Try cleaning your DNS cache. On MacOS Sierra (10.12) you can do this with:
+```console
+sudo killall -HUP mDNSResponder
+```
