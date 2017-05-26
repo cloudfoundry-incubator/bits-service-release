@@ -40,4 +40,15 @@ module ManifestHelpers
   def signing_password
     signing_user['password']
   end
+
+  def blobstore_provider(resource_type)
+    if resource_type.to_sym == :buildpack_cache
+      resource_type = 'droplets'
+    end
+
+    return 'webdav' if blobstore_type(resource_type) == 'webdav'
+
+    config = fog_config(resource_type)
+    config['provider'].downcase
+  end
 end
