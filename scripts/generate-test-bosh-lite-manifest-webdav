@@ -5,4 +5,5 @@ cd $(dirname $0)/..
 
 ./scripts/generate-test-bosh-lite-manifest \
   ./templates/webdav.yml \
-  ./templates/bits-release-network-webdav.yml
+  ./templates/bits-release-network-webdav.yml \
+  ./templates/bits-service-system-tests.yml

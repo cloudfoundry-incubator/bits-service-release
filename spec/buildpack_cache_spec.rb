@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'buildpack cache resource', type: :integration do
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
@@ -29,6 +30,8 @@ describe 'buildpack cache resource', type: :integration do
         expect(response.code).to eq(415)
       end
     end
+
+    include_examples 'when blobstore disk is full', :buildpack_cache
   end
 
   describe 'DELETE specific entry for /buildpack_cache/entries/:app_guid/:stack_name' do

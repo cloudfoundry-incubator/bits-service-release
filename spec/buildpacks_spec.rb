@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'shared_examples'
 
 describe 'buildpacks resource', type: :integration do
   let(:guid) { SecureRandom.uuid }
@@ -25,6 +26,8 @@ describe 'buildpacks resource', type: :integration do
       make_put_request resource_path, upload_body
       expect(blobstore_client.key_exist?(guid)).to eq(true)
     end
+
+    include_examples 'when blobstore disk is full', :buildpacks
   end
 
   describe 'GET /buildpacks/:guid' do
