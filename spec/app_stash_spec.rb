@@ -12,7 +12,14 @@ describe 'app_stash endpoint' do
     ]
   end
 
-  describe 'POST /app_stash/entries', type: :integration do
+  after action: :upload do
+    app_stash_entries.each do |entry|
+      expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
+      expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
+    end
+  end
+
+  describe 'POST /app_stash/entries', { type: :integration, action: :upload } do
     let(:endpoint) { '/app_stash/entries' }
     let(:request_body) { { application: File.new(app_stash_zip_path) } }
 
@@ -38,7 +45,7 @@ describe 'app_stash endpoint' do
       end
     end
 
-    context 'when the uploaded file is not a zip file' do
+    context 'when the uploaded file is not a zip file', action: false do
       let(:request_body) { { application: File.new(__FILE__) } }
 
       it 'returns HTTP status 4XX' do
@@ -69,7 +76,7 @@ describe 'app_stash endpoint' do
     end
   end
 
-  describe 'POST /app_stash/matches', type: :integration do
+  describe 'POST /app_stash/matches', { type: :integration, action: :upload } do
     before do
       request_body = { application: File.new(app_stash_zip_path) }
       make_post_request '/app_stash/entries', request_body
@@ -129,7 +136,7 @@ describe 'app_stash endpoint' do
     end
   end
 
-  describe 'POST /app_stash/bundles', type: :integration do
+  describe 'POST /app_stash/bundles', { type: :integration, action: :upload } do
     before do
       request_body = { application: File.new(app_stash_zip_path) }
       make_post_request '/app_stash/entries', request_body

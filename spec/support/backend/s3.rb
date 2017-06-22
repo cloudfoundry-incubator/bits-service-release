@@ -22,6 +22,14 @@ module Backend
       rescue Aws::S3::Errors::NoSuchKey
         false
       end
+
+      def delete_resource(guid)
+        resp = @client.delete_object(
+          bucket: @bucket,
+          key: path_for_guid(guid),
+        )
+        resp.successful?
+      end
     end
   end
 end

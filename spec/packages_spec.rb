@@ -14,8 +14,17 @@ describe 'packages resource' do
     end
   end
 
+  after action: :upload do
+    expect(blobstore_client.delete_resource(guid)).to be_truthy
+    expect(blobstore_client.key_exist?(guid)).to eq(false)
+  end
+  after action: :upload_existing do
+    expect(blobstore_client.delete_resource(existing_guid)).to be_truthy
+    expect(blobstore_client.key_exist?(existing_guid)).to eq(false)
+  end
+
   describe 'PUT /packages/:guid', type: :integration do
-    context 'when package is uploaded' do
+    context 'when package is uploaded', action: :upload do
       it 'returns HTTP status 201' do
         response = make_put_request resource_path, upload_body
         expect(response.code).to eq 201
@@ -26,7 +35,7 @@ describe 'packages resource' do
         expect(blobstore_client.key_exist?(guid)).to eq(true)
       end
 
-      context 'when the request body is invalid' do
+      context 'when the request body is invalid', action: false do
         let(:upload_body) { Hash.new }
 
         it 'returns HTTP status 4XX' do
@@ -39,7 +48,7 @@ describe 'packages resource' do
     end
 
     context 'when package is duplicated' do
-      context 'when the package exists' do
+      context 'when the package exists', action: [:upload, :upload_existing] do
         it 'returns HTTP status 201' do
           response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(response.code).to eq 201
@@ -49,26 +58,26 @@ describe 'packages resource' do
           make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(blobstore_client.key_exist?(guid)).to eq(true)
         end
+      end
 
-        context 'when the package does not exist' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, JSON.generate(source_guid: 'invalid-guid')
-            expect(response).to be_a_404
-          end
+      context 'when the package does not exist' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, JSON.generate(source_guid: 'invalid-guid')
+          expect(response).to be_a_404
         end
+      end
 
-        context 'when the body is invalid' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, 'foobar'
-            expect(response.code).to eq(400)
-          end
+      context 'when the body is invalid' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, 'foobar'
+          expect(response.code).to eq(400)
         end
+      end
 
-        context 'when the body is empty' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, ''
-            expect(response.code).to eq(400)
-          end
+      context 'when the body is empty' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, ''
+          expect(response.code).to eq(400)
         end
       end
     end
@@ -84,7 +93,8 @@ describe 'packages resource' do
   end
 
   describe 'GET /packages/:guid', type: :integration do
-    context 'when the package exists' do
+    context 'when the package exists', action: :upload do
+      let(:guid) { existing_guid }
       let(:resource_path) { "/packages/#{existing_guid}" }
 
       it 'returns HTTP status 200' do

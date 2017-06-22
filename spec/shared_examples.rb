@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 shared_examples 'when blobstore disk is full' do |resource|
-  context 'when blobstore disk is full', if: blobstore_provider(resource) == 'local' do
+  context 'when blobstore disk is full', if: blobstore_provider(resource) == 'local', action: false do
     before { expect(blobstore_client.fill_storage).to be true }
     after { blobstore_client.clear_storage }
 

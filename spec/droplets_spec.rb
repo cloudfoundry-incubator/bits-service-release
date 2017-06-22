@@ -16,7 +16,12 @@ describe 'droplets resource' do
     File.new(zip_filepath)
   end
 
-  describe 'PUT /droplets/:guid', type: :integration do
+  after action: :upload do
+    expect(blobstore_client.delete_resource(guid)).to be_truthy
+    expect(blobstore_client.key_exist?(guid)).to eq(false)
+  end
+
+  describe 'PUT /droplets/:guid', type: :integration, action: :upload do
     it 'returns HTTP status 201' do
       response = make_put_request resource_path, upload_body
       expect(response.code).to eq 201
@@ -29,7 +34,7 @@ describe 'droplets resource' do
 
     include_examples 'when blobstore disk is full', :droplets
 
-    context 'when the request body is invalid' do
+    context 'when the request body is invalid', action: false do
       let(:tempfile) {
         @f = Tempfile.new('xxx')
       }
@@ -48,7 +53,7 @@ describe 'droplets resource' do
   end
 
   describe 'GET /droplets/:guid', type: :integration do
-    context 'when the droplet exists' do
+    context 'when the droplet exists', action: :upload do
       let(:guid) { existing_guid }
 
       it 'returns HTTP status 200' do
