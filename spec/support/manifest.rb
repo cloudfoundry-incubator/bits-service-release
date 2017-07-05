@@ -51,4 +51,34 @@ module ManifestHelpers
     config = fog_config(resource_type)
     config['provider'].downcase
   end
+
+  def cc_updates_enabled?
+    cc_updates = manifest['properties']['bits-service']['cc_updates']
+    !cc_updates.nil? &&
+    !cc_updates['ca_cert'].to_s.empty? &&
+    !cc_updates['client_cert'].to_s.empty? &&
+    !cc_updates['client_key'].to_s.empty?
+  end
+
+  def test_properties
+    manifest['properties']['bits_service_tests']
+  end
+
+  def cc_api_url
+    test_properties['api']
+  rescue NoMethodError
+    raise 'Bits-service test configuration is missing: api'
+  end
+
+  def cc_user
+    test_properties['user']
+  rescue NoMethodError
+    raise 'Bits-service test configuration is missing: user'
+  end
+
+  def cc_password
+    test_properties['password']
+  rescue NoMethodError
+    raise 'Bits-service test configuration is missing: password'
+  end
 end

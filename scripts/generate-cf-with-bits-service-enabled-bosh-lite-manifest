@@ -1,6 +1,7 @@
 #!/bin/bash -e
 
 BLOBSTORE_TYPE=${1}
+SIZE_LIMITS=${2}
 
 if [ -z "$BLOBSTORE_TYPE" ]; then
   >&2 echo "Please provide a BLOBSTORE_TYPE {local,s3,webdav}"
@@ -18,29 +19,39 @@ if [ ! -f "$cf_yml" ]; then
   exit 1
 fi
 
-if [ "${BLOBSTORE_TYPE}" == "webdav" ]; then
-  spruce merge "$cf_yml" \
-    ./templates/bits-service-from-ci.yml \
-    ./templates/cc-blobstore-properties.yml \
-    ./templates/bits-service-signing-properties.yml \
-    ./templates/director_uuid.yml \
-    ./templates/acceptance_test_properties.yml \
-    ./templates/enable-bits.yml \
-    ./templates/bits-network-bosh-lite.yml \
-    ./templates/webdav.yml \
-    ./templates/webdav-blobstore-support.yml \
-    > deployments/cf-with-bits-service-enabled.yml
+templates="
+  ./templates/bits-service-from-ci.yml
+  ./templates/cc-blobstore-properties.yml
+  ./templates/bits-service-signing-properties.yml
+  ./templates/director_uuid.yml
+  ./templates/acceptance_test_properties.yml
+  ./templates/enable-bits.yml
+  ./templates/bits-network-bosh-lite.yml
+  ./templates/mutual_tls.yml
+  ./templates/bits_service_tests.yml
+"
+
+if [ "${SIZE_LIMITS}" == "--size-limits" ]; then
+  echo "Including size limits for blobstore uploads"
+  templates="${templates}
+    ./templates/body-size-stub.yml
+  "
 else
-  spruce merge "$cf_yml" \
-    ./templates/bits-service-from-ci.yml \
-    ./templates/cc-blobstore-properties.yml \
-    ./templates/bits-service-signing-properties.yml \
-    ./templates/director_uuid.yml \
-    ./templates/acceptance_test_properties.yml \
-    ./templates/enable-bits.yml \
-    ./templates/bits-network-bosh-lite.yml \
-    ./templates/${BLOBSTORE_TYPE}.yml \
-    > deployments/cf-with-bits-service-enabled.yml
+  echo "Skipping size limits for blobstore uploads"
 fi
+
+if [ "${BLOBSTORE_TYPE}" == "webdav" ]; then
+  templates="${templates}
+    ./templates/webdav.yml
+    ./templates/webdav-blobstore-support.yml
+  "
+else
+  templates="${templates}
+    ./templates/${BLOBSTORE_TYPE}.yml
+  "
+fi
+
+spruce merge "$cf_yml" ${templates} \
+  > deployments/cf-with-bits-service-enabled.yml
 
 bosh deployment deployments/cf-with-bits-service-enabled.yml

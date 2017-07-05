@@ -1,0 +1,5 @@
+properties:
+  bits_service_tests:
+    api: https://api.bosh-lite.com
+    user: admin
+    password: admin
