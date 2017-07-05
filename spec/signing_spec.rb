@@ -1,8 +1,31 @@
 require 'spec_helper'
 
 describe 'URL Signing', type: :integration do
-  let(:guid) { SecureRandom.uuid }
   let(:path) { "/packages/#{guid}" }
+  let(:guid) do
+    if !cc_updates_enabled?
+      SecureRandom.uuid
+    else
+      @cf_client.create_package(@app_id)
+    end
+  end
+  before :all do
+    if cc_updates_enabled?
+      @cf_client = CFClient::Client.new(cc_api_url, cc_user, cc_password)
+      @org_id = @cf_client.create_org
+      expect(@org_id).to_not be_empty
+      @space_id = @cf_client.create_space(@org_id)
+      expect(@space_id).to_not be_empty
+      @app_id = @cf_client.create_app(@space_id)
+      expect(@app_id).to_not be_empty
+    end
+  end
+  after :all do
+    if cc_updates_enabled?
+      @cf_client.delete_org(@org_id)
+      expect(@cf_client.get_org(@org_id)['error_code']).to eq('CF-OrganizationNotFound')
+    end
+  end
 
   after action: :upload do
     response = RestClient.delete("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}")

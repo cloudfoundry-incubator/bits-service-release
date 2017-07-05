@@ -32,46 +32,50 @@ describe 'Upload limits for resources' do
   end
 
   shared_examples 'limited file upload' do
-    context 'when the file is smaller then limit' do
-      after do
-        del_response = make_delete_request resource_path
-        expect(del_response.code).to be_between(200, 204)
+    context 'internal uploads' do
+      context 'when the file is smaller then limit' do
+        after do
+          del_response = make_delete_request resource_path
+          expect(del_response.code).to be_between(200, 204)
+        end
+        it 'returns HTTP status code 201' do
+          response = make_put_request(resource_path, upload_body_small)
+          expect(response.code).to eq 201
+        end
       end
-      it 'returns HTTP status code 201' do
-        response = make_put_request(resource_path, upload_body_small)
-        expect(response.code).to eq 201
-      end
-    end
 
-    context 'when the file is bigger then limit' do
-      it 'returns HTTP status code 413' do
-        response = make_put_request(resource_path, upload_body_big)
-        expect(response.code).to eq 413
+      context 'when the file is bigger then limit' do
+        it 'returns HTTP status code 413' do
+          response = make_put_request(resource_path, upload_body_big)
+          expect(response.code).to eq 413
+        end
       end
     end
   end
 
   shared_examples 'limited signed file upload' do
-    context 'when the file is smaller then limit' do
-      after do
-        del_response = make_delete_request resource_path
-        expect(del_response.code).to be_between(200, 204)
+    context 'signed uploads' do
+      context 'when the file is smaller then limit' do
+        after do
+          del_response = make_delete_request resource_path
+          expect(del_response.code).to be_between(200, 204)
+        end
+        it 'returns HTTP status code 201' do
+          sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          response = RestClient.get(sign_url)
+          signed_put_url = response.body.to_s
+          response = RestClient.put(signed_put_url, upload_body_small)
+          expect(response.code).to eq 201
+        end
       end
-      it 'returns HTTP status code 201' do
-        sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-        response = RestClient.get(sign_url)
-        signed_put_url = response.body.to_s
-        response = RestClient.put(signed_put_url, upload_body_small)
-        expect(response.code).to eq 201
-      end
-    end
 
-    context 'when the file is bigger then limit' do
-      it 'returns HTTP status code 413' do
-        sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-        response = RestClient.get(sign_url)
-        signed_put_url = response.body.to_s
-        expect { RestClient.put(signed_put_url, upload_body_big) }.to raise_error(RestClient::RequestEntityTooLarge)
+      context 'when the file is bigger then limit' do
+        it 'returns HTTP status code 413' do
+          sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          response = RestClient.get(sign_url)
+          signed_put_url = response.body.to_s
+          expect { RestClient.put(signed_put_url, upload_body_big) }.to raise_error(RestClient::RequestEntityTooLarge)
+        end
       end
     end
   end
@@ -97,7 +101,31 @@ describe 'Upload limits for resources' do
   end
 
   context 'packages' do
-    let(:resource_path) { "/packages/#{SecureRandom.uuid}" }
+    let(:guid) do
+      if !cc_updates_enabled?
+        SecureRandom.uuid
+      else
+        @cf_client.create_package(@app_id)
+      end
+    end
+    before :all do
+      if cc_updates_enabled?
+        @cf_client = CFClient::Client.new(cc_api_url, cc_user, cc_password)
+        @org_id = @cf_client.create_org
+        expect(@org_id).to_not be_empty
+        @space_id = @cf_client.create_space(@org_id)
+        expect(@space_id).to_not be_empty
+        @app_id = @cf_client.create_app(@space_id)
+        expect(@app_id).to_not be_empty
+      end
+    end
+    after :all do
+      if cc_updates_enabled?
+        @cf_client.delete_org(@org_id)
+        expect(@cf_client.get_org(@org_id)['error_code']).to eq('CF-OrganizationNotFound')
+      end
+    end
+    let(:resource_path) { "/packages/#{guid}" }
     let(:upload_field) { 'package' }
     let(:file_size_small) { 5.5 * 1024 * 1024 }
     let(:file_size_big) { 6.5 * 1024 * 1024 }

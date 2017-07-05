@@ -15,6 +15,9 @@ templates:
   buildpacks_ca_cert.pem.erb: config/certs/buildpacks_ca_cert.pem
   droplets_ca_cert.pem.erb:   config/certs/droplets_ca_cert.pem
   packages_ca_cert.pem.erb:   config/certs/packages_ca_cert.pem
+  mutual_ca_cert.pem.erb:     config/certs/mutual_ca_cert.pem
+  mutual_client_cert.pem.erb: config/certs/mutual_client_cert.pem
+  mutual_client_key.pem.erb:  config/certs/mutual_client_key.pem
 
 packages:
   - ruby-2.3
@@ -201,3 +204,16 @@ properties:
   bits-service.nginx.metrics_log_destination:
     description: "Nginx metrics log destination."
     default: "/var/vcap/sys/log/nginx_bits/metrics.log"
+
+  bits-service.cc_updates.cc_url:
+    description: "CloudController endpoint for sending package status updates"
+    default: "https://cloud-controller-ng.service.cf.internal:9023/internal/v4/"
+  bits-service.cc_updates.ca_cert:
+    description: "PEM-encoded CA certificate for secure, mutually authenticated TLS communication"
+    default: ""
+  bits-service.cc_updates.client_cert:
+    description: "PEM-encoded certificate for secure, mutually authenticated TLS communication"
+    default: ""
+  bits-service.cc_updates.client_key:
+    description: "PEM-encoded key for secure, mutually authenticated TLS communication"
+    default: ""
