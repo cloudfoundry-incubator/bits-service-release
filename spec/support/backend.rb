@@ -16,6 +16,10 @@ module BackendHelpers
       path_prefix = 'buildpack_cache'
     end
 
+    if resource_type.to_sym == :app_stash
+      path_prefix = 'app_bits_cache'
+    end
+
     resource_type = resource_type.to_s
     directory_key = directory_key(resource_type)
 
