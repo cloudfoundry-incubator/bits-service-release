@@ -1,9 +1,15 @@
 require 'spec_helper'
 
 describe 'URL Signing', type: :integration do
-  let(:path) { "/packages/#{SecureRandom.uuid}" }
+  let(:guid) { SecureRandom.uuid }
+  let(:path) { "/packages/#{guid}" }
 
-  context 'method: PUT' do
+  after action: :upload do
+    response = RestClient.delete("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}")
+    expect(response.code).to be_between(200, 204)
+  end
+
+  context 'method: PUT', action: :upload do
     it 'return a signed URL that can be used to upload a package' do
       response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put")
       signed_put_url = response.body.to_s
@@ -19,7 +25,7 @@ describe 'URL Signing', type: :integration do
     end
   end
 
-  context 'method: GET' do
+  context 'method: GET', action: :upload do
     before do
       # TODO: (pego) Why does this work without authentication?
       RestClient.put("#{private_endpoint}#{path}", { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })

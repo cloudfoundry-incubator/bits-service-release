@@ -16,7 +16,12 @@ describe 'buildpacks resource', type: :integration do
     end
   end
 
-  describe 'PUT /buildpacks/:guid' do
+  after action: :upload do
+    expect(blobstore_client.delete_resource(guid)).to be_truthy
+    expect(blobstore_client.key_exist?(guid)).to eq(false)
+  end
+
+  describe 'PUT /buildpacks/:guid', action: :upload do
     it 'returns HTTP status 201' do
       response = make_put_request resource_path, upload_body
       expect(response.code).to eq 201
@@ -31,7 +36,8 @@ describe 'buildpacks resource', type: :integration do
   end
 
   describe 'GET /buildpacks/:guid' do
-    context 'when the buildpack exists' do
+    context 'when the buildpack exists', action: :upload do
+      let(:guid) { existing_guid } # in order for `after` cleanup to work
       let(:resource_path) { "/buildpacks/#{existing_guid}" }
 
       it 'returns HTTP status 200' do

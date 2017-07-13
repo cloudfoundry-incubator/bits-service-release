@@ -23,21 +23,29 @@ describe 'Upload limits for resources' do
   let(:upload_body_small) { { upload_field => file_small } }
   let(:upload_body_big) { { upload_field => file_big } }
 
+  let(:blobstore_client) { backend_client(:app_stash) }
+  let(:app_stash_entries) do
+    [
+      { 'fn' => 'app/app.rb', 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'mode' => '777' },
+      { 'fn' => 'app/lib.rb', 'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5', 'mode' => '666' }
+    ]
+  end
+
   shared_examples 'limited file upload' do
     context 'when the file is smaller then limit' do
+      after do
+        del_response = make_delete_request resource_path
+        expect(del_response.code).to be_between(200, 204)
+      end
       it 'returns HTTP status code 201' do
-        response = make_put_request(resource_path, upload_body_small) if method == :PUT
-        response = make_post_request(resource_path, upload_body_small) if method == :POST
-
+        response = make_put_request(resource_path, upload_body_small)
         expect(response.code).to eq 201
       end
     end
 
     context 'when the file is bigger then limit' do
       it 'returns HTTP status code 413' do
-        response = make_put_request(resource_path, upload_body_big) if method == :PUT
-        response = make_post_request(resource_path, upload_body_big) if method == :POST
-
+        response = make_put_request(resource_path, upload_body_big)
         expect(response.code).to eq 413
       end
     end
@@ -45,12 +53,15 @@ describe 'Upload limits for resources' do
 
   shared_examples 'limited signed file upload' do
     context 'when the file is smaller then limit' do
+      after do
+        del_response = make_delete_request resource_path
+        expect(del_response.code).to be_between(200, 204)
+      end
       it 'returns HTTP status code 201' do
-        response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=#{method.to_s.downcase}")
+        sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+        response = RestClient.get(sign_url)
         signed_put_url = response.body.to_s
-
         response = RestClient.put(signed_put_url, upload_body_small)
-
         expect(response.code).to eq 201
       end
     end
@@ -60,7 +71,6 @@ describe 'Upload limits for resources' do
         sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
         response = RestClient.get(sign_url)
         signed_put_url = response.body.to_s
-
         expect { RestClient.put(signed_put_url, upload_body_big) }.to raise_error(RestClient::RequestEntityTooLarge)
       end
     end
@@ -68,7 +78,6 @@ describe 'Upload limits for resources' do
 
   context 'buildpack_cache/entries' do
     let(:resource_path) { "/buildpack_cache/entries/#{SecureRandom.uuid}/cflinux" }
-    let(:method) { :PUT }
     let(:upload_field) { 'buildpack_cache' }
     let(:file_size_small) { 6.5 * 1024 * 1024 }
     let(:file_size_big) { 7.5 * 1024 * 1024 }
@@ -79,7 +88,6 @@ describe 'Upload limits for resources' do
 
   context 'buildpacks' do
     let(:resource_path) { "/buildpacks/#{SecureRandom.uuid}" }
-    let(:method) { :PUT }
     let(:upload_field) { 'buildpack' }
     let(:file_size_small) { 3.5 * 1024 * 1024 }
     let(:file_size_big) { 4.5 * 1024 * 1024 }
@@ -90,7 +98,6 @@ describe 'Upload limits for resources' do
 
   context 'packages' do
     let(:resource_path) { "/packages/#{SecureRandom.uuid}" }
-    let(:method) { :PUT }
     let(:upload_field) { 'package' }
     let(:file_size_small) { 5.5 * 1024 * 1024 }
     let(:file_size_big) { 6.5 * 1024 * 1024 }
@@ -101,7 +108,6 @@ describe 'Upload limits for resources' do
 
   context 'droplets' do
     let(:resource_path) { "/droplets/#{SecureRandom.uuid}/#{SecureRandom.uuid}" }
-    let(:method) { :PUT }
     let(:upload_field) { 'droplet' }
     let(:file_size_small) { 4.5 * 1024 * 1024 }
     let(:file_size_big) { 5.5 * 1024 * 1024 }
@@ -112,12 +118,29 @@ describe 'Upload limits for resources' do
 
   context 'app_stash/entries' do
     let(:resource_path) { '/app_stash/entries' }
-    let(:method) { :POST }
     let(:upload_field) { 'application' }
     # We need a valid zip for this spec
     let(:file_small) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
     let(:file_size_big) { 3.5 * 1024 * 1024 }
 
-    include_examples 'limited file upload'
+    context 'when the file is smaller then limit' do
+      after do
+        app_stash_entries.each do |entry|
+          expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
+          expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
+        end
+      end
+      it 'returns HTTP status code 201' do
+        response = make_post_request(resource_path, upload_body_small)
+        expect(response.code).to eq 201
+      end
+    end
+
+    context 'when the file is bigger then limit' do
+      it 'returns HTTP status code 413' do
+        response = make_post_request(resource_path, upload_body_big)
+        expect(response.code).to eq 413
+      end
+    end
   end
 end

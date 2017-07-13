@@ -13,7 +13,12 @@ describe 'buildpack cache resource', type: :integration do
   let(:app_name) { "#{app_guid}/linux" }
   let(:path) { '/buildpack_cache/entries/' + app_name }
 
-  describe 'PUT /buildpack_cache/entries/:app_guid/:stack_name' do
+  after action: :upload do
+    expect(blobstore_client.delete_resource(app_name)).to be_truthy
+    expect(blobstore_client.key_exist?(app_name)).to eq(false)
+  end
+
+  describe 'PUT /buildpack_cache/entries/:app_guid/:stack_name', action: :upload do
     it 'returns HTTP status 201' do
       response = make_put_request(path, upload_body)
       expect(response.code).to eq(201)
@@ -24,7 +29,7 @@ describe 'buildpack cache resource', type: :integration do
       expect(blobstore_client.key_exist?(app_name)).to eq(true)
     end
 
-    context 'when the request body is invalid' do
+    context 'when the request body is invalid', action: false do
       it 'returns HTTP status 415' do
         response = make_put_request(path, {})
         expect(response.code).to eq(415)
@@ -117,7 +122,7 @@ describe 'buildpack cache resource', type: :integration do
   end
 
   describe 'GET /buildpack_cache/entries/:app_guid/:stack_name' do
-    context 'when getting a known file' do
+    context 'when getting a known file', action: :upload do
       before do
         make_put_request(path, upload_body)
       end
