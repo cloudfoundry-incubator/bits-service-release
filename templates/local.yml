@@ -1,7 +1,5 @@
 metadata:
   release_name: bits-service-local
-  blobstore:
-    instances: 0
 
 properties:
   bits-service:

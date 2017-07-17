@@ -2,8 +2,7 @@
 
 cd $(dirname $0)/..
 
-./scripts/generate-bosh-manifest ./templates/blobstore-job.yml \
-                                 ./templates/bosh-lite.yml \
+./scripts/generate-bosh-manifest ./templates/bosh-lite.yml \
                                  ./templates/body-size-stub.yml \
                                  $@
 

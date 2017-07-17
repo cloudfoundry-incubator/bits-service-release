@@ -4,6 +4,7 @@ set -e
 cd $(dirname $0)/..
 
 ./scripts/generate-test-bosh-lite-manifest \
+  ./templates/blobstore-job.yml \
   ./templates/webdav.yml \
   ./templates/bits-release-network-webdav.yml \
-  ./templates/bits-service-system-tests.yml
+  ./templates/bits-service-system-tests-webdav.yml
