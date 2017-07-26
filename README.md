@@ -10,7 +10,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 
 1. Grab the bits-service-release
 
-    ```
+    ```sh
     git clone git@github.com:cloudfoundry-incubator/bits-service-release.git
     cd bits-service-release/
     ./scripts/update
@@ -30,7 +30,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 
     When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
 
-    ```
+    ```sh
     export BITS_DIRECTORY_KEY=
     export AWS_ACCESS_KEY_ID=
     export AWS_SECRET_ACCESS_KEY=
@@ -39,7 +39,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 
 1. Deploy
 
-    ```
+    ```sh
     bosh create release --force && bosh upload release && bosh -n deploy
     ```
 
@@ -83,7 +83,7 @@ The pipeline is publicly visible at [flintstone.ci.cf-app.com](https://flintston
 
 ## Certificate generation
 We used CA credentials as provided by `cf-release/templates/bosh-lite-fixtures/server-ca.{crt,key}`. To generate bits-service certificate and key, the following commands have been issued:
-```console
+```sh
 certstrap init --key server-ca.key --cn 'bbsCA'
 certstrap request-cert --passphrase '' --common-name bits-service
 certstrap sign bits-service --CA bbsCA
@@ -96,12 +96,12 @@ Pay extra attention to CA's common name: it absolutely needs to be 'bbsCA' for t
 ## Troubleshooting
 ### Failed TCP connections
 If you run into connection errors like this one: `Failed to open TCP connection to 10.250.0.2.xip.io:80 (getaddrinfo: nodename nor servname provided, or not known)` try cleaning your DNS cache. On MacOS Sierra (10.12) you can do this with:
-```console
+```sh
 sudo killall -HUP mDNSResponder
 ```
 
 ### Failed SSH connections
 If you run into errors like `Net::SSH::HostKeyMismatch`, you need to remove the offending entry from `~/.ssh/known_hosts`.
-```console
+```sh
 ssh-keygen -R $offending_ip
 ```

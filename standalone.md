@@ -6,7 +6,7 @@ In order to run tests against a standalone bits-service (deployed without Cloud 
 
     When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
 
-      ```
+      ```sh
       export BITS_DIRECTORY_KEY=
       export AWS_ACCESS_KEY_ID=
       export AWS_SECRET_ACCESS_KEY=
