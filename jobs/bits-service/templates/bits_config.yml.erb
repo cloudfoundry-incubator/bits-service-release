@@ -6,7 +6,7 @@ buildpacks:
     private_endpoint: <%= p("bits-service.buildpacks.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.buildpacks.webdav_config.username") %>
     password: <%= p("bits-service.buildpacks.webdav_config.password") %>
-    <% if p("bits-service.buildpacks.webdav_config.ca_cert") != "" && p("bits-service.buildpacks.webdav_config.ca_cert") != nil %>
+    <% if_p("bits-service.buildpacks.webdav_config.ca_cert") do %>
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/buildpacks_ca_cert.pem"
     <% end %>
   fog_connection: <%= p("bits-service.buildpacks.fog_connection", {}).to_json %>
@@ -18,7 +18,7 @@ droplets:
     private_endpoint: <%= p("bits-service.droplets.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.droplets.webdav_config.username") %>
     password: <%= p("bits-service.droplets.webdav_config.password") %>
-    <% if p("bits-service.droplets.webdav_config.ca_cert") != "" && p("bits-service.droplets.webdav_config.ca_cert") != nil %>
+    <% if_p("bits-service.droplets.webdav_config.ca_cert") do %>
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/droplets_ca_cert.pem"
     <% end %>
   fog_connection: <%= p("bits-service.droplets.fog_connection", {}).to_json %>
@@ -30,7 +30,7 @@ packages:
     private_endpoint: <%= p("bits-service.packages.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.packages.webdav_config.username") %>
     password: <%= p("bits-service.packages.webdav_config.password") %>
-    <% if p("bits-service.packages.webdav_config.ca_cert") != "" && p("bits-service.packages.webdav_config.ca_cert") != nil %>
+    <% if_p("bits-service.packages.webdav_config.ca_cert") do %>
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/packages_ca_cert.pem"
     <% end %>
   fog_connection: <%= p("bits-service.packages.fog_connection", {}).to_json %>
@@ -42,7 +42,7 @@ app_stash:
     private_endpoint: <%= p("bits-service.app_stash.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.app_stash.webdav_config.username") %>
     password: <%= p("bits-service.app_stash.webdav_config.password") %>
-    <% if p("bits-service.app_stash.webdav_config.ca_cert") != "" && p("bits-service.app_stash.webdav_config.ca_cert") != nil %>
+    <% if_p("bits-service.app_stash.webdav_config.ca_cert") do %>
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/app_stash_ca_cert.pem"
     <% end %>
   fog_connection: <%= p("bits-service.app_stash.fog_connection", {}).to_json %>
@@ -56,7 +56,7 @@ logging:
 public_endpoint: <%= p("bits-service.public_endpoint") %>
 secret: <%= p("bits-service.secret") %>
 skip_cert_verify: true
-<% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do |ca_cert, client_cert, client_key| %>
+<% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do %>
 cc_updates:
   cc_url: <%= p("bits-service.cc_updates.cc_url") %>
   ca_cert: "/var/vcap/jobs/bits-service/config/certs/mutual_ca_cert.pem"
