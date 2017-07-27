@@ -10,7 +10,6 @@ require_relative 'support/response'
 require_relative 'support/http'
 require_relative 'support/file'
 require_relative 'support/manifest'
-require_relative 'support/cf.rb'
 
 RSpec.configure do |conf|
   include HttpHelpers

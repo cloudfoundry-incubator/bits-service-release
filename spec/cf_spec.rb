@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative 'support/cf.rb'
+require 'support/cf.rb'
 
 describe 'CF test', if: cc_updates_enabled? do
   subject(:cf_client) do

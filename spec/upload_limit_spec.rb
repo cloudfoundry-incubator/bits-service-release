@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'support/cf.rb'
 
 describe 'Upload limits for resources' do
   before :all do
