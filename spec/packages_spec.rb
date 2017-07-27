@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'shared_examples'
 require 'json'
+require 'support/cf.rb'
 
 describe 'packages resource' do
   let(:resource_path) { "/packages/#{guid}" }

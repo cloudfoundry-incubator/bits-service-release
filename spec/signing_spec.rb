@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'support/cf.rb'
 
 describe 'URL Signing', type: :integration do
   let(:path) { "/packages/#{guid}" }

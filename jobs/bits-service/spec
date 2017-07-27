@@ -210,10 +210,7 @@ properties:
     default: "https://cloud-controller-ng.service.cf.internal:9023/internal/v4/"
   bits-service.cc_updates.ca_cert:
     description: "PEM-encoded CA certificate for secure, mutually authenticated TLS communication"
-    default: ""
   bits-service.cc_updates.client_cert:
     description: "PEM-encoded certificate for secure, mutually authenticated TLS communication"
-    default: ""
   bits-service.cc_updates.client_key:
     description: "PEM-encoded key for secure, mutually authenticated TLS communication"
-    default: ""

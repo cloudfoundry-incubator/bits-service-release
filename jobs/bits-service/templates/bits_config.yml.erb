@@ -56,9 +56,7 @@ logging:
 public_endpoint: <%= p("bits-service.public_endpoint") %>
 secret: <%= p("bits-service.secret") %>
 skip_cert_verify: true
-<% if p("bits-service.cc_updates.ca_cert") != "" && p("bits-service.cc_updates.ca_cert") != nil &&
-  p("bits-service.cc_updates.client_cert") != "" && p("bits-service.cc_updates.client_cert") != nil &&
-  p("bits-service.cc_updates.client_key") != "" && p("bits-service.cc_updates.client_key") != nil %>
+<% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do |ca_cert, client_cert, client_key| %>
 cc_updates:
   cc_url: <%= p("bits-service.cc_updates.cc_url") %>
   ca_cert: "/var/vcap/jobs/bits-service/config/certs/mutual_ca_cert.pem"
