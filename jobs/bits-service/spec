@@ -68,7 +68,6 @@ properties:
     default: ""
   bits-service.buildpacks.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
-    default: ""
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
     default: null
@@ -99,7 +98,6 @@ properties:
     default: ""
   bits-service.droplets.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
-    default: ""
   bits-service.droplets.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
@@ -127,7 +125,6 @@ properties:
     default: ""
   bits-service.packages.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
-    default: ""
   bits-service.packages.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
@@ -155,7 +152,6 @@ properties:
     default: ""
   bits-service.app_stash.webdav_config.ca_cert:
     description: "The ca cert to use when communicating with webdav"
-    default: ""
   bits-service.app_stash.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
