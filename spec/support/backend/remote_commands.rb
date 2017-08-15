@@ -43,4 +43,9 @@ module RemoteCommands
   def resource_root_path
     "#{root_path}/#{directory_key}"
   end
+
+  def refresh_known_hosts
+    `ssh-keygen -R #{ENV['BITS_SERVICE_PRIVATE_ENDPOINT_IP']}`
+    `ssh-keyscan #{ENV['BITS_SERVICE_PRIVATE_ENDPOINT_IP']}`
+  end
 end
