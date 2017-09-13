@@ -4,14 +4,14 @@ releases:
 
 instance_groups:
 - name: bits-service
-  azs: [ az1 ]
+  azs: [ z1 ]
   instances: 1
   jobs:
   - { name: bits-service, release: bits-service }
   vm_type: bits_service_vm
   stemcell: default
   networks:
-    - name: network1
+    - name: default
     - name: static
       static_ips:
         - (( grab $BITS_SERVICE_JOB_IP ))
