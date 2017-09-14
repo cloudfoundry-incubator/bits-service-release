@@ -2,7 +2,6 @@ require 'rspec'
 require 'securerandom'
 require 'rest-client'
 require 'support/environment'
-require 'support/manifest'
 require 'support/cf'
 
 RSpec.configure {

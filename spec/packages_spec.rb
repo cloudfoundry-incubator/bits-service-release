@@ -54,66 +54,18 @@ describe 'packages resource' do
   end
 
   describe 'PUT /packages/:guid', type: :integration do
-    context 'without CC updater config' do
-      context 'when package is uploaded', action: :upload do
-        it 'returns HTTP status 201' do
-          response = make_put_request resource_path, upload_body
-          expect(response.code).to eq 201
-        end
-
-        it 'stores the blob in the backend' do
-          make_put_request resource_path, upload_body
-          expect(blobstore_client.key_exist?(guid)).to eq(true)
-        end
-
-        context 'when the request body is invalid', action: false do
-          let(:upload_body) { Hash.new }
-
-          it 'returns HTTP status 4XX' do
-            response = make_put_request resource_path, upload_body
-            expect(response.code).to eq 400
-          end
-        end
-
-        include_examples 'when blobstore disk is full', :packages
+    context 'when package is uploaded', action: :upload do
+      it 'returns HTTP status 201' do
+        response = make_put_request resource_path, upload_body
+        expect(response.code).to eq 201
       end
 
-      context 'when package is duplicated' do
-        context 'when the package exists', action: [:upload, :upload_existing] do
-          it 'returns HTTP status 201' do
-            response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-            expect(response.code).to eq 201
-          end
-
-          it 'returns the guid and the package exists' do
-            make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-            expect(blobstore_client.key_exist?(guid)).to eq(true)
-          end
-        end
-
-        context 'when the package does not exist' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, JSON.generate(source_guid: 'invalid-guid')
-            expect(response).to be_a_404
-          end
-        end
-
-        context 'when the body is invalid' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, 'foobar'
-            expect(response.code).to eq(400)
-          end
-        end
-
-        context 'when the body is empty' do
-          it 'returns the correct error' do
-            response = make_put_request resource_path, ''
-            expect(response.code).to eq(400)
-          end
-        end
+      it 'stores the blob in the backend' do
+        make_put_request resource_path, upload_body
+        expect(blobstore_client.key_exist?(guid)).to eq(true)
       end
 
-      context 'when the PUT is not a multipart request' do
+      context 'when the request body is invalid', action: false do
         let(:upload_body) { Hash.new }
 
         it 'returns HTTP status 4XX' do
@@ -121,9 +73,55 @@ describe 'packages resource' do
           expect(response.code).to eq 400
         end
       end
+
+      include_examples 'when blobstore disk is full', :packages
     end
 
-    context 'with CC updater config', if: cc_updates_enabled? do
+    context 'when package is duplicated' do
+      context 'when the package exists', action: [:upload, :upload_existing] do
+        it 'returns HTTP status 201' do
+          response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+          expect(response.code).to eq 201
+        end
+
+        it 'returns the guid and the package exists' do
+          make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+          expect(blobstore_client.key_exist?(guid)).to eq(true)
+        end
+      end
+
+      context 'when the package does not exist' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, JSON.generate(source_guid: 'invalid-guid')
+          expect(response).to be_a_404
+        end
+      end
+
+      context 'when the body is invalid' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, 'foobar'
+          expect(response.code).to eq(400)
+        end
+      end
+
+      context 'when the body is empty' do
+        it 'returns the correct error' do
+          response = make_put_request resource_path, ''
+          expect(response.code).to eq(400)
+        end
+      end
+    end
+
+    context 'when the PUT is not a multipart request' do
+      let(:upload_body) { Hash.new }
+
+      it 'returns HTTP status 4XX' do
+        response = make_put_request resource_path, upload_body
+        expect(response.code).to eq 400
+      end
+    end
+
+    context 'with CC updates enabled', if: cc_updates_enabled? do
       it 'does not allow to upload the same package twice' do
         response = make_put_request resource_path, upload_body
         expect(response.code).to eq(201), 'First upload should succeed'
@@ -131,6 +129,48 @@ describe 'packages resource' do
         # zip_file from upload_body is already closed by now, so we can't reuse it.
         response = make_put_request resource_path, { package: File.new(zip_filepath) }
         expect(response.code).to eq(400), 'Repeat upload should fail because package is already finalized'
+
+        err = JSON.parse(response)
+        expect(err['code']).to eq(290008)
+        expect(err['description']).to eq('Cannot update an existing package.')
+      end
+
+      it 'does not allow to upload a package after copying it' do
+        # create new package as copy of existing guid
+        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+        expect(response.code).to eq(201), 'First copying should succeed'
+
+        # attempt to upload to copied package must fail
+        response = make_put_request resource_path, { package: File.new(zip_filepath) }
+        expect(response.code).to eq(400), 'Repeated upload should fail because package is already finalized'
+
+        err = JSON.parse(response)
+        expect(err['code']).to eq(290008)
+        expect(err['description']).to eq('Cannot update an existing package.')
+      end
+
+      it 'does not allow to copy a package after uploading it' do
+        # create new package as copy of existing guid
+        response = make_put_request resource_path, upload_body
+        expect(response.code).to eq(201), 'First upload should succeed'
+
+        # attempt to upload to copied package must fail
+        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+        expect(response.code).to eq(400), 'Copying into the same package should fail because package is already finalized'
+
+        err = JSON.parse(response)
+        expect(err['code']).to eq(290008)
+        expect(err['description']).to eq('Cannot update an existing package.')
+      end
+
+      it 'does not allow to copy into the same package twice' do
+        # create new package as copy of existing guid
+        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+        expect(response.code).to eq(201), 'First copying should succeed'
+
+        # attempt to copy into it again
+        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
+        expect(response.code).to eq(400), 'Repeated upload should fail because package is already finalized'
 
         err = JSON.parse(response)
         expect(err['code']).to eq(290008)

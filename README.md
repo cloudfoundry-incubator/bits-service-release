@@ -60,6 +60,9 @@ Configure test execution:
 ```sh
 export BITS_SERVICE_PRIVATE_ENDPOINT_IP=10.244.0.74
 export BITS_SERVICE_MANIFEST=./deployments/cf-with-bits-service-enabled.yml
+export CC_API=https://api.bosh-lite.com
+export CC_PASSWORD=xxx
+export CC_USER=admin
 
 ./scripts/add-route
 ```
