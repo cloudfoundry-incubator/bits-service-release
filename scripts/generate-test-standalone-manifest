@@ -6,7 +6,7 @@ mkdir -p deployments
 MANIFEST_FILE=deployments/bits-service-release.yml
 
 export BLOBSTORE_TYPE="${1:?Missing parameter indicating blobstore type}"; shift
-export BOSH_DIRECTOR_UUID=$(bosh status --uuid)
+export BOSH_DIRECTOR_UUID=not-used-anymore-in-cli-v2
 
 echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
 
