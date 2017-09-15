@@ -19,18 +19,19 @@ export HOME=/home/vcap # rake needs it to be set to run tasks
 export TMPDIR=/var/vcap/data/${NAME}/tmp
 export BITS_CONFIG_FILE=$JOB_DIR/config/bits_config.yml
 
+source ${JOB_DIR}/bin/syslog_utils.sh
+mkdir -p $LOG_DIR
+tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
+
 source /var/vcap/packages/bits-common/pid_utils.sh
 source ${JOB_DIR}/bin/blobstore_waiter.sh
-source ${JOB_DIR}/bin/syslog_utils.sh
-tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
+mkdir -p $RUN_DIR
+mkdir -p $TMPDIR
+mkdir -p $STORE_DIR
 
 case $1 in
 
   start)
-    mkdir -p $RUN_DIR
-    mkdir -p $LOG_DIR
-    mkdir -p $TMPDIR
-    mkdir -p $STORE_DIR
 
     chown vcap:vcap $RUN_DIR
     chown vcap:vcap $LOG_DIR

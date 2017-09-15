@@ -8,15 +8,17 @@ UPLOADS_DIR=/var/vcap/data/bits-service/tmp/uploads
 PIDFILE=$RUN_DIR/nginx.pid
 JOB_DIR=/var/vcap/jobs/bits-service
 
+source ${JOB_DIR}/bin/syslog_utils.sh
+mkdir -p $LOG_DIR
+tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
+
+mkdir -p $RUN_DIR
 source /var/vcap/packages/bits-common/pid_utils.sh
 
 case $1 in
 
   start)
     pid_guard $PIDFILE "Nginx"
-
-    mkdir -p $RUN_DIR
-    mkdir -p $LOG_DIR
 
     echo $$ > $PIDFILE
 
