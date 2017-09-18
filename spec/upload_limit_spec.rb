@@ -34,7 +34,7 @@ describe 'Upload limits for resources' do
 
   shared_examples 'limited file upload' do
     context 'internal uploads' do
-      context 'when the file is smaller then limit' do
+      context 'when the file is smaller than limit' do
         after do
           del_response = make_delete_request resource_path
           expect(del_response.code).to be_between(200, 204)
@@ -45,7 +45,7 @@ describe 'Upload limits for resources' do
         end
       end
 
-      context 'when the file is bigger then limit' do
+      context 'when the file is bigger than limit' do
         it 'returns HTTP status code 413' do
           response = make_put_request(resource_path, upload_body_big)
           expect(response.code).to eq 413
@@ -56,7 +56,7 @@ describe 'Upload limits for resources' do
 
   shared_examples 'limited signed file upload' do
     context 'signed uploads' do
-      context 'when the file is smaller then limit' do
+      context 'when the file is smaller than limit' do
         after do
           del_response = make_delete_request resource_path
           expect(del_response.code).to be_between(200, 204)
@@ -70,7 +70,7 @@ describe 'Upload limits for resources' do
         end
       end
 
-      context 'when the file is bigger then limit' do
+      context 'when the file is bigger than limit' do
         it 'returns HTTP status code 413' do
           sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
           response = RestClient.get(sign_url)
@@ -152,7 +152,7 @@ describe 'Upload limits for resources' do
     let(:file_small) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
     let(:file_size_big) { 3.5 * 1024 * 1024 }
 
-    context 'when the file is smaller then limit' do
+    context 'when the file is smaller than limit' do
       after do
         app_stash_entries.each do |entry|
           expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
@@ -165,7 +165,7 @@ describe 'Upload limits for resources' do
       end
     end
 
-    context 'when the file is bigger then limit' do
+    context 'when the file is bigger than limit' do
       it 'returns HTTP status code 413' do
         response = make_post_request(resource_path, upload_body_big)
         expect(response.code).to eq 413
