@@ -1,5 +1,5 @@
 ---
-name: nginx
+name: nginx_bits
 files:
 - nginx/headers-more-v0.25.tgz
 - nginx/nginx-1.8.0.tar.gz

@@ -26,7 +26,7 @@ case $1 in
       chpst -u vcap:vcap mkdir -p $UPLOADS_DIR
     fi
 
-    exec /var/vcap/packages/nginx/sbin/nginx \
+    exec /var/vcap/packages/nginx_bits/sbin/nginx \
          -c $JOB_DIR/config/nginx.conf
     ;;
 

@@ -23,7 +23,7 @@ packages:
   - ruby-2.3
   - bits-service
   - bits-common
-  - nginx
+  - nginx_bits
 
 properties:
   request_timeout_in_seconds:
