@@ -20,7 +20,7 @@ templates:
   mutual_client_key.pem.erb:  config/certs/mutual_client_key.pem
 
 packages:
-  - ruby-2.3
+  - ruby-2.3_bits
   - bits-service
   - bits-common
   - nginx_bits

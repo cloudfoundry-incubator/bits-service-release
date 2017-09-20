@@ -2,7 +2,7 @@
 name: bits-service
 
 dependencies:
-- ruby-2.3
+- ruby-2.3_bits
 
 files:
 - bits-service/**/*

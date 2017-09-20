@@ -5,7 +5,7 @@ cp -a * ${BOSH_INSTALL_TARGET}
 
 cd ${BOSH_INSTALL_TARGET}/bits-service
 
-bundle_cmd=/var/vcap/packages/ruby-2.3/bin/bundle
+bundle_cmd=/var/vcap/packages/ruby-2.3_bits/bin/bundle
 
 $bundle_cmd install --local \
                     --deployment \
