@@ -78,7 +78,9 @@ describe 'packages resource' do
     end
 
     context 'when package is duplicated' do
-      context 'when the package exists', action: [:upload, :upload_existing] do
+      # Since we cannot create a package in CC with COPYING state easily, we
+      # decided to not test this behavior when CC updates are enabled.
+      context 'when the package exists', if: !cc_updates_enabled?, action: [:upload, :upload_existing] do
         it 'returns HTTP status 201' do
           response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(response.code).to eq 201
@@ -129,48 +131,6 @@ describe 'packages resource' do
         # zip_file from upload_body is already closed by now, so we can't reuse it.
         response = make_put_request resource_path, { package: File.new(zip_filepath) }
         expect(response.code).to eq(400), 'Repeat upload should fail because package is already finalized'
-
-        err = JSON.parse(response)
-        expect(err['code']).to eq(290008)
-        expect(err['description']).to eq('Cannot update an existing package.')
-      end
-
-      it 'does not allow to upload a package after copying it' do
-        # create new package as copy of existing guid
-        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-        expect(response.code).to eq(201), 'First copying should succeed'
-
-        # attempt to upload to copied package must fail
-        response = make_put_request resource_path, { package: File.new(zip_filepath) }
-        expect(response.code).to eq(400), 'Repeated upload should fail because package is already finalized'
-
-        err = JSON.parse(response)
-        expect(err['code']).to eq(290008)
-        expect(err['description']).to eq('Cannot update an existing package.')
-      end
-
-      it 'does not allow to copy a package after uploading it' do
-        # create new package as copy of existing guid
-        response = make_put_request resource_path, upload_body
-        expect(response.code).to eq(201), 'First upload should succeed'
-
-        # attempt to upload to copied package must fail
-        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-        expect(response.code).to eq(400), 'Copying into the same package should fail because package is already finalized'
-
-        err = JSON.parse(response)
-        expect(err['code']).to eq(290008)
-        expect(err['description']).to eq('Cannot update an existing package.')
-      end
-
-      it 'does not allow to copy into the same package twice' do
-        # create new package as copy of existing guid
-        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-        expect(response.code).to eq(201), 'First copying should succeed'
-
-        # attempt to copy into it again
-        response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-        expect(response.code).to eq(400), 'Repeated upload should fail because package is already finalized'
 
         err = JSON.parse(response)
         expect(err['code']).to eq(290008)
