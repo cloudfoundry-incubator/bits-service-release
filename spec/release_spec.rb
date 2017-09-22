@@ -3,7 +3,7 @@ require 'spec_helper'
 # TODO: (pego) rename properly (also this file)
 describe 'Bits-Release' do
   context 'HTTP Frontend' do
-    context 'Max Body Size' do
+    context 'Max Body Size', type: 'limits' do
       let(:tmp_dir) { Dir.mktmpdir }
       let(:filepath) { File.join(tmp_dir, 'large-file.zip') }
       let(:bits_to_upload) do

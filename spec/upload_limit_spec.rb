@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/cf.rb'
 
-describe 'Upload limits for resources' do
+describe 'Upload limits for resources', type: 'limits' do
   before :all do
     @tmp_dir = Dir.mktmpdir
   end
