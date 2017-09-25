@@ -34,7 +34,9 @@ module ManifestHelpers
   end
 
   def private_endpoint
-    URI(bits_service_config['private_endpoint'])
+    URI(bits_service_config['private_endpoint']).tap { |uri|
+      uri.scheme = 'https'
+    }
   end
 
   def signing_user
