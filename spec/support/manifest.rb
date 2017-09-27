@@ -9,7 +9,11 @@ module ManifestHelpers
     if manifest['properties'] && manifest['properties']['bits-service']
       manifest['properties']['bits-service']
     else
-      manifest['instance_groups'].find { |e| e['name'] == 'bits-service' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
+      if manifest['instance_groups'].find { |e| e['name'] == 'bits-service' }
+        manifest['instance_groups'].find { |e| e['name'] == 'bits-service' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
+      else
+        manifest['instance_groups'].find { |e| e['name'] == 'api' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
+      end
     end
   end
 
