@@ -39,29 +39,44 @@ describe 'accessing the bits-service', type: :integration do
 
   before do
     RestClient::Resource.new(
-        "https://#{private_endpoint_ip}/packages/#{guid}", 
-        verify_ssl: OpenSSL::SSL::VERIFY_PEER, 
-        ssl_ca_file: ca_cert).put({ package: zip_file},  { host: private_endpoint.hostname })
+      "https://#{private_endpoint_ip}/packages/#{guid}",
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+      ssl_ca_file: ca_cert).put({ package: zip_file },
+      { host: private_endpoint.hostname }
+      )
   end
 
   after do
     RestClient::Resource.new(
-        "https://#{private_endpoint_ip}/packages/#{guid}", 
-        verify_ssl: OpenSSL::SSL::VERIFY_PEER, 
-        ssl_ca_file: ca_cert).delete({ host: private_endpoint.hostname })
+      "https://#{private_endpoint_ip}/packages/#{guid}",
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+      ssl_ca_file: ca_cert).delete({ host: private_endpoint.hostname }
+      )
   end
 
   context 'by IP address' do
     context 'not passing a host header' do
       it 'responds with 400, because URL is used as host the host is unknown and therefore it is a bad request' do
         puts "https://#{private_endpoint_ip}/packages/#{guid}"
-        expect { RestClient::Request.execute({ url: "https://#{private_endpoint_ip}/packages/#{guid}", method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })  }.to raise_error(RestClient::BadRequest)
+        expect { RestClient::Request.execute({
+          url: "https://#{private_endpoint_ip}/packages/#{guid}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert
+          })
+        }.to raise_error(RestClient::BadRequest)
       end
     end
 
     context 'passing header "host: <public_endpoint>"' do
       it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
-        expect { RestClient::Request.execute({ url: "https://#{private_endpoint_ip}/packages/#{guid}", method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert, headers: {host: public_endpoint.hostname} })  }.to raise_error(RestClient::ResourceNotFound)
+        expect { RestClient::Request.execute({
+          url: "https://#{private_endpoint_ip}/packages/#{guid}",
+          method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert,
+          headers: { host: public_endpoint.hostname }
+          })
+        }.to raise_error(RestClient::ResourceNotFound)
       end
     end
   end
@@ -69,8 +84,14 @@ describe 'accessing the bits-service', type: :integration do
   context 'by private endpoint' do
     context 'passing header "host: <public_endpoint>"' do
       it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
-        expect { RestClient::Request.execute({ url: "#{private_endpoint}/packages/#{guid}", method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert, headers: {host: public_endpoint.hostname} })  }.to raise_error(RestClient::ResourceNotFound)
-        expect { RestClient.get("#{private_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
+        expect { RestClient::Request.execute({
+          url: "#{private_endpoint}/packages/#{guid}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert, headers: { host: public_endpoint.hostname }
+          })
+        }.to raise_error(RestClient::ResourceNotFound)
+        # expect { RestClient.get("#{private_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
 
