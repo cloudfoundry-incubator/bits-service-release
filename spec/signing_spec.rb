@@ -29,22 +29,46 @@ describe 'URL Signing', type: :integration do
   end
 
   after action: :upload do
-    response = RestClient.delete("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}")
+    response = RestClient::Request.execute({
+      url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}",
+      method: :delete,
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+      ssl_ca_file: ca_cert
+      })
     expect(response.code).to be_between(200, 204)
   end
 
   context 'method: PUT', action: :upload do
     it 'return a signed URL that can be used to upload a package' do
-      response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put")
+      puts "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put".to_s
+      response = RestClient::Request.execute({
+        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put",
+        method: :get,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_ca_file: ca_cert
+        })
       signed_put_url = response.body.to_s
-
-      response = RestClient.put(signed_put_url, { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
+      RestClient::Resource.new(
+        signed_put_url,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_ca_file: ca_cert
+      ).put({ package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
       expect(response.code).to be_between(200, 201)
 
-      response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}")
+      response = RestClient::Request.execute({
+        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+        method: :get,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_ca_file: ca_cert
+        })
       signed_get_url = response.body.to_s
 
-      response = RestClient.get(signed_get_url)
+      response = RestClient::Request.execute({
+        url: signed_get_url,
+        method: :get,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_ca_file: ca_cert
+        })
       expect(response.code).to eq 200
     end
   end
@@ -52,12 +76,21 @@ describe 'URL Signing', type: :integration do
   context 'method: GET', action: :upload do
     before do
       # TODO: (pego) Why does this work without authentication?
-      RestClient.put("#{private_endpoint}#{path}", { package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
+      RestClient::Resource.new(
+        "#{private_endpoint}#{path}",
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_ca_file: ca_cert
+      ).put({ package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
     end
 
     describe '/sign' do
       it 'returns a signed URL' do
-        response = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}")
+        response = RestClient::Request.execute({
+          url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert
+          })
 
         expect(response.code).to eq 200
 
@@ -69,7 +102,12 @@ describe 'URL Signing', type: :integration do
       context 'when the signing credentials are incorrect' do
         it 'returns HTTP status code 401' do
           expect {
-            RestClient.get("http://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}/sign#{path}")
+            RestClient::Request.execute({
+              url: "https://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}/sign#{path}",
+              method: :get,
+              verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_ca_file: ca_cert
+              })
           }.to raise_error RestClient::Unauthorized
         end
       end
@@ -78,8 +116,18 @@ describe 'URL Signing', type: :integration do
     describe '/signed' do
       context 'when the signature is valid' do
         it 'resolves the signed_url and handles the request' do
-          signed_url = RestClient.get("http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}").body.to_s
-          response = RestClient.get(signed_url)
+          signed_url = RestClient::Request.execute({
+            url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_ca_file: ca_cert
+            })
+          response = RestClient::Request.execute({
+            url: signed_url,
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_ca_file: ca_cert
+            })
 
           expect(response.code).to eq 200
         end
@@ -88,7 +136,12 @@ describe 'URL Signing', type: :integration do
       context 'when the signature is invaid' do
         it 'returns a 403' do
           expect {
-            RestClient.get("#{public_endpoint}/signed#{path}?md5=INVALID_SIGNATURE&expires=1467828099")
+            RestClient::Request.execute({
+              url: "#{public_endpoint}/signed#{path}?md5=INVALID_SIGNATURE&expires=1467828099",
+              method: :get,
+              verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_ca_file: ca_cert
+              })
           }.to raise_error RestClient::Forbidden
         end
       end
