@@ -57,7 +57,6 @@ describe 'accessing the bits-service', type: :integration do
   context 'by IP address' do
     context 'not passing a host header' do
       it 'responds with 400, because URL is used as host the host is unknown and therefore it is a bad request' do
-        puts "https://#{private_endpoint_ip}/packages/#{guid}"
         expect { RestClient::Request.execute({
           url: "https://#{private_endpoint_ip}/packages/#{guid}",
           method: :get,
@@ -91,13 +90,17 @@ describe 'accessing the bits-service', type: :integration do
           ssl_ca_file: ca_cert, headers: { host: public_endpoint.hostname }
           })
         }.to raise_error(RestClient::ResourceNotFound)
-        # expect { RestClient.get("#{private_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
 
     context 'not passing any header' do
       it 'responds with 200, because host is private and the private host allows unsigned access to packages' do
-        response = RestClient.get("#{private_endpoint}/packages/#{guid}")
+        response = RestClient::Request.execute({
+          url: "#{private_endpoint}/packages/#{guid}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert
+          })
         expect(response.code).to eq(200)
       end
     end
@@ -114,13 +117,23 @@ describe 'accessing the bits-service', type: :integration do
   context 'by public endpoint' do
     context 'not passing a host header' do
       it 'responds with 404, because URL is used as Host header and the public host does not allow unsigned access to packages' do
-        expect { RestClient.get("#{public_endpoint}/packages/#{guid}", {}) }.to raise_error(RestClient::ResourceNotFound)
+        expect { RestClient::Request.execute({
+          url: "#{public_endpoint}/packages/#{guid}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert
+          }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
 
     context 'passing header "host: <public_endpoint>"' do
       it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
-        expect { RestClient.get("#{public_endpoint}/packages/#{guid}", { host: public_endpoint.hostname }) }.to raise_error(RestClient::ResourceNotFound)
+        expect { RestClient::Request.execute({
+          url: "#{public_endpoint}/packages/#{guid}",
+          method: :get,
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_ca_file: ca_cert
+          }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
   end
