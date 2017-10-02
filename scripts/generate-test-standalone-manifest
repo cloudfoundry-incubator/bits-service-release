@@ -8,6 +8,8 @@ MANIFEST_FILE=deployments/bits-service-release.yml
 export BLOBSTORE_TYPE="${1:?Missing parameter indicating blobstore type}"; shift
 export BOSH_DIRECTOR_UUID=not-used-anymore-in-cli-v2
 
+bosh int templates/tls.yml --vars-env BITS --vars-store /tmp/tls-crt.yml > /tmp/generated-tls.yml
+
 echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
 
 spruce merge \
@@ -15,6 +17,7 @@ spruce merge \
     templates/standalone-blobstore-job.yml \
     templates/standalone-bits-service-job.yml \
     templates/standalone-properties-${BLOBSTORE_TYPE}.yml \
+    /tmp/generated-tls.yml \
     templates/body-size-stub.yml \
     "$@" \
   > ${MANIFEST_FILE}

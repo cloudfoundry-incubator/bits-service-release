@@ -1,6 +1,7 @@
 releases:
   - (( merge ))
-  - { name: cf, version: latest }
+  - { name: capi, version: latest }
+  # - { name: capi, version: latest, url: 'https://bosh.io/d/github.com/cloudfoundry/capi-release' }
 
 instance_groups:
   - (( prepend ))
@@ -8,7 +9,7 @@ instance_groups:
     azs: [ z1 ]
     instances: 1
     jobs:
-    - { name: blobstore, release: cf }
+    - { name: blobstore, release: capi}
     vm_type: bits_service_vm
     stemcell: default
     networks:
