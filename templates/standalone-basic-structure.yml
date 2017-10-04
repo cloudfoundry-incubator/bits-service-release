@@ -1,7 +1,5 @@
 name: (( concat "bits-service-" $BLOBSTORE_TYPE ))
 
-director_uuid: (( grab $BOSH_DIRECTOR_UUID))
-
 stemcells:
 - alias: default
   os: ubuntu-trusty

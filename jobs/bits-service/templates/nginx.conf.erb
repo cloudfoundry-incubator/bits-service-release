@@ -1,3 +1,10 @@
+<% if !p("bits-service.private_endpoint").start_with?("https://") %>
+   ERROR bits-service.private_endpoint must start with https://
+<% end %>
+<% if !p("bits-service.public_endpoint").start_with?("https://") %>
+   ERROR bits-service.private_endpoint must start with https://
+<% end %>
+
 # deployment bits-service nginx.conf
 user  vcap vcap;
 
@@ -36,9 +43,19 @@ http {
 
   # Private endpoint
   server {
-    listen 80;
-    server_name <%= p("bits-service.private_endpoint").sub(%r{^http://}, '') %>;
+    listen      <%= p('bits-service.tls.port') %> ssl;
+    server_name <%= p("bits-service.private_endpoint").sub(%r{^https://}, '') %>;
     server_name_in_redirect off;
+
+    ssl_certificate     /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.crt;
+    ssl_certificate_key /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.key;
+
+    # TODO: nosu any changes needed?
+    ssl_ciphers DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    # TODO: Only Support for TLS 1.2
+    ssl_protocols TLSv1.2;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
 
     access_log  <%= p("bits-service.nginx.private_access_log_destination") %> main;
     access_log <%= p("bits-service.nginx.metrics_log_destination") %> metrics;
@@ -124,8 +141,19 @@ http {
 
   # Public endpoint
   server {
-    listen 80;
-    server_name <%= p("bits-service.public_endpoint").sub(%r{^http://}, '') %>;
+    listen      <%= p('bits-service.tls.port') %> ssl;
+    server_name <%= p("bits-service.public_endpoint").sub(%r{^https://}, '') %>;
+
+    ssl_certificate     /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.crt;
+    ssl_certificate_key /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.key;
+
+    # TODO: nosu any changes needed?
+    ssl_ciphers DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    # TODO: Only Support for TLS 1.2
+    ssl_protocols TLSv1.2;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
     server_name_in_redirect off;
 
     access_log  <%= p("bits-service.nginx.public_access_log_destination") %> main;
@@ -291,7 +319,18 @@ http {
 
   # catch-all
   server {
-    listen      80	default_server;
+    listen      <%= p('bits-service.tls.port') %> ssl default_server;
+
+    ssl_certificate     /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.crt;
+    ssl_certificate_key /var/vcap/jobs/bits-service/config/certs/nginx_bits_tls.key;
+
+    # TODO: nosu any changes needed?
+    ssl_ciphers DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    # TODO: Only Support for TLS 1.2
+    ssl_protocols TLSv1.2;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
     return      400;
   }
 }

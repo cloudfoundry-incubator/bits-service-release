@@ -18,6 +18,8 @@ templates:
   mutual_ca_cert.pem.erb:     config/certs/mutual_ca_cert.pem
   mutual_client_cert.pem.erb: config/certs/mutual_client_cert.pem
   mutual_client_key.pem.erb:  config/certs/mutual_client_key.pem
+  nginx_bits_tls.crt.erb:     config/certs/nginx_bits_tls.crt
+  nginx_bits_tls.key.erb:     config/certs/nginx_bits_tls.key
 
 packages:
   - ruby-2.3_bits
@@ -35,6 +37,13 @@ properties:
 
   bits-service.private_endpoint:
     description: Private endpoint for the Bits Service. Does not include URI scheme.
+  bits-service.tls.port:
+    description: Post for https endpoint
+    default: 443
+  bits-service.tls.cert:
+    description: The TLS server certificate
+  bits-service.tls.key:
+    description: The TLS server private key
 
   bits-service.secret:
     description: "The secret used for signing URLs"

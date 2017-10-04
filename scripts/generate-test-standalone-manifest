@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 cd $(dirname $0)/..
 
@@ -7,6 +7,7 @@ MANIFEST_FILE=deployments/bits-service-release.yml
 
 export BLOBSTORE_TYPE="${1:?Missing parameter indicating blobstore type}"; shift
 export BOSH_DIRECTOR_UUID=not-used-anymore-in-cli-v2
+
 
 echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
 
@@ -18,5 +19,8 @@ spruce merge \
     templates/body-size-stub.yml \
     "$@" \
   > ${MANIFEST_FILE}
+
+bosh2 int ${MANIFEST_FILE} --vars-store ../bits-service-private-config/environments/softlayer/deployment-vars.yml > ${MANIFEST_FILE}-with-vars
+mv ${MANIFEST_FILE}-with-vars ${MANIFEST_FILE}
 
 echo "Manifest written to ${MANIFEST_FILE}"

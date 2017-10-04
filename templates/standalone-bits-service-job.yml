@@ -26,9 +26,29 @@ instance_groups:
 
 properties:
   bits-service:
-    private_endpoint: (( concat "http://internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
-    public_endpoint: (( concat "http://" instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    tls:
+      cert: ((bits_service_ssl.certificate))
+      key: ((bits_service_ssl.private_key))
+    private_endpoint: (( concat "https://internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    public_endpoint: (( concat "https://" instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
     secret: 12345
     signing_users:
     - username: admin
       password: admin
+
+variables:
+- name: default_ca
+  type: certificate
+  options:
+    is_ca: true
+    common_name: ca
+- name: bits_service_ssl
+  type: certificate
+  options:
+    common_name:  (( concat "internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    alternative_names:
+    - (( grab instance_groups.bits-service.networks.static.static_ips.0 ))
+    - (( concat "*." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    - (( concat "internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    - (( concat instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
+    ca: default_ca

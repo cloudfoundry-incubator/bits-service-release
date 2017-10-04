@@ -62,20 +62,31 @@ describe 'Upload limits for resources', type: 'limits' do
           expect(del_response.code).to be_between(200, 204)
         end
         it 'returns HTTP status code 201' do
-          sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-          response = RestClient.get(sign_url)
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })
           signed_put_url = response.body.to_s
-          response = RestClient.put(signed_put_url, upload_body_small)
+
+          response = RestClient::Resource.new(
+            signed_put_url,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_ca_file: ca_cert
+          ).put(upload_body_small)
           expect(response.code).to eq 201
         end
       end
 
       context 'when the file is bigger than limit' do
         it 'returns HTTP status code 413' do
-          sign_url = "http://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-          response = RestClient.get(sign_url)
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })
           signed_put_url = response.body.to_s
-          expect { RestClient.put(signed_put_url, upload_body_big) }.to raise_error(RestClient::RequestEntityTooLarge)
+          expect {
+            RestClient::Resource.new(
+              signed_put_url,
+              verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_ca_file: ca_cert
+            ).put(upload_body_big)
+          }.to raise_error(RestClient::RequestEntityTooLarge)
         end
       end
     end
