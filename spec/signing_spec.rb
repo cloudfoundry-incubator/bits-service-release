@@ -66,8 +66,8 @@ describe 'URL Signing', type: :integration do
         url: signed_get_url,
         method: :get,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-        ssl_ca_file: ca_cert
-        })
+        ssl_ca_file: signed_get_url.include?(public_endpoint) ? ca_cert : nil
+      })
       expect(response.code).to eq 200
     end
   end
@@ -125,8 +125,8 @@ describe 'URL Signing', type: :integration do
             url: signed_url,
             method: :get,
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-            ssl_ca_file: ca_cert
-            })
+            ssl_ca_file: signed_get_url.include?(public_endpoint) ? ca_cert : nil
+          })
 
           expect(response.code).to eq 200
         end
