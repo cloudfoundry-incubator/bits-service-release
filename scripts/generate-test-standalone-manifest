@@ -20,7 +20,7 @@ spruce merge \
     "$@" \
   > ${MANIFEST_FILE}
 
-bosh2 int ${MANIFEST_FILE} --vars-store ../bits-service-private-config/environments/softlayer/deployment-vars.yml > ${MANIFEST_FILE}-with-vars
+bosh2 int ${MANIFEST_FILE} --vars-store ../bits-service-private-config/environments/softlayer/deployment-vars-${DEPLOYMENT_NAME}.yml > ${MANIFEST_FILE}-with-vars
 mv ${MANIFEST_FILE}-with-vars ${MANIFEST_FILE}
 
 echo "Manifest written to ${MANIFEST_FILE}"
