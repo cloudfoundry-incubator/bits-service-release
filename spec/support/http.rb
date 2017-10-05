@@ -5,13 +5,13 @@ module HttpHelpers
 
   def make_get_request(path, args={})
     try_catch {
-      RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert }.merge(args))
+      RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER }.merge(args))
     }
   end
 
   def make_delete_request(path)
     try_catch {
-      RestClient::Request.execute({ url: url(path), method: :delete, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })
+      RestClient::Request.execute({ url: url(path), method: :delete, verify_ssl: OpenSSL::SSL::VERIFY_PEER })
     }
   end
 
@@ -20,7 +20,6 @@ module HttpHelpers
       RestClient::Resource.new(
         url(path),
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-        ssl_ca_file: ca_cert
       ).post body
     }
   end
@@ -30,7 +29,6 @@ module HttpHelpers
       RestClient::Resource.new(
         url(path),
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-        ssl_ca_file: ca_cert
       ).put body
     }
   end

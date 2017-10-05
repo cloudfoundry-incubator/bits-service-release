@@ -40,8 +40,7 @@ describe 'accessing the bits-service', type: :integration do
   before do
     RestClient::Resource.new(
       "https://#{private_endpoint_ip}/packages/#{guid}",
-      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-      ssl_ca_file: ca_cert).put({ package: zip_file },
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER).put({ package: zip_file },
       { host: private_endpoint.hostname }
       )
   end
@@ -49,8 +48,7 @@ describe 'accessing the bits-service', type: :integration do
   after do
     RestClient::Resource.new(
       "https://#{private_endpoint_ip}/packages/#{guid}",
-      verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-      ssl_ca_file: ca_cert).delete({ host: private_endpoint.hostname }
+      verify_ssl: OpenSSL::SSL::VERIFY_PEER).delete({ host: private_endpoint.hostname }
       )
   end
 
@@ -60,8 +58,7 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient::Request.execute({
           url: "https://#{private_endpoint_ip}/packages/#{guid}",
           method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER
           })
         }.to raise_error(RestClient::BadRequest)
       end
@@ -72,7 +69,6 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient::Request.execute({
           url: "https://#{private_endpoint_ip}/packages/#{guid}",
           method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert,
           headers: { host: public_endpoint.hostname }
           })
         }.to raise_error(RestClient::ResourceNotFound)
@@ -86,8 +82,7 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient::Request.execute({
           url: "#{private_endpoint}/packages/#{guid}",
           method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert, headers: { host: public_endpoint.hostname }
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER, headers: { host: public_endpoint.hostname }
           })
         }.to raise_error(RestClient::ResourceNotFound)
       end
@@ -98,8 +93,7 @@ describe 'accessing the bits-service', type: :integration do
         response = RestClient::Request.execute({
           url: "#{private_endpoint}/packages/#{guid}",
           method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER
           })
         expect(response.code).to eq(200)
       end
@@ -120,8 +114,7 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient::Request.execute({
           url: "#{public_endpoint}/packages/#{guid}",
           method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER
           }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end
@@ -131,8 +124,7 @@ describe 'accessing the bits-service', type: :integration do
         expect { RestClient::Request.execute({
           url: "#{public_endpoint}/packages/#{guid}",
           method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_ca_file: ca_cert
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER
           }) }.to raise_error(RestClient::ResourceNotFound)
       end
     end

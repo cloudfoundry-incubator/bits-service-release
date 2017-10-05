@@ -63,13 +63,12 @@ describe 'Upload limits for resources', type: 'limits' do
         end
         it 'returns HTTP status code 201' do
           sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })
+          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER })
           signed_put_url = response.body.to_s
 
           response = RestClient::Resource.new(
             signed_put_url,
-            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-            ssl_ca_file: ca_cert
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER
           ).put(upload_body_small)
           expect(response.code).to eq 201
         end
@@ -78,13 +77,12 @@ describe 'Upload limits for resources', type: 'limits' do
       context 'when the file is bigger than limit' do
         it 'returns HTTP status code 413' do
           sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
-          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_ca_file: ca_cert })
+          response = RestClient::Request.execute({ url: sign_url, method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER })
           signed_put_url = response.body.to_s
           expect {
             RestClient::Resource.new(
               signed_put_url,
-              verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-              ssl_ca_file: ca_cert
+              verify_ssl: OpenSSL::SSL::VERIFY_PEER
             ).put(upload_body_big)
           }.to raise_error(RestClient::RequestEntityTooLarge)
         end
