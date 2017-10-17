@@ -1,5 +1,10 @@
 require 'spec_helper'
 require 'support/cf.rb'
+require 'support/http'
+
+RSpec.configure {
+  include HttpHelpers
+}
 
 describe 'URL Signing', type: :integration do
   let(:path) { "/packages/#{guid}" }
@@ -33,6 +38,7 @@ describe 'URL Signing', type: :integration do
       url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}",
       method: :delete,
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+      ssl_cert_store: cert_store
       })
     expect(response.code).to be_between(200, 204)
   end
@@ -43,11 +49,13 @@ describe 'URL Signing', type: :integration do
         url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put",
         method: :get,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
         })
       signed_put_url = response.body.to_s
       RestClient::Resource.new(
         signed_put_url,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
       ).put({ package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
       expect(response.code).to be_between(200, 201)
 
@@ -55,13 +63,15 @@ describe 'URL Signing', type: :integration do
         url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
         method: :get,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
         })
       signed_get_url = response.body.to_s
 
       response = RestClient::Request.execute({
         url: signed_get_url,
         method: :get,
-        verify_ssl: OpenSSL::SSL::VERIFY_PEER
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
       })
       expect(response.code).to eq 200
     end
@@ -73,6 +83,7 @@ describe 'URL Signing', type: :integration do
       RestClient::Resource.new(
         "#{private_endpoint}#{path}",
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
       ).put({ package: File.new(File.expand_path('../assets/empty.zip', __FILE__)) })
     end
 
@@ -82,6 +93,7 @@ describe 'URL Signing', type: :integration do
           url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
           method: :get,
           verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_cert_store: cert_store
           })
 
         expect(response.code).to eq 200
@@ -98,6 +110,7 @@ describe 'URL Signing', type: :integration do
               url: "https://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}/sign#{path}",
               method: :get,
               verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_cert_store: cert_store
               })
           }.to raise_error RestClient::Unauthorized
         end
@@ -111,11 +124,13 @@ describe 'URL Signing', type: :integration do
             url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
             method: :get,
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
             })
           response = RestClient::Request.execute({
             url: signed_url,
             method: :get,
-            verify_ssl: OpenSSL::SSL::VERIFY_PEER
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
           })
 
           expect(response.code).to eq 200
@@ -129,6 +144,7 @@ describe 'URL Signing', type: :integration do
               url: "#{public_endpoint}/signed#{path}?md5=INVALID_SIGNATURE&expires=1467828099",
               method: :get,
               verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_cert_store: cert_store
               })
           }.to raise_error RestClient::Forbidden
         end

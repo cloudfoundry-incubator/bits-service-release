@@ -5,13 +5,13 @@ module HttpHelpers
 
   def make_get_request(path, args={})
     try_catch {
-      RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER }.merge(args))
+      RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store }.merge(args))
     }
   end
 
   def make_delete_request(path)
     try_catch {
-      RestClient::Request.execute({ url: url(path), method: :delete, verify_ssl: OpenSSL::SSL::VERIFY_PEER })
+      RestClient::Request.execute({ url: url(path), method: :delete, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store })
     }
   end
 
@@ -20,6 +20,7 @@ module HttpHelpers
       RestClient::Resource.new(
         url(path),
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
       ).post body
     }
   end
@@ -29,8 +30,16 @@ module HttpHelpers
       RestClient::Resource.new(
         url(path),
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
       ).put body
     }
+  end
+
+  def cert_store
+    cert_store = OpenSSL::X509::Store.new
+    cert_store.set_default_paths
+    # cert_store.add_file '/Users/norman/workspace/mis/default_ca.pem'
+    cert_store.add_file ca_cert
   end
 
   private
