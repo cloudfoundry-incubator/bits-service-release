@@ -47,7 +47,6 @@ variables:
   options:
     common_name:  (( concat "internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
     alternative_names:
-    - (( grab instance_groups.bits-service.networks.static.static_ips.0 ))
     - (( concat "*." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
     - (( concat "internal." instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
     - (( concat instance_groups.bits-service.networks.static.static_ips.0 ".xip.io" ))
