@@ -1,0 +1,55 @@
+name: bits-service
+version: 1.4.0
+commit_hash: fef01c9
+uncommitted_changes: false
+jobs:
+- name: bits-service
+  version: 8f0bd4786492f94c90230d50f622da2e29b2fece
+  fingerprint: 8f0bd4786492f94c90230d50f622da2e29b2fece
+  sha1: 48dbf1a8948245a0edf5aa062abafdadbfc792c1
+- name: bits-service-migration-tests
+  version: 3e16dcfdbdea252e1463b082087d4f0bc74dec92
+  fingerprint: 3e16dcfdbdea252e1463b082087d4f0bc74dec92
+  sha1: c96680499ac40163e930f4686946964572c3752f
+packages:
+- name: bits-common
+  version: 31323f35fea0d06665c3ffdd9019605655cdcb99
+  fingerprint: 31323f35fea0d06665c3ffdd9019605655cdcb99
+  sha1: 03bb73898c26fc9713456c0bb9cc75bc9c7fea35
+  dependencies: []
+- name: bits-service
+  version: 50af34331335c18ab3ac779fc8c42b0490a706ed
+  fingerprint: 50af34331335c18ab3ac779fc8c42b0490a706ed
+  sha1: 3c9a8d22ea5a994bfd6dd4231076f13f9dfa92cd
+  dependencies:
+  - ruby-2.3_bits
+- name: bits-service-migration-tests
+  version: 2a0f05ad85128057a6e5eaa10b42d593f3fc09eb
+  fingerprint: 2a0f05ad85128057a6e5eaa10b42d593f3fc09eb
+  sha1: 1da3f309fb7366a59de1bb15e0ecd9923cc82881
+  dependencies:
+  - golang1.6
+- name: cli
+  version: 0f19a1df7ef777208cc3bfcdc875b2b56613ab40
+  fingerprint: 0f19a1df7ef777208cc3bfcdc875b2b56613ab40
+  sha1: a4e387616588ef30de5bf055595a6b096de369f4
+  dependencies: []
+- name: golang1.6
+  version: 85a489b7c0c2584aa9e0a6dd83666db31c6fc8e8
+  fingerprint: 85a489b7c0c2584aa9e0a6dd83666db31c6fc8e8
+  sha1: 4ada00036cd58f9902f13bd3795a8794980d52dc
+  dependencies: []
+- name: nginx_bits
+  version: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  fingerprint: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  sha1: 63277e90b8e45136e582bcfb820bbf011dfd75dd
+  dependencies: []
+- name: ruby-2.3_bits
+  version: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  fingerprint: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  sha1: 5aa86f46e08262c8aa2c978a3a62286e3ec8e009
+  dependencies: []
+license:
+  version: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  fingerprint: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  sha1: 5b431b09817c6a22857579501120edf483cac16c
