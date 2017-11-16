@@ -44,8 +44,8 @@ describe 'accessing the bits-service', type: :integration do
       "https://#{private_endpoint.hostname}/packages/#{guid}",
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
       ssl_cert_store: cert_store
-    )
-    .put({ package: zip_file },
+    ).
+      put({ package: zip_file },
       { host: private_endpoint.hostname }
       )
   end

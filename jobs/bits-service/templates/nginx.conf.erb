@@ -282,7 +282,7 @@ http {
       break;
     }
     location /signed/droplets {
-      # add_header X-debug-public-droplets "Hit" always;
+      # add_header X-debug-public-droplets "/signed/droplets" always;
       dav_methods PUT;
       create_full_put_path on;
 
@@ -301,19 +301,30 @@ http {
         return 410;
       }
 
-      rewrite ^\/signed(.*)$ $1; # Remove "/signed" prefix from URI
-
       if ( $request_method != PUT ) {
         proxy_pass http://bits_service;
       }
-      # PUT
-      include "location_stub.conf";
-      client_max_body_size <%= p("bits-service.droplets.max_body_size") %>;
 
+      # PUT
+      client_max_body_size <%= p("bits-service.droplets.max_body_size") %>;
       proxy_pass_header HTTP_X_VCAP_REQUEST_ID;
       add_header HTTP_X_VCAP_REQUEST_ID $HTTP_X_VCAP_REQUEST_ID;
 
-      break;
+      location ~ /signed/droplets/((?!\/).)*$ {
+        rewrite ^\/signed(.*)$ $1 break; # Remove "/sign" prefix from URI
+        #add_header X-debug-public-droplets "/signed/droplets/:guid" always;
+        client_body_in_file_only clean;
+        client_body_temp_path /var/vcap/data/bits-service/tmp/uploads;
+        proxy_set_header DROPLET_FILE $request_body_file;
+        proxy_set_header Content-Type application/octet-stream;
+        proxy_pass http://bits_service;
+      }
+
+      location ~ /signed/droplets/.*/.* {
+        rewrite ^\/signed(.*)$ $1 break; # Remove "/sign" prefix from URI
+        # add_header X-debug-public-droplets "/signed/droplets/:guid/:sha" always;
+        include "location_stub.conf";
+      }
     }
   }
 
