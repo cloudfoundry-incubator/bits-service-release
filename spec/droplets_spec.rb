@@ -27,7 +27,8 @@ describe 'droplets resource' do
   end
 
   describe 'public signed endpoints', type: :integration, action: :upload do
-    let(:path) { "/droplets/#{SecureRandom.uuid}" }
+    let(:guid) { SecureRandom.uuid.to_s }
+    let(:path) { "/droplets/#{guid}" }
 
     context 'PUT /sign/droplets/:guid' do
       context 'with content_type is configured' do
@@ -43,7 +44,7 @@ describe 'droplets resource' do
         end
       end
 
-      context 'missing Digest' do
+      context 'missing Digest', action: false do
         it 'returns HTTP status 400' do
           droplet_url = signed_url_for_droplets(path)
           expect { RestClient::Resource.new(
@@ -55,7 +56,7 @@ describe 'droplets resource' do
         end
       end
 
-      context 'digest malformed' do
+      context 'digest malformed', action: false do
         let(:digest) { '' }
 
         it 'returns the right error code' do
