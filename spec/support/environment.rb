@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnvironmentHelpers
   def private_endpoint_ip
     ENV.fetch('BITS_SERVICE_PRIVATE_ENDPOINT_IP')

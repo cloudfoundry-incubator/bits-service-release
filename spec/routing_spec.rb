@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require 'securerandom'
 require 'rest-client'
@@ -46,8 +48,7 @@ describe 'accessing the bits-service', type: :integration do
       ssl_cert_store: cert_store
     ).
       put({ package: zip_file },
-      { host: private_endpoint.hostname }
-      )
+      { host: private_endpoint.hostname })
   end
 
   after do
@@ -55,8 +56,7 @@ describe 'accessing the bits-service', type: :integration do
       "https://#{private_endpoint.hostname}/packages/#{guid}",
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
       ssl_cert_store: cert_store
-    ).delete({ host: private_endpoint.hostname }
-      )
+    ).delete({ host: private_endpoint.hostname })
   end
 
   context 'by IP address' do

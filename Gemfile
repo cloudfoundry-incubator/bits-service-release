@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 group :test do
-  gem 'rake'
-  gem 'rspec'
-  gem 'rspec-collection_matchers'
-  gem 'rest-client'
   gem 'aws-sdk'
   gem 'net-sftp'
+  gem 'rake'
+  gem 'rest-client', '1.8.0' # Pinning to this version as otherwise spec/packages_spec.rb:154 fails
+  gem 'rspec'
+  gem 'rspec-collection_matchers'
 
-  gem 'rubocop'
+  gem 'guard-rspec'
   gem 'pry'
   gem 'pry-nav'
   gem 'rb-readline'
-  gem 'guard-rspec'
-  gem 'terminal-notifier-guard'
+  gem 'rubocop'
   gem 'terminal-notifier'
+  gem 'terminal-notifier-guard'
 end

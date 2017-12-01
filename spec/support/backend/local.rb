@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/sftp'
 
 require_relative './remote_commands'

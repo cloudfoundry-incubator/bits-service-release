@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 require 'json'
 
@@ -11,8 +13,7 @@ module CFClient
 
     def create_org
       resp = make_post_request('/v2/organizations',
-        { name: random_name('testOrg') }.to_json
-      )
+        { name: random_name('testOrg') }.to_json)
       resp['metadata']['guid']
     end
 
@@ -29,8 +30,7 @@ module CFClient
         {
           name: random_name('testSpace'),
           organization_guid: parent_org_guid
-        }.to_json
-      )
+        }.to_json)
       resp['metadata']['guid']
     end
 
@@ -39,8 +39,7 @@ module CFClient
         {
           name: random_name('testApp'),
           space_guid: parent_space_guid
-        }.to_json
-      )
+        }.to_json)
       resp['metadata']['guid']
     end
 
@@ -55,8 +54,7 @@ module CFClient
               }
             }
           }
-        }.to_json
-      )
+        }.to_json)
       resp['guid']
     end
 

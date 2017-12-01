@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'shared_examples'
 require 'json'
@@ -66,7 +68,7 @@ describe 'packages resource' do
       end
 
       context 'when the request body is invalid', action: false do
-        let(:upload_body) { Hash.new }
+        let(:upload_body) { {} }
 
         it 'returns HTTP status 4XX' do
           response = make_put_request resource_path, upload_body
@@ -80,7 +82,7 @@ describe 'packages resource' do
     context 'when package is duplicated' do
       # Since we cannot create a package in CC with COPYING state easily, we
       # decided to not test this behavior when CC updates are enabled.
-      context 'when the package exists', if: !cc_updates_enabled?, action: [:upload, :upload_existing] do
+      context 'when the package exists', if: !cc_updates_enabled?, action: %i[upload upload_existing] do
         it 'returns HTTP status 201' do
           response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(response.code).to eq 201
@@ -115,7 +117,7 @@ describe 'packages resource' do
     end
 
     context 'when the PUT is not a multipart request' do
-      let(:upload_body) { Hash.new }
+      let(:upload_body) { {} }
 
       it 'returns HTTP status 4XX' do
         response = make_put_request resource_path, upload_body

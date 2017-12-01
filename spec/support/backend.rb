@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './backend/client_base'
 require_relative './backend/s3'
 require_relative './backend/local'
