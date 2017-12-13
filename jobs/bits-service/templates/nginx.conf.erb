@@ -41,6 +41,8 @@ http {
     server unix:/var/vcap/sys/run/bits-service/bits-service.sock;
   }
 
+  server_names_hash_bucket_size  128;
+
   # Private endpoint
   server {
     listen      <%= p('bits-service.tls.port') %> ssl;
