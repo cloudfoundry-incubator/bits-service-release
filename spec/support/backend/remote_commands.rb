@@ -3,14 +3,15 @@
 require 'net/ssh'
 
 module RemoteCommands
-  def remote_path_exists?(ip, path, user='vcap', password='c1oudc0w')
-    Net::SFTP.start(ip, user, password: password) do |sftp|
-      sftp.stat(path) do |response|
-        return true if response.ok?
-      end
+  def remote_path_exists?(ip, path)
+    out = exec_remote_cmd("ls -l #{path}")
+    if out.include?('-rw-')
+      return true
     end
-
-    false
+    if out.include?('No such file or directory')
+      return false
+    end
+    raise "exec_remote_cmd failed: #{out}"
   end
 
   def fill_storage(size='50G')
@@ -27,22 +28,26 @@ module RemoteCommands
   def delete_resource(guid)
     guid, _ = guid.split('/') if guid.include?('/')
     res = exec_remote_cmd "rm -r #{resource_root_path}/#{path_for_guid guid}"
-    !res.include? 'cannot remove'
+    if !res.include?('stderr') # assumption: bosh ssh always prints:
+                               # 'stderr | Unauthorized use is strictly prohibited. All access and activity'
+                               # independent of the command bosh ssh executes inside the VM.
+      raise "exec_remote_cmd failed: #{res}"
+    end
+    if res.include?('stdout') # bosh ssh + rm returns potential errors with a 'stdout' prefix (comes from bosh ssh)
+      # TODO: Should provide this in the return value instead and change the expects using this method
+      puts "delete_resource failed with: #{res}"
+      return false
+    end
+    true
   end
 
   private
 
-  def exec_remote_cmd(cmd, user='vcap', password='c1oudc0w')
-    output = ''
-
-    Net::SSH.start(job_ip, user, password: password) do |ssh|
-      output = ssh.exec!("echo '#{password}' | sudo -S #{cmd}")
-    end
-
-    output
+  def exec_remote_cmd(cmd)
+    `bosh2 ssh bits-service -c 'sudo #{cmd}' 2>&1`
   end
 
   def resource_root_path
-    "#{root_path}/#{directory_key}"
+    "#{root_path}#{directory_key}"
   end
 end
