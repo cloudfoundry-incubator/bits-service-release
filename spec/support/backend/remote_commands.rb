@@ -3,8 +3,14 @@
 require 'net/ssh'
 
 module RemoteCommands
-  def remote_path_exists?(ip, path)
-    exec_remote_cmd("ls -l #{path}").include?('-rw-')
+  def remote_path_exists?(ip, path, user='vcap', password='c1oudc0w')
+    Net::SFTP.start(ip, user, password: password) do |sftp|
+      sftp.stat(path) do |response|
+        return true if response.ok?
+      end
+    end
+
+    false
   end
 
   def fill_storage(size='50G')
@@ -26,8 +32,14 @@ module RemoteCommands
 
   private
 
-  def exec_remote_cmd(cmd)
-    `bosh2 ssh bits-service -c 'sudo #{cmd}' 2>&1`
+  def exec_remote_cmd(cmd, user='vcap', password='c1oudc0w')
+    output = ''
+
+    Net::SSH.start(job_ip, user, password: password) do |ssh|
+      output = ssh.exec!("echo '#{password}' | sudo -S #{cmd}")
+    end
+
+    output
   end
 
   def resource_root_path

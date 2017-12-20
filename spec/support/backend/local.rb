@@ -10,11 +10,6 @@ module Backend
       include RemoteCommands
 
       def initialize(root_path, directory_key, path_prefix, job_ip)
-        fail 'BOSH_CLIENT env var not set' if ENV['BOSH_CLIENT'].nil?
-        fail 'BOSH_CLIENT_SECRET env var not set' if ENV['BOSH_CLIENT_SECRET'].nil?
-        fail 'BOSH_DEPLOYMENT env var not set' if ENV['BOSH_DEPLOYMENT'].nil?
-        fail 'BOSH_ENVIRONMENT env var not set' if ENV['BOSH_ENVIRONMENT'].nil?
-
         @root_path = root_path
         @directory_key = directory_key
         @path_prefix = path_prefix
