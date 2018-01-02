@@ -141,7 +141,8 @@ describe 'app_stash endpoint' do
   describe 'POST /app_stash/bundles', { type: :integration, action: :upload } do
     before do
       request_body = { application: File.new(app_stash_zip_path) }
-      make_post_request '/app_stash/entries', request_body
+      response = make_post_request('/app_stash/entries', request_body)
+      expect(response.code).to eq(201)
     end
 
     let(:default_file_mode) { '744' }
@@ -155,6 +156,11 @@ describe 'app_stash endpoint' do
     subject(:response) { make_post_request endpoint, resources.to_json }
 
     it 'returns HTTP status 200' do
+      # We had some flakes and would like to assert that the blobstore really really has these SHAs
+      resources.each do |entry|
+        expect(blobstore_client.key_exist?(entry['sha1'])).to be_truthy
+      end
+
       expect(response.code).to eq(200)
     end
 
