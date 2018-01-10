@@ -37,7 +37,7 @@ describe 'URL Signing', type: :integration do
 
   after action: :upload do
     response = RestClient::Request.execute({
-      url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/#{path}",
+      url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}#{path}",
       method: :delete,
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
       ssl_cert_store: cert_store
