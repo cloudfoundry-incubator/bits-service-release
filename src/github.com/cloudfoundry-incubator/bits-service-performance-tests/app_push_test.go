@@ -23,6 +23,10 @@ var _ = Describe("Pushing an app", func() {
 				To(Exit(0))
 
 			statsdClient.Timing(asSparseMetric("cf-push"), time.Since(startTime).Seconds()*1000)
+
+			Expect(
+				cf.Cf("delete", appName, "-f").Wait(cfPushTimeout)).
+				To(Exit(0))
 		}
 	})
 })
