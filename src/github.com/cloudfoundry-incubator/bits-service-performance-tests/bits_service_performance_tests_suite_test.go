@@ -42,7 +42,7 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 	metricsPrefix = os.Getenv("PERFORMANCE_TEST_METRICS_PREFIX")
 
 	if metricsPrefix != "" {
-		metricsPrefix += "."
+		metricsPrefix += "_"
 	}
 	fmt.Printf("Using metricsPrefix=%v", metricsPrefix)
 
