@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	statsd "gopkg.in/alexcesaro/statsd.v2"
+	"github.com/tecnickcom/statsd"
 
 	"github.com/cloudfoundry-incubator/cf-test-helpers/helpers"
 
