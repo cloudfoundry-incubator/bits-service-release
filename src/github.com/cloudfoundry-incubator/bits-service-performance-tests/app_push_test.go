@@ -32,5 +32,5 @@ var _ = Describe("Pushing an app", func() {
 })
 
 func asSparseMetric(metricName string) string {
-	return metricsPrefix + metricName + ".sparse-avg"
+	return metricsPrefix + metricName + "_sparse-avg"
 }
