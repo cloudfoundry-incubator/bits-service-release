@@ -205,11 +205,8 @@ describe 'app_stash endpoint' do
         ]
       end
 
-      it 'returns 422' do
+      it 'returns 422 and an error' do
         expect(response.code).to eq(422)
-      end
-
-      it 'returns an error' do
         description = JSON.parse(response.body)['description']
         expect(description).to eq('The request is semantically invalid: key `sha1` missing or empty')
       end
@@ -223,11 +220,8 @@ describe 'app_stash endpoint' do
         ]
       end
 
-      it 'returns 422' do
+      it 'returns 422 and an error' do
         expect(response.code).to eq(422)
-      end
-
-      it 'returns an error' do
         description = JSON.parse(response.body)['description']
         expect(description).to eq('The request is semantically invalid: key `fn` missing or empty')
       end
