@@ -82,8 +82,7 @@ describe 'app_stash endpoint' do
       expect(response.code).to eq 201
     end
 
-    let(:endpoint) { '/app_stash/matches' }
-    subject(:response) { make_post_request endpoint, sha_list.to_json }
+    subject(:response) { make_post_request '/app_stash/matches', sha_list.to_json }
 
     context 'when all entries match' do
       let(:sha_list) do
@@ -94,6 +93,7 @@ describe 'app_stash endpoint' do
       end
 
       it 'returns all given entries' do
+        expect(response.code).to eq(200)
         response_body = JSON.parse(response.body)
         expect(response_body).to eq(sha_list)
       end
@@ -117,6 +117,7 @@ describe 'app_stash endpoint' do
       end
 
       it 'returns only the matching entries' do
+        expect(response.code).to eq(200)
         response_body = JSON.parse(response.body)
         expect(response_body).to eq([{ 'sha1' => '8b381f8864b572841a26266791c64ae97738a659' }])
       end
@@ -141,6 +142,10 @@ describe 'app_stash endpoint' do
       request_body = { application: File.new(app_stash_zip_path) }
       response = make_post_request('/app_stash/entries', request_body)
       expect(response.code).to eq(201)
+      # We had some flakes and would like to assert that the blobstore really really has these SHAs
+      resources.each do |entry|
+        expect(blobstore_client.key_exist?(entry['sha1'])).to be_truthy
+      end
     end
 
     let(:default_file_mode) { '744' }
@@ -154,10 +159,6 @@ describe 'app_stash endpoint' do
     subject(:response) { make_post_request endpoint, resources.to_json }
 
     it 'returns HTTP status 200' do
-      # We had some flakes and would like to assert that the blobstore really really has these SHAs
-      resources.each do |entry|
-        expect(blobstore_client.key_exist?(entry['sha1'])).to be_truthy
-      end
 
       expect(response.code).to eq(200)
     end
@@ -189,11 +190,8 @@ describe 'app_stash endpoint' do
         ]
       end
 
-      it 'returns 404' do
+      it 'returns 404 and an error' do
         expect(response.code).to eq(404)
-      end
-
-      it 'returns an error' do
         description = JSON.parse(response.body)['description']
         expect(description).to eq('not-there not found')
       end
