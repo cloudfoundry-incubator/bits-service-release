@@ -25,13 +25,10 @@ describe 'app_stash endpoint' do
     let(:endpoint) { '/app_stash/entries' }
     let(:request_body) { { application: File.new(app_stash_zip_path) } }
 
-    it 'returns HTTP status 201' do
+    it 'returns HTTP status 201 and stores the blob in the backend' do
       response = make_post_request endpoint, request_body
-      expect(response.code).to eq 201
-    end
 
-    it 'stores the blob in the backend' do
-      make_post_request endpoint, request_body
+      expect(response.code).to eq 201
       app_stash_entries.each do |entry|
         expect(blobstore_client.key_exist?(entry['sha1'])).to eq(true)
       end
@@ -81,7 +78,8 @@ describe 'app_stash endpoint' do
   describe 'POST /app_stash/matches', { type: :integration, action: :upload } do
     before do
       request_body = { application: File.new(app_stash_zip_path) }
-      make_post_request '/app_stash/entries', request_body
+      response = make_post_request '/app_stash/entries', request_body
+      expect(response.code).to eq 201
     end
 
     let(:endpoint) { '/app_stash/matches' }
