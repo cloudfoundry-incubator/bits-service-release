@@ -44,7 +44,7 @@ module RemoteCommands
   private
 
   def exec_remote_cmd(cmd)
-    `bosh2 ssh bits-service -c 'sudo #{cmd}' 2>&1`
+    `bosh2 ssh #{instance_name} -c 'sudo #{cmd}' 2>&1`
   end
 
   def resource_root_path

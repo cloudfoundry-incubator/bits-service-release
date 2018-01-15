@@ -11,6 +11,7 @@ module Backend
         @path_prefix = path_prefix
         # TODO: (ae, ns) Just for testing
         @root_path = '/var/vcap/store/shared/'
+        @instance_name = 'blobstore'
       end
 
       def key_exist?(guid)
@@ -18,6 +19,10 @@ module Backend
 
         remote_path_exists?(job_ip, path)
       end
+
+      private
+
+      attr_reader :instance_name
     end
   end
 end

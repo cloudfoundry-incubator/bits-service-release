@@ -20,6 +20,7 @@ module Backend
         @path_prefix = path_prefix
         raise 'job_ip must not be a http(s) endpoint' if job_ip.start_with?('http')
         @job_ip = job_ip
+        @instance_name = 'bits-service'
       end
 
       def key_exist?(guid)
@@ -29,7 +30,7 @@ module Backend
 
       private
 
-      attr_reader :root_path, :directory_key, :job_ip
+      attr_reader :root_path, :directory_key, :job_ip, :instance_name
     end
   end
 end
