@@ -146,6 +146,8 @@ describe 'app_stash endpoint' do
       request_body = { application: File.new(app_stash_zip_path) }
       response = make_post_request('/app_stash/entries', request_body)
       expect(response.code).to eq(201)
+      # Sleeping to get over eventual consistency: https://docs.aws.amazon.com/AmazonS3/latest/dev/Introduction.html#ConsistencyModel
+      sleep 3
       # We had some flakes and would like to assert that the blobstore really really has these SHAs
       ['8b381f8864b572841a26266791c64ae97738a659','594eb15515c89bbfb0874aa4fd4128bee0a1d0b5'].each do |entry|
         expect(blobstore_client.key_exist?(entry)).to be_truthy
