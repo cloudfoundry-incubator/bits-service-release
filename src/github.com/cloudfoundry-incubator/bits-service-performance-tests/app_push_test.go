@@ -19,7 +19,7 @@ var _ = Describe("Pushing an app", func() {
 
 			appName := generator.PrefixedRandomName("APP")
 			Expect(
-				cf.Cf("push", appName, "-p", "assets/dora").Wait(cfPushTimeout)).
+				cf.Cf("push", appName, "-p", "assets/golang", "-b", "go_buildpack").Wait(cfPushTimeout)).
 				To(Exit(0))
 
 			statsdClient.Timing(asSparseMetric("cf-push"), time.Since(startTime).Seconds()*1000)
