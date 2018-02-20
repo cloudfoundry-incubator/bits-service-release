@@ -1,0 +1,13 @@
+#!/var/vcap/packages/ruby-2.3/bin/ruby
+
+# A diagnostic endpoint for Statsd
+
+require 'socket'
+
+socket = UDPSocket.new
+socket.bind('127.0.0.1', 8125)
+
+while true
+  mesg, addr = socket.recvfrom(10_000)
+  puts mesg
+end

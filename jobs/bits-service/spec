@@ -20,12 +20,15 @@ templates:
   mutual_client_key.pem.erb:  config/certs/mutual_client_key.pem
   nginx_bits_tls.crt.erb:     config/certs/nginx_bits_tls.crt
   nginx_bits_tls.key.erb:     config/certs/nginx_bits_tls.key
+  statsd_pipe_ctl.erb:        bin/statsd_pipe_ctl
+  statsd_pipe:                bin/statsd_pipe
 
 packages:
   - ruby-2.3_bits
   - bits-service
   - bits-common
   - nginx_bits
+  - socat
 
 properties:
   request_timeout_in_seconds:

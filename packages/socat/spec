@@ -1,0 +1,4 @@
+---
+name: socat
+files:
+- socat/socat-1.7.3.0.tar.gz
