@@ -209,9 +209,12 @@ properties:
   bits-service.nginx.error_log_level:
     description: "The lowest severity nginx log level to capture in the error log."
     default: error
-  bits-service.nginx.metrics_log_destination:
+  bits-service.nginx.metrics_public_log_destination:
     description: "Nginx metrics log destination."
-    default: "/var/vcap/sys/log/nginx_bits/metrics.log"
+    default: "/var/vcap/sys/log/nginx_bits/metrics_public.log"
+  bits-service.nginx.metrics_private_log_destination:
+    description: "Nginx metrics log destination."
+    default: "/var/vcap/sys/log/nginx_bits/metrics_private.log"
 
   bits-service.cc_updates.cc_url:
     description: "CloudController endpoint for sending package status updates"

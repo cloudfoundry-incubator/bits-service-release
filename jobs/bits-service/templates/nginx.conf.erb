@@ -26,7 +26,6 @@ http {
   log_format metrics '$request;$request_time;$bytes_sent';
 
   access_log <%= p("bits-service.nginx.access_log_destination") %> main;
-  access_log <%= p("bits-service.nginx.metrics_log_destination") %> metrics;
 
   sendfile             on;  #enable use of sendfile()
   tcp_nopush           on;
@@ -58,7 +57,7 @@ http {
     ssl_session_timeout 10m;
 
     access_log  <%= p("bits-service.nginx.private_access_log_destination") %> main;
-    access_log <%= p("bits-service.nginx.metrics_log_destination") %> metrics;
+    access_log <%= p("bits-service.nginx.metrics_private_log_destination") %> metrics;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>
       proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
@@ -155,7 +154,7 @@ http {
     server_name_in_redirect off;
 
     access_log  <%= p("bits-service.nginx.public_access_log_destination") %> main;
-    access_log <%= p("bits-service.nginx.metrics_log_destination") %> metrics;
+    access_log <%= p("bits-service.nginx.metrics_public_log_destination") %> metrics;
 
     <% if p("request_timeout_in_seconds").to_i > 0 %>
       proxy_send_timeout          <%= p("request_timeout_in_seconds") %>;
