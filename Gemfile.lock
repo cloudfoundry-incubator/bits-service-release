@@ -591,6 +591,7 @@ GEM
     rspec-expectations (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
+    rspec-json_expectations (2.1.0)
     rspec-mocks (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.7.0)
@@ -628,6 +629,7 @@ DEPENDENCIES
   rest-client (= 1.8.0)
   rspec
   rspec-collection_matchers
+  rspec-json_expectations
   rubocop
   terminal-notifier
   terminal-notifier-guard
