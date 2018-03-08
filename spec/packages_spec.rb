@@ -4,6 +4,7 @@ require 'spec_helper'
 require 'shared_examples'
 require 'json'
 require 'support/cf.rb'
+require "rspec/json_expectations"
 
 describe 'packages resource' do
   let(:resource_path) { "/packages/#{guid}" }
@@ -113,6 +114,23 @@ describe 'packages resource' do
           response = make_put_request resource_path, ''
           expect(response.code).to eq(400)
         end
+      end
+    end
+
+    context 'when multipart param is called "bits" (as done by cf CLI), not "package" (as done by CC)' do
+      let(:upload_body) { { bits: zip_file } }
+
+      it 'returns HTTP status 201 and a json body acceptable for the cf CLI' do
+        response = make_put_request resource_path, upload_body
+
+        expect(response.code).to eq(201)
+
+        expect(JSON.parse(response.body)).to include_json(
+          guid: guid,
+          state: 'READY',
+          type: 'bits',
+          created_at: /.+/
+        )
       end
     end
 
