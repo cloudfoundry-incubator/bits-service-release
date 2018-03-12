@@ -22,7 +22,7 @@ var _ = Describe("Pushing an app", func() {
 				cf.Cf("push", appName, "-p", "assets/golang", "-b", "go_buildpack").Wait(cfPushTimeout)).
 				To(Exit(0))
 
-			statsdClient.Timing(asSparseMetric("cf-push"), time.Since(startTime).Seconds()*1000)
+			metricsService.SendTimingMetric(asSparseMetric("cf-push"), time.Since(startTime))
 
 			Expect(
 				cf.Cf("delete", appName, "-f").Wait(cfPushTimeout)).

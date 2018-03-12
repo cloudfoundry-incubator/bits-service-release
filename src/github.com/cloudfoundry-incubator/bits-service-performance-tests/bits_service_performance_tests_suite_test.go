@@ -23,10 +23,30 @@ var (
 	config         helpers.Config
 	defaultTimeout time.Duration = 30 * time.Second
 	cfPushTimeout  time.Duration = 5 * time.Minute
-	statsdClient   *statsd.Client
+	metricsService *CombinedStatsdAndLocalFileEmittingMetricsService
 	metricsPrefix  string
 	loopCount      int
 )
+
+type CombinedStatsdAndLocalFileEmittingMetricsService struct {
+	filename     string
+	statsdClient *statsd.Client
+}
+
+func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) SendTimingMetric(name string, duration time.Duration) {
+	ms.statsdClient.Timing(name, duration.Seconds()*1000)
+
+	file, e := os.OpenFile(ms.filename, os.O_APPEND|os.O_WRONLY, 0644)
+	if e != nil {
+		panic(e)
+	}
+	defer file.Close()
+	file.WriteString("Bla")
+}
+
+func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) Close() {
+	ms.statsdClient.Close()
+}
 
 func TestBitsServicePerformanceTests(t *testing.T) {
 	config = helpers.LoadConfig()
@@ -55,13 +75,16 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 	BeforeSuite(func() {
 		environment.Setup()
 
-		var e error
-		statsdClient, e = statsd.New() // Connect to the UDP port 8125 by default.
+		statsdClient, e := statsd.New() // Connect to the UDP port 8125 by default.
 		Expect(e).NotTo(HaveOccurred())
+		metricsService = &CombinedStatsdAndLocalFileEmittingMetricsService{
+			filename:     "Bla",
+			statsdClient: statsdClient,
+		}
 	})
 
 	AfterSuite(func() {
-		statsdClient.Close()
+		metricsService.Close()
 		environment.Teardown()
 	})
 
