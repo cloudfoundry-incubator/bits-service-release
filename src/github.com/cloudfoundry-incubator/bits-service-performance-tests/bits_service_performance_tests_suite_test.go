@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"bufio"
 	"fmt"
 	"time"
 
@@ -34,14 +35,21 @@ type CombinedStatsdAndLocalFileEmittingMetricsService struct {
 }
 
 func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) SendTimingMetric(name string, duration time.Duration) {
-	ms.statsdClient.Timing(name, duration.Seconds()*1000)
-
-	file, e := os.OpenFile(ms.filename, os.O_APPEND|os.O_WRONLY, 0644)
+	milliseconds := duration.Seconds() * 1000
+	ms.statsdClient.Timing(name, milliseconds)
+	file, e := os.OpenFile(ms.filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if e != nil {
 		panic(e)
 	}
 	defer file.Close()
-	file.WriteString("Bla")
+	file.WriteString(time.Now().UTC().Format(time.RFC3339))
+	file.WriteString(",")
+	file.WriteString(name)
+	file.WriteString(",")
+	file.WriteString(fmt.Sprintf("%d", int(milliseconds)))
+	file.WriteString(",")
+	file.WriteString("ms")
+	file.WriteString("\n")
 }
 
 func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) Close() {
@@ -78,7 +86,7 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		statsdClient, e := statsd.New() // Connect to the UDP port 8125 by default.
 		Expect(e).NotTo(HaveOccurred())
 		metricsService = &CombinedStatsdAndLocalFileEmittingMetricsService{
-			filename:     "Bla",
+			filename:     "metrics.csv",
 			statsdClient: statsdClient,
 		}
 	})
@@ -106,4 +114,23 @@ func loopCountFromEnv() int {
 
 		return loopCount
 	}
+}
+
+func lastLine(filepath string) (string, error) {
+	file, err := os.Open(filepath)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	lastline := ""
+	for scanner.Scan() {
+		lastline = scanner.Text()
+	}
+
+	if err := scanner.Err(); err != nil {
+		return "", err
+	}
+	return lastline, nil
 }

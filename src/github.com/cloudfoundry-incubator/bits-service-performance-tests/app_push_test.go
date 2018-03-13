@@ -1,6 +1,8 @@
 package main_test
 
 import (
+	"strings"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gexec"
@@ -28,6 +30,21 @@ var _ = Describe("Pushing an app", func() {
 				cf.Cf("delete", appName, "-f").Wait(cfPushTimeout)).
 				To(Exit(0))
 		}
+
+		Expect(metricsService.filename).To(BeAnExistingFile())
+
+		lastLine, err := lastLine(metricsService.filename)
+		Expect(err).NotTo(HaveOccurred())
+
+		parts := strings.Split(lastLine, ",")
+		Expect(parts).To(HaveLen(4))
+
+		_, err = time.Parse(time.RFC3339, parts[0])
+		Expect(err).NotTo(HaveOccurred())
+
+		Expect(parts[1]).To(Equal("cf-push_sparse-avg"))
+		Expect(parts[2]).To(MatchRegexp("\\d+"))
+		Expect(parts[3]).To(MatchRegexp("ms"))
 	})
 })
 
