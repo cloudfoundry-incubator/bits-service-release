@@ -42,7 +42,7 @@ var _ = Describe("Pushing an app", func() {
 		_, err = time.Parse(time.RFC3339, parts[0])
 		Expect(err).NotTo(HaveOccurred())
 
-		Expect(parts[1]).To(Equal("cf-push_sparse-avg"))
+		Expect(parts[1]).To(HaveSuffix("cf-push_sparse-avg"))
 		Expect(parts[2]).To(MatchRegexp("\\d+"))
 		Expect(parts[3]).To(MatchRegexp("ms"))
 	})
