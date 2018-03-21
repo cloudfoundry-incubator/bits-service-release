@@ -2,6 +2,7 @@ package main_test
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/tecnickcom/statsd"
@@ -60,7 +61,7 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		cfPushTimeout = config.CfPushTimeout * time.Second
 	}
 
-	if os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)") {
+	if strings.ToLower(os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)")) == "true" {
 		shouldUseV3Push = true
 	}
 
