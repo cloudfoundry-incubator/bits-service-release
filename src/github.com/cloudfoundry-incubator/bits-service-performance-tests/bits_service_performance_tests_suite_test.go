@@ -1,7 +1,6 @@
 package main_test
 
 import (
-	"bufio"
 	"fmt"
 	"time"
 
@@ -20,13 +19,14 @@ import (
 )
 
 var (
-	context        helpers.SuiteContext
-	config         helpers.Config
-	defaultTimeout time.Duration = 30 * time.Second
-	cfPushTimeout  time.Duration = 5 * time.Minute
-	metricsService *CombinedStatsdAndLocalFileEmittingMetricsService
-	metricsPrefix  string
-	loopCount      int
+	context         helpers.SuiteContext
+	config          helpers.Config
+	defaultTimeout  time.Duration = 30 * time.Second
+	cfPushTimeout   time.Duration = 5 * time.Minute
+	metricsService  *CombinedStatsdAndLocalFileEmittingMetricsService
+	metricsPrefix   string
+	loopCount       int
+	shouldUseV3Push bool
 )
 
 type CombinedStatsdAndLocalFileEmittingMetricsService struct {
@@ -58,6 +58,10 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 
 	if config.CfPushTimeout > 0 {
 		cfPushTimeout = config.CfPushTimeout * time.Second
+	}
+
+	if os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)") {
+		shouldUseV3Push = true
 	}
 
 	metricsPrefix = os.Getenv("PERFORMANCE_TEST_METRICS_PREFIX")
@@ -107,23 +111,4 @@ func loopCountFromEnv() int {
 
 		return loopCount
 	}
-}
-
-func lastLine(filepath string) (string, error) {
-	file, err := os.Open(filepath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-	lastline := ""
-	for scanner.Scan() {
-		lastline = scanner.Text()
-	}
-
-	if err := scanner.Err(); err != nil {
-		return "", err
-	}
-	return lastline, nil
 }
