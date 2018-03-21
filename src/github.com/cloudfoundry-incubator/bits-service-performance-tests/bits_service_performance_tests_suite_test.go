@@ -42,14 +42,7 @@ func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) SendTimingMetric(nam
 		panic(e)
 	}
 	defer file.Close()
-	file.WriteString(time.Now().UTC().Format(time.RFC3339))
-	file.WriteString(",")
-	file.WriteString(name)
-	file.WriteString(",")
-	file.WriteString(fmt.Sprintf("%d", int(milliseconds)))
-	file.WriteString(",")
-	file.WriteString("ms")
-	file.WriteString("\n")
+	fmt.Fprintf(file, "%v,%v,%d,ms\n", time.Now().UTC().Format(time.RFC3339), name, int(milliseconds))
 }
 
 func (ms *CombinedStatsdAndLocalFileEmittingMetricsService) Close() {
@@ -86,7 +79,7 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		statsdClient, e := statsd.New() // Connect to the UDP port 8125 by default.
 		Expect(e).NotTo(HaveOccurred())
 		metricsService = &CombinedStatsdAndLocalFileEmittingMetricsService{
-			filename:     "metrics.csv",
+			filename:     os.Getenv("PERFORMANCE_TEST_METRICS_CSV_FILE"),
 			statsdClient: statsdClient,
 		}
 	})
