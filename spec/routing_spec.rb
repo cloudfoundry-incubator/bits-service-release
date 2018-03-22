@@ -69,8 +69,7 @@ describe 'accessing the bits-service', type: :integration do
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
             ssl_cert_store: cert_store
           )
-          # RestClient::Request.execute(method: :get, url: "https://#{private_endpoint_ip}/packages/#{guid}",  verify_ssl: OpenSSL::SSL::VERIFY_PEER)
-        }.to raise_error(OpenSSL::SSL::SSLError)
+        }.to raise_error(RestClient::SSLCertificateNotVerified)
       end
     end
 
@@ -81,7 +80,7 @@ describe 'accessing the bits-service', type: :integration do
           method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store,
           headers: { host: public_endpoint.hostname }
           })
-        }.to raise_error(OpenSSL::SSL::SSLError)
+        }.to raise_error(RestClient::SSLCertificateNotVerified)
       end
     end
   end
