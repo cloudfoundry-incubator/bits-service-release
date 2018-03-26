@@ -15,10 +15,8 @@ templates:
   mutual_ca_cert.pem.erb:     config/certs/mutual_ca_cert.pem
   mutual_client_cert.pem.erb: config/certs/mutual_client_cert.pem
   mutual_client_key.pem.erb:  config/certs/mutual_client_key.pem
-  nginx_bits_tls.crt.erb:     config/certs/nginx_bits_tls.crt
-  nginx_bits_tls.key.erb:     config/certs/nginx_bits_tls.key
-  statsd_pipe_ctl.erb:        bin/statsd_pipe_ctl
-  statsd_pipe:                bin/statsd_pipe
+  bits_tls.crt.erb:           config/certs/bits_tls.crt
+  bits_tls.key.erb:           config/certs/bits_tls.key
 
 packages:
   - bitsgo

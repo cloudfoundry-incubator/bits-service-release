@@ -125,3 +125,5 @@ signing_users:
     password: <%= user['password'] %>
   <% end %>
 max_body_size: <%= p("bits-service.max_body_size") %>
+cert_file: config/certs/bits_tls.crt
+key_file: config/certs/bits_tls.key
