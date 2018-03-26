@@ -109,7 +109,7 @@ logging:
   max_retries: <%= p("bits-service.logging.max_retries") %>
 private_endpoint: <%= p("bits-service.private_endpoint") %>
 public_endpoint: <%= p("bits-service.public_endpoint") %>
-port: 80
+port: 443
 secret: <%= p("bits-service.secret") %>
 skip_cert_verify: true
 <% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do %>
@@ -125,5 +125,5 @@ signing_users:
     password: <%= user['password'] %>
   <% end %>
 max_body_size: <%= p("bits-service.max_body_size") %>
-cert_file: config/certs/bits_tls.crt
-key_file: config/certs/bits_tls.key
+cert_file: /var/vcap/jobs/bits-service/config/certs/bits_tls.crt
+key_file: /var/vcap/jobs/bits-service/config/certs/bits_tls.key
