@@ -61,7 +61,8 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		cfPushTimeout = config.CfPushTimeout * time.Second
 	}
 
-	fmt.Printf("Value of PERFORMANCE_TEST_SHOULD_USE_V3_PUSH: %v", os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)"))
+	fmt.Printf("Environment variables:\n%#v\n", os.Environ())
+
 	if strings.ToLower(os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)")) == "true" {
 		shouldUseV3Push = true
 	}
