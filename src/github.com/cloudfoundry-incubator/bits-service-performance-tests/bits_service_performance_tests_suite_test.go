@@ -61,9 +61,8 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 		cfPushTimeout = config.CfPushTimeout * time.Second
 	}
 
-	fmt.Printf("Environment variables:\n%#v\n", os.Environ())
-
-	if strings.ToLower(os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH)")) == "true" {
+	fmt.Printf("Using v3-push: %v\n", os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH"))
+	if strings.ToLower(os.Getenv("PERFORMANCE_TEST_SHOULD_USE_V3_PUSH")) == "true" {
 		shouldUseV3Push = true
 	}
 
@@ -72,10 +71,10 @@ func TestBitsServicePerformanceTests(t *testing.T) {
 	if metricsPrefix != "" {
 		metricsPrefix += "_"
 	}
-	fmt.Printf("Using metricsPrefix=%v", metricsPrefix)
+	fmt.Printf("Using metricsPrefix=%v\n", metricsPrefix)
 
 	loopCount = loopCountFromEnv()
-	fmt.Printf("Using loopCount=%v", loopCount)
+	fmt.Printf("Using loopCount=%v\n", loopCount)
 
 	context = helpers.NewContext(config)
 	environment := helpers.NewEnvironment(context)
