@@ -11,7 +11,7 @@ export BOSH_DIRECTOR_UUID=not-used-anymore-in-cli-v2
 
 echo "Using blobstore-type=${BLOBSTORE_TYPE} for manifest generation."
 
-spruce merge \
+spruce merge --go-patch \
     templates/standalone-basic-structure.yml \
     templates/standalone-blobstore-job.yml \
     templates/standalone-bits-service-job.yml \
