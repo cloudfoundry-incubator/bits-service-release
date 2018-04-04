@@ -1,0 +1,13 @@
+logging:
+  level: debug
+private_endpoint: https://internal.127.0.0.1.xip.io
+public_endpoint: https://127.0.0.1.xip.io
+cert_file: cert_file
+key_file: key_file
+port: 4443
+secret: 12345
+skip_cert_verify: true
+max_body_size: 2M
+signing_users:
+  - username: admin
+    password: admin

@@ -1,0 +1,12 @@
+properties:
+  bits-service:
+    private_endpoint: https://internal.127.0.0.1.xip.io:4443
+    public_endpoint: https://127.0.0.1.xip.io:4443
+    secret: 12345
+    signing_users:
+    - password: admin
+      username: admin
+    cc_updates:
+      ca_cert: TODO
+      client_cert: TODO
+      client_key: TODO

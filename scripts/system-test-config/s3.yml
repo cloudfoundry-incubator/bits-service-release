@@ -1,0 +1,30 @@
+buildpacks: &blobstore_config
+  blobstore_type: AWS
+  max_body_size: 4M
+  s3_config:
+    bucket: (( grab $BUCKET ))
+    access_key_id: (( grab $ACCESS_KEY_ID ))
+    secret_access_key: (( grab $SECRET_ACCESS_KEY ))
+    region: (( grab $REGION ))
+droplets:
+  <<: *blobstore_config
+  max_body_size: 5M
+packages:
+  <<: *blobstore_config
+  max_body_size: 6M
+app_stash:
+  <<: *blobstore_config
+  max_body_size: 3M
+
+properties:
+  bits-service:
+    app_stash: &manifest_blobstore_config
+      directory_key: (( grab $BUCKET ))
+      fog_connection:
+        aws_access_key_id: (( grab $ACCESS_KEY_ID ))
+        aws_secret_access_key: (( grab $SECRET_ACCESS_KEY ))
+        provider: AWS
+        region: (( grab $REGION ))
+    buildpacks: *manifest_blobstore_config
+    droplets: *manifest_blobstore_config
+    packages: *manifest_blobstore_config
