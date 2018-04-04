@@ -1,0 +1,9 @@
+buildpacks: &blobstore_config
+  blobstore_type: Azure
+  azure_config:
+    container_name: (( grab $CONTAINER_NAME ))
+    account_name:  (( grab $ACCOUNT_NAME ))
+    account_key:  (( grab $ACCOUNT_KEY ))
+droplets: *blobstore_config
+packages: *blobstore_config
+app_stash: *blobstore_config

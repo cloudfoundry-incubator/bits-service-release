@@ -1,0 +1,12 @@
+buildpacks: &blobstore_config
+  blobstore_type: Google
+  gcp_config:
+    email: (( grab $EMAIL ))
+    private_key: (( grab $PRIVATE_KEY ))
+    private_key_id: (( grab $PRIVATE_KEY_ID ))
+    token_url: (( grab $TOKEN_URL ))
+    bucket:  (( grab $BUCKET ))
+droplets: *blobstore_config
+packages: *blobstore_config
+app_stash: *blobstore_config
+

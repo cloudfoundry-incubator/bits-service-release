@@ -1,0 +1,32 @@
+app_stash: &blobstore_config
+  blobstore_type: webdav
+  webdav_config:
+    private_endpoint: (( grab $PRIVATE_ENDPOINT ))
+    public_endpoint: (( grab $PUBLIC_ENDPOINT ))
+    ca_cert_path: TODO
+    username: blobstore
+    password: blobstore
+buildpacks: *blobstore_config
+droplets: *blobstore_config
+packages: *blobstore_config
+
+properties:
+  bits-service:
+    app_stash: &manifest_blobstore_config
+      blobstore_type: webdav
+      directory_key: app_stash
+      webdav_config:
+        ca_cert: T§ODO
+        password: blobstore
+        private_endpoint:  (( grab $PRIVATE_ENDPOINT ))
+        public_endpoint: (( grab $PUBLIC_ENDPOINT ))
+        username: blobstore
+    buildpacks:
+      <<: *manifest_blobstore_config
+      directory_key: buildpacks
+    droplets:
+      <<: *manifest_blobstore_config
+      directory_key: droplets
+    packages:
+      <<: *manifest_blobstore_config
+      directory_key: packages

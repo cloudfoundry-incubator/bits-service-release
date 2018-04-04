@@ -1,0 +1,34 @@
+app_stash:
+  blobstore_type: local
+  local_config:
+    path_prefix: /tmp/app_stash
+buildpacks:
+  blobstore_type: local
+  local_config:
+    path_prefix: /tmp/buildpacks
+droplets:
+  blobstore_type: local
+  local_config:
+    path_prefix: /tmp/droplets
+max_body_size: 2M
+packages:
+  blobstore_type: local
+  local_config:
+    path_prefix: /tmp/packages
+
+properties:
+  bits-service:
+    app_stash:
+      directory_key: app_stash
+      fog_connection: &fog_connection
+        local_root: /var/vcap/store/bits-service/
+        provider: local
+    buildpacks:
+      directory_key: buildpacks
+      fog_connection: *fog_connection
+    droplets:
+      directory_key: droplets
+      fog_connection: *fog_connection
+    packages:
+      directory_key: packages
+      fog_connection: *fog_connection
