@@ -22,8 +22,8 @@ case $1 in
 
     pid_guard $PIDFILE "statsd_pipe"
 
-    $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_private_log_destination") %> <%= p("bits-service.nginx.metrics_public_log_destination") %>' 2>&1 &
-    echo $! > $PIDFILE
+    echo $$ > $PIDFILE
+    exec $JOB_DIR/bin/statsd_pipe '<%= p("bits-service.nginx.metrics_private_log_destination") %> <%= p("bits-service.nginx.metrics_public_log_destination") %>' 2>&1
 
     ;;
   stop)
