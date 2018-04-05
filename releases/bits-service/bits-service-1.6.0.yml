@@ -1,0 +1,60 @@
+name: bits-service
+version: 1.6.0
+commit_hash: f41f121
+uncommitted_changes: false
+jobs:
+- name: bits-service
+  version: 667d57442001a33e45b5ed8c1a24888ded029fa0
+  fingerprint: 667d57442001a33e45b5ed8c1a24888ded029fa0
+  sha1: 14586f636efd5c00087f70fe02740c57001077c0
+- name: bits-service-migration-tests
+  version: 3e16dcfdbdea252e1463b082087d4f0bc74dec92
+  fingerprint: 3e16dcfdbdea252e1463b082087d4f0bc74dec92
+  sha1: c96680499ac40163e930f4686946964572c3752f
+packages:
+- name: bits-common
+  version: 31323f35fea0d06665c3ffdd9019605655cdcb99
+  fingerprint: 31323f35fea0d06665c3ffdd9019605655cdcb99
+  sha1: 03bb73898c26fc9713456c0bb9cc75bc9c7fea35
+  dependencies: []
+- name: bits-service
+  version: d45a352a46c21b43afca02e501cdf49926b124de
+  fingerprint: d45a352a46c21b43afca02e501cdf49926b124de
+  sha1: 1548b1dcde55434be6011f5d364641050d7ecc11
+  dependencies:
+  - ruby-2.3_bits
+- name: bits-service-migration-tests
+  version: 2a0f05ad85128057a6e5eaa10b42d593f3fc09eb
+  fingerprint: 2a0f05ad85128057a6e5eaa10b42d593f3fc09eb
+  sha1: 1da3f309fb7366a59de1bb15e0ecd9923cc82881
+  dependencies:
+  - golang1.6
+- name: cli
+  version: 0f19a1df7ef777208cc3bfcdc875b2b56613ab40
+  fingerprint: 0f19a1df7ef777208cc3bfcdc875b2b56613ab40
+  sha1: a4e387616588ef30de5bf055595a6b096de369f4
+  dependencies: []
+- name: golang1.6
+  version: 85a489b7c0c2584aa9e0a6dd83666db31c6fc8e8
+  fingerprint: 85a489b7c0c2584aa9e0a6dd83666db31c6fc8e8
+  sha1: 4ada00036cd58f9902f13bd3795a8794980d52dc
+  dependencies: []
+- name: nginx_bits
+  version: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  fingerprint: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  sha1: 63277e90b8e45136e582bcfb820bbf011dfd75dd
+  dependencies: []
+- name: ruby-2.3_bits
+  version: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  fingerprint: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  sha1: 5aa86f46e08262c8aa2c978a3a62286e3ec8e009
+  dependencies: []
+- name: socat
+  version: 1f4f792cd5604887a8dc9d4d382a16fb838bbb09
+  fingerprint: 1f4f792cd5604887a8dc9d4d382a16fb838bbb09
+  sha1: 86c93cde55ed39017998ba9a8b7c13fa94366a5d
+  dependencies: []
+license:
+  version: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  fingerprint: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  sha1: 5b431b09817c6a22857579501120edf483cac16c
