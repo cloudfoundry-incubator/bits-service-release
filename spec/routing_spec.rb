@@ -43,7 +43,7 @@ describe 'accessing the bits-service', type: :integration do
 
   before do
     RestClient::Resource.new(
-      "https://#{private_endpoint.hostname}/packages/#{guid}",
+      "https://#{private_endpoint.hostname}:#{private_endpoint.port}/packages/#{guid}",
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
       ssl_cert_store: cert_store
     ).
@@ -53,7 +53,7 @@ describe 'accessing the bits-service', type: :integration do
 
   after do
     RestClient::Resource.new(
-      "https://#{private_endpoint.hostname}/packages/#{guid}",
+      "https://#{private_endpoint.hostname}:#{private_endpoint.port}/packages/#{guid}",
       verify_ssl: OpenSSL::SSL::VERIFY_PEER,
       ssl_cert_store: cert_store
     ).delete({ host: private_endpoint.hostname })
@@ -65,7 +65,7 @@ describe 'accessing the bits-service', type: :integration do
         expect {
           RestClient::Request.execute(
             method: :get,
-            url: "https://#{private_endpoint_ip}/packages/#{guid}",
+            url: "https://#{private_endpoint_ip}:#{private_endpoint.port}/packages/#{guid}",
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
             ssl_cert_store: cert_store
           )
