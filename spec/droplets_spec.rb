@@ -35,20 +35,22 @@ describe 'droplets resource' do
     context 'PUT /sign/droplets/:guid' do
       context 'with content_type is configured' do
         it 'returns HTTP status 201' do
-          response = rest_request.put zip_file, content_type: 'application/octet-stream'
+          signed_droplet_url = signed_url_for_droplets_puts(path)
+          response = rest_request(signed_droplet_url).put zip_file, content_type: 'application/octet-stream'
           expect(response.code).to eq 201
         end
       end
       context 'minimal request config' do
         it 'returns HTTP status 201' do
-          response = rest_request.put zip_file
+          signed_droplet_url = signed_url_for_droplets_puts(path)
+          response = rest_request(signed_droplet_url).put zip_file
           expect(response.code).to eq 201
         end
       end
 
       context 'missing Digest', action: false do
         it 'returns HTTP status 400' do
-          droplet_url = signed_url_for_droplets(path)
+          droplet_url = signed_url_for_droplets_puts(path)
           expect { RestClient::Resource.new(
             droplet_url,
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
@@ -62,7 +64,7 @@ describe 'droplets resource' do
         let(:digest) { '' }
 
         it 'returns the right error code' do
-          droplet_url = signed_url_for_droplets(path)
+          droplet_url = signed_url_for_droplets_puts(path)
           expect {
             RestClient::Resource.new(
               droplet_url,
@@ -79,10 +81,9 @@ describe 'droplets resource' do
         end
       end
 
-      def rest_request
-        droplet_url = signed_url_for_droplets(path)
+      def rest_request(signed_droplet_url)
         RestClient::Resource.new(
-          droplet_url,
+          signed_droplet_url,
           verify_ssl: OpenSSL::SSL::VERIFY_PEER,
           ssl_cert_store: cert_store,
           headers: {
@@ -91,9 +92,9 @@ describe 'droplets resource' do
         )
       end
 
-      def signed_url_for_droplets(path)
+      def signed_url_for_droplets_puts(path)
         droplet_url = RestClient::Request.execute({
-          url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+          url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}?verb=put",
           method: :get,
           verify_ssl: OpenSSL::SSL::VERIFY_PEER,
           ssl_cert_store: cert_store
