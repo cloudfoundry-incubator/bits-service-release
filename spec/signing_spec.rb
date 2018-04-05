@@ -48,7 +48,7 @@ describe 'URL Signing', type: :integration do
   context 'method: PUT', action: :upload do
     it 'return a signed URL that can be used to upload a package' do
       response = RestClient::Request.execute({
-        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}?verb=put",
+        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}?verb=put",
         method: :get,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
         ssl_cert_store: cert_store
@@ -62,7 +62,7 @@ describe 'URL Signing', type: :integration do
       expect(response.code).to be_between(200, 201)
 
       response = RestClient::Request.execute({
-        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}",
         method: :get,
         verify_ssl: OpenSSL::SSL::VERIFY_PEER,
         ssl_cert_store: cert_store
@@ -92,7 +92,7 @@ describe 'URL Signing', type: :integration do
     describe '/sign' do
       it 'returns a signed URL' do
         response = RestClient::Request.execute({
-          url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+          url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}",
           method: :get,
           verify_ssl: OpenSSL::SSL::VERIFY_PEER,
           ssl_cert_store: cert_store
@@ -109,7 +109,7 @@ describe 'URL Signing', type: :integration do
         it 'returns HTTP status code 401' do
           expect {
             RestClient::Request.execute({
-              url: "https://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}/sign#{path}",
+              url: "https://#{signing_username}:WRONG_PASSWORD@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}",
               method: :get,
               verify_ssl: OpenSSL::SSL::VERIFY_PEER,
               ssl_cert_store: cert_store
@@ -123,7 +123,7 @@ describe 'URL Signing', type: :integration do
       context 'when the signature is valid' do
         it 'resolves the signed_url and handles the request' do
           signed_url = RestClient::Request.execute({
-            url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{path}",
+            url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{path}",
             method: :get,
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
             ssl_cert_store: cert_store
