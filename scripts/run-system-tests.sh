@@ -2,6 +2,11 @@
 
 cd $(dirname $0)/..
 
+: ${BOSH_ENVIRONMENT?"Please set bosh env variable BOSH_ENVIRONMENT to access the blobstore VM."}
+: ${BOSH_CLIENT?"Please set bosh env variable BOSH_CLIENT to access the blobstore VM."}
+: ${BOSH_CLIENT_SECRET?"Please set bosh env variable BOSH_CLIENT_SECRET to access the blobstore VM."}
+: ${BOSH_DEPLOYMENT?"Please set bosh env variable BOSH_DEPLOYMENT to access the blobstore VM."}
+
 # build bitsgo
 pushd src/github.com/petergtz/bitsgo/cmd/bitsgo
     go install
