@@ -44,7 +44,15 @@ module RemoteCommands
   private
 
   def exec_remote_cmd(cmd)
+    verify_env_var('BOSH_ENVIRONMENT')
+    verify_env_var('BOSH_CLIENT')
+    verify_env_var('BOSH_CLIENT_SECRET')
+    verify_env_var('BOSH_DEPLOYMENT')
     `bosh2 ssh #{instance_name} -c 'sudo #{cmd}' 2>&1`
+  end
+
+  def verify_env_var(var)
+    raise "Please set bosh env variable #{var} to access the blobstore VM" unless ENV.include?(var)
   end
 
   def resource_root_path
