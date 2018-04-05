@@ -8,18 +8,19 @@ LOG_DIR=/var/vcap/sys/log/nginx_bits
 PIDFILE=$RUN_DIR/statsd_pipe.pid
 export PATH=/var/vcap/packages/socat/bin:$PATH
 
+mkdir -p $LOG_DIR
+mkdir -p $RUN_DIR
+
+# TODO: Do we really need to change owner here?:
+chown vcap:vcap $RUN_DIR
+chown vcap:vcap $LOG_DIR
+
 source /var/vcap/packages/bits-common/pid_utils.sh
 source ${JOB_DIR}/bin/syslog_utils.sh
 tee_output_to_sys_log_and_file "${LOG_DIR}" "$(basename "$0")"
 
 case $1 in
   start)
-    mkdir -p $RUN_DIR
-    mkdir -p $LOG_DIR
-
-    chown vcap:vcap $RUN_DIR
-    chown vcap:vcap $LOG_DIR
-
     pid_guard $PIDFILE "statsd_pipe"
 
     echo $$ > $PIDFILE
