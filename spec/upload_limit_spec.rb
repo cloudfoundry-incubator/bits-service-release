@@ -69,7 +69,7 @@ describe 'Upload limits for resources', type: 'limits' do
           expect(del_response.code).to be_between(200, 204)
         end
         it 'returns HTTP status code 201' do
-          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{resource_path}?verb=put"
           response = RestClient::Request.execute({
             url: sign_url,
             method: :get,
@@ -89,7 +89,7 @@ describe 'Upload limits for resources', type: 'limits' do
 
       context 'when the file is bigger than limit' do
         it 'returns HTTP status code 413' do
-          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}/sign#{resource_path}?verb=put"
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{resource_path}?verb=put"
           response = RestClient::Request.execute({
             url: sign_url,
             method: :get,

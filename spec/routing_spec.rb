@@ -76,7 +76,7 @@ describe 'accessing the bits-service', type: :integration do
     context 'passing header "host: <public_endpoint>"' do
       it 'responds SSLError: hostname <private_endpoint_ip> does not match the server certificate, because the IP is not part of the certificate.' do
         expect { RestClient::Request.execute({
-          url: "https://#{private_endpoint_ip}/packages/#{guid}",
+          url: "https://#{private_endpoint_ip}:#{private_endpoint.port}/packages/#{guid}",
           method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store,
           headers: { host: public_endpoint.hostname }
           })
@@ -87,13 +87,17 @@ describe 'accessing the bits-service', type: :integration do
 
   context 'by private endpoint' do
     context 'passing header "host: <public_endpoint>"' do
-      it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
-        expect { RestClient::Request.execute({
-          url: "#{private_endpoint}/packages/#{guid}",
-          method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store, headers: { host: public_endpoint.hostname }
-          })
-        }.to raise_error(RestClient::ResourceNotFound)
+      it 'responds with 404 or 403, because host is public and the public host does not allow unsigned access to packages' do
+        begin
+          RestClient::Request.execute({
+            url: "#{private_endpoint}/packages/#{guid}",
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store, headers: { host: public_endpoint.hostname }
+            })
+          fail 'should not get here'
+        rescue => e
+          expect(e).to be_a(RestClient::ResourceNotFound).or(be_a(RestClient::Forbidden))
+        end
       end
     end
 
@@ -120,24 +124,34 @@ describe 'accessing the bits-service', type: :integration do
 
   context 'by public endpoint' do
     context 'not passing a host header' do
-      it 'responds with 404, because URL is used as Host header and the public host does not allow unsigned access to packages' do
-        expect { RestClient::Request.execute({
-          url: "#{public_endpoint}/packages/#{guid}",
-          method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_cert_store: cert_store
-          }) }.to raise_error(RestClient::ResourceNotFound)
+      it 'responds with 404 or 403, because URL is used as Host header and the public host does not allow unsigned access to packages' do
+        begin
+          RestClient::Request.execute({
+            url: "#{public_endpoint}/packages/#{guid}",
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+            })
+          fail 'should not get here'
+        rescue => e
+          expect(e).to be_a(RestClient::ResourceNotFound).or(be_a(RestClient::Forbidden))
+        end
       end
     end
 
     context 'passing header "host: <public_endpoint>"' do
-      it 'responds with 404, because host is public and the public host does not allow unsigned access to packages' do
-        expect { RestClient::Request.execute({
-          url: "#{public_endpoint}/packages/#{guid}",
-          method: :get,
-          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-          ssl_cert_store: cert_store
-          }) }.to raise_error(RestClient::ResourceNotFound)
+      it 'responds with 404 or 403, because host is public and the public host does not allow unsigned access to packages' do
+        begin
+          RestClient::Request.execute({
+            url: "#{public_endpoint}/packages/#{guid}",
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+            })
+          fail 'should not get here'
+        rescue => e
+          expect(e).to be_a(RestClient::ResourceNotFound).or(be_a(RestClient::Forbidden))
+        end
       end
     end
   end
