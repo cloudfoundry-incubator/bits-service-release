@@ -36,6 +36,7 @@ describe 'app_stash endpoint' do
 
     it 'returns HTTP status 201 and stores the blob in the backend' do
       response = make_post_request endpoint, request_body
+    end
 
     it 'stores the blob in the backend' do
       response = make_post_request endpoint, request_body
