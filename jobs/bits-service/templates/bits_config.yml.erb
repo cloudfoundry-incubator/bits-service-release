@@ -1,4 +1,5 @@
 buildpacks:
+  max_body_size: <%= p("bits-service.buildpacks.max_body_size") %>
   <% if p("bits-service.buildpacks.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
@@ -25,6 +26,7 @@ buildpacks:
   <% end %>
 
 droplets:
+  max_body_size: <%= p("bits-service.droplets.max_body_size") %>
   <% if p("bits-service.droplets.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
@@ -51,6 +53,7 @@ droplets:
   <% end %>
 
 packages:
+  max_body_size: <%= p("bits-service.packages.max_body_size") %>
   <% if p("bits-service.packages.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
@@ -77,6 +80,7 @@ packages:
   <% end %>
 
 app_stash:
+  max_body_size: <%= p("bits-service.app_stash.max_body_size") %>
   <% if p("bits-service.app_stash.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
@@ -101,6 +105,9 @@ app_stash:
     region: <%= p("bits-service.app_stash.fog_connection.region") %>
   <% end %>
   <% end %>
+
+buildpack_cache:
+  max_body_size: <%= p("bits-service.buildpack_cache.max_body_size") %>
 
 logging:
   file: /var/vcap/sys/log/bits-service/bits-service.log
