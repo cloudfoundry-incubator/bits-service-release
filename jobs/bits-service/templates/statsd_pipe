@@ -44,6 +44,11 @@ tail -n0 -q --retry -F $1 2>/dev/null | while read in; do
   time=$(echo ${fields[1]} 1000 | awk '{printf "%.0f\n",$1*$2}')
   bytes_sent="${fields[2]}"
 
+  # if request did not refer to a resource
+  if [ "$resource_type" == "-" ]; then
+    continue
+  fi
+
   printf "$resource_type-time.sparse-avg:$time|ms" | socat -t 0 - UDP:127.0.0.1:8125
   printf "$resource_type-size:$bytes_sent|g" | socat -t 0 - UDP:127.0.0.1:8125
 done
