@@ -1,14 +1,24 @@
-app_stash: &blobstore_config
+buildpacks: &blobstore_config
   blobstore_type: webdav
+  max_body_size: 4M
   webdav_config:
     private_endpoint: (( grab $PRIVATE_ENDPOINT ))
     public_endpoint: (( grab $PUBLIC_ENDPOINT ))
     ca_cert_path: (( grab $CA_CERT_FILE ))
     username: (( grab $USERNAME ))
     password: (( grab $PASSWORD ))
-buildpacks: *blobstore_config
-droplets: *blobstore_config
-packages: *blobstore_config
+droplets:
+  <<: *blobstore_config
+  max_body_size: 5M
+packages:
+  <<: *blobstore_config
+  max_body_size: 6M
+app_stash:
+  <<: *blobstore_config
+  max_body_size: 3M
+buildpack_cache:
+  max_body_size: 7M
+max_body_size: 2M
 
 properties:
   bits-service:
