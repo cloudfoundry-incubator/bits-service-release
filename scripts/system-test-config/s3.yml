@@ -15,6 +15,9 @@ packages:
 app_stash:
   <<: *blobstore_config
   max_body_size: 3M
+buildpack_cache:
+  max_body_size: 7M
+max_body_size: 2M
 
 properties:
   bits-service:
