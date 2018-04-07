@@ -2,10 +2,13 @@
 
 cd $(dirname $0)/..
 
+if [ "$1" == "webdav" -o "$1" == "local" ]; then
+# the tests use bosh ssh for webdav and local
 : ${BOSH_ENVIRONMENT?"Please set bosh env variable BOSH_ENVIRONMENT to access the blobstore VM."}
 : ${BOSH_CLIENT?"Please set bosh env variable BOSH_CLIENT to access the blobstore VM."}
 : ${BOSH_CLIENT_SECRET?"Please set bosh env variable BOSH_CLIENT_SECRET to access the blobstore VM."}
 : ${BOSH_DEPLOYMENT?"Please set bosh env variable BOSH_DEPLOYMENT to access the blobstore VM."}
+fi
 
 # build bitsgo
 pushd src/github.com/petergtz/bitsgo/cmd/bitsgo
