@@ -29,7 +29,7 @@ case $1 in
     ;;
   stop)
     # force kill immediately; drain script should have already run
-    kill_and_wait $PIDFILE
+    pkill_and_wait $PIDFILE
     ;;
   *)
     echo "Usage: statsd_pipe_ctl {start|stop}"
