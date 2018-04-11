@@ -58,6 +58,10 @@ module CFClient
       resp['guid']
     end
 
+    def package(package_guid)
+      make_get_request("/v3/packages/#{package_guid}")
+    end
+
     private
 
     def login_url
