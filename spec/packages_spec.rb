@@ -154,11 +154,16 @@ describe 'packages resource' do
 
     context 'with CC updates enabled', if: cc_updates_enabled? do
       it 'does not allow to upload the same package twice' do
-        response = make_put_request resource_path, upload_body
+        package_upload_url = @cf_client.package(@cf_client.create_package(@app_id))['links']['upload']['href']
+
+        response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).put upload_body
+
         expect(response.code).to eq(201), 'First upload should succeed'
 
-        # zip_file from upload_body is already closed by now, so we can't reuse it.
-        response = make_put_request resource_path, { package: File.new(zip_filepath) }
+        # zip_file from upload_body is already closed by now, so we can't reuse it:
+        response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).
+          put({ package: File.new(zip_filepath) })
+
         expect(response.code).to eq(400), 'Repeat upload should fail because package is already finalized'
 
         err = JSON.parse(response)

@@ -40,7 +40,6 @@ module HttpHelpers
   def cert_store
     cert_store = OpenSSL::X509::Store.new
     cert_store.set_default_paths
-    # cert_store.add_file '/Users/norman/workspace/mis/default_ca.pem'
     cert_store.add_file ca_cert
   end
 
