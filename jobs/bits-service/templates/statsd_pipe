@@ -49,6 +49,6 @@ tail -n0 -q --retry -F $1 2>/dev/null | while read in; do
     continue
   fi
 
-  printf "$resource_type-time.sparse-avg:$time|ms" | socat -t 0 - UDP:127.0.0.1:8125
-  printf "$resource_type-size:$bytes_sent|g" | socat -t 0 - UDP:127.0.0.1:8125
+  printf "bits.$resource_type-time.sparse-avg:$time|ms" | socat -t 0 - UDP:127.0.0.1:8125
+  printf "bits.$resource_type-size:$bytes_sent|g" | socat -t 0 - UDP:127.0.0.1:8125
 done
