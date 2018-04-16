@@ -28,4 +28,4 @@
 	branch = master
 [submodule "src/github.com/petergtz/bitsgo"]
 	path = src/github.com/petergtz/bitsgo
-	url = git://github.com/petergtz/bitsgo.git
+	url = https://github.com/petergtz/bitsgo.git
