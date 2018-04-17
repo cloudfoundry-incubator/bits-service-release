@@ -1,6 +1,0 @@
-properties:
-  cc:
-    buildpacks: (( grab properties.bits-service.buildpacks ))
-    droplets: (( grab properties.bits-service.droplets ))
-    packages: (( grab properties.bits-service.packages ))
-    resource_pool: (( grab properties.bits-service.app_stash ))
