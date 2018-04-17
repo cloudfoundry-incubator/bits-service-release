@@ -16,7 +16,9 @@ pushd src/github.com/petergtz/bitsgo/cmd/bitsgo
 popd
 
 # generate config and run bitsgo
-source .private/$1.sh
+if [ "$1" != "local" ]; then
+    source .private/$1.sh
+fi
 pushd scripts/system-test-config
     bosh interpolate --vars-store=var-store.yml generate-cert.yml > /dev/null
     bosh interpolate var-store.yml --path /bits_service_ssl/ca > ca_cert
