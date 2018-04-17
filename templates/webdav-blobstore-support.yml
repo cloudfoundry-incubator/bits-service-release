@@ -1,7 +1,0 @@
-metadata:
-  blobstore:
-    private_endpoint: https://blobstore.service.cf.internal:4443
-    public_endpoint: http://blobstore.bosh-lite.com
-
-properties:
-  system_domain: bosh-lite.com

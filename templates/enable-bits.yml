@@ -1,8 +1,0 @@
-properties:
-  cc:
-    bits_service:
-      enabled: true
-      public_endpoint: (( concat "http://bits-service." properties.system_domain ))
-      private_endpoint: http://bits-service.service.cf.internal
-      username: (( grab properties.bits-service.signing_users.0.username ))
-      password: (( grab properties.bits-service.signing_users.0.password ))

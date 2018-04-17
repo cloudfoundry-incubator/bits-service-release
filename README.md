@@ -6,44 +6,7 @@ A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-ser
 
 ### Deploy a CF on BOSH Lite with bits-service enabled
 
-**Important**: We assume that you already deployed a CF to bosh-lite, with the deployment manifest in `cf-release/bosh-lite/deployments/cf.yml`.
-
-1. Grab the bits-service-release
-
-    ```sh
-    git clone git@github.com:cloudfoundry-incubator/bits-service-release.git
-    cd bits-service-release/
-    ./scripts/update
-    ```
-
-1. Install `spruce` which is used to generate the bosh-lite manifest:
-
-    ```
-    brew install starkandwayne/cf/spruce
-    ```
-
-1. Generate the deployment manifest. Pass the backend to be used (`local`, `s3`, or `webdav`) as parameter. For example, for a bits-service with local backend:
-
-    ```
-    ./scripts/generate-cf-with-bits-service-enabled-bosh-lite-manifest local
-    ```
-
-    When targeting an S3 blobstore, the following environment variables are required to be set. Otherwise you can skip this step.
-
-    ```sh
-    export BITS_DIRECTORY_KEY=
-    export AWS_ACCESS_KEY_ID=
-    export AWS_SECRET_ACCESS_KEY=
-    export BITS_AWS_REGION=
-    ```
-
-1. Deploy
-
-    ```sh
-    bosh create release --force && bosh upload release && bosh -n deploy
-    ```
-
-    When prompted for the name of the bits-service release, accept the default `bits-service`.
+Simply follow instructions in [cf-deployment](https://github.com/cloudfoundry/cf-deployment) and the [Ops-file README for experimental](https://github.com/cloudfoundry/cf-deployment/blob/master/operations/experimental/README.md) to add `bits-service.yml` and other necessary Ops-files (documented there as well) to enable the Bits-Service.
 
 ## Run Tests
 
