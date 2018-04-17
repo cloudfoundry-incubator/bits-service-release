@@ -1,0 +1,26 @@
+instance_groups:
+- name: bits-service
+  persistent_disk_type: tiny
+
+properties:
+  bits-service:
+    buildpacks:
+      directory_key: buildpacks
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
+    droplets:
+      directory_key: droplets
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
+    packages:
+      directory_key: packages
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
+    app_stash:
+      directory_key: app_stash
+      fog_connection:
+        provider: "local"
+        local_root: "/var/vcap/store/bits-service/"
