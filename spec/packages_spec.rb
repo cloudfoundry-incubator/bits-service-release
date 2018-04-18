@@ -158,17 +158,19 @@ describe 'packages resource' do
 
         response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).put upload_body
 
-        expect(response.code).to eq(201), 'First upload should succeed'
+        expect(response.code).to eq(201), "First upload to \"#{package_upload_url}\" should succeed"
 
         # zip_file from upload_body is already closed by now, so we can't reuse it:
-        response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).
-          put({ package: File.new(zip_filepath) })
-
-        expect(response.code).to eq(400), 'Repeat upload should fail because package is already finalized'
-
-        err = JSON.parse(response)
-        expect(err['code']).to eq(290008)
-        expect(err['description']).to eq('Cannot update an existing package.')
+        begin
+          response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).
+            put({ package: File.new(zip_filepath) })
+          fail "upload to \"#{package_upload_url}\" should not succeed"
+        rescue RestClient::ExceptionWithResponse => e
+          expect(e.response.code).to eq(400)
+          err = JSON.parse(e.response)
+          expect(err['code']).to eq(290008)
+          expect(err['description']).to eq('Cannot update an existing package.')
+        end
       end
     end
   end
