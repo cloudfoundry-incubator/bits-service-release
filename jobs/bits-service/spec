@@ -177,7 +177,7 @@ properties:
 
   bits-service.cc_updates.cc_url:
     description: "CloudController endpoint for sending package status updates"
-    default: "https://cloud-controller-ng.service.cf.internal:9023/internal/v4/"
+    default: "https://cloud-controller-ng.service.cf.internal:9023/internal/v4/packages"
   bits-service.cc_updates.ca_cert:
     description: "PEM-encoded CA certificate for secure, mutually authenticated TLS communication"
   bits-service.cc_updates.client_cert:
