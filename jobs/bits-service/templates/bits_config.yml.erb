@@ -121,10 +121,10 @@ secret: <%= p("bits-service.secret") %>
 skip_cert_verify: true
 <% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do %>
 cc_updates:
-  cc_url: <%= p("bits-service.cc_updates.cc_url") %>
-  ca_cert: "/var/vcap/jobs/bits-service/config/certs/mutual_ca_cert.pem"
-  client_cert: "/var/vcap/jobs/bits-service/config/certs/mutual_client_cert.pem"
-  client_key: "/var/vcap/jobs/bits-service/config/certs/mutual_client_key.pem"
+  endpoint: <%= p("bits-service.cc_updates.cc_url") %>
+  ca_cert_file: "/var/vcap/jobs/bits-service/config/certs/mutual_ca_cert.pem"
+  client_cert_file: "/var/vcap/jobs/bits-service/config/certs/mutual_client_cert.pem"
+  client_key_file: "/var/vcap/jobs/bits-service/config/certs/mutual_client_key.pem"
 <% end %>
 signing_users:
   <% p('bits-service.signing_users').each do |user| %>
