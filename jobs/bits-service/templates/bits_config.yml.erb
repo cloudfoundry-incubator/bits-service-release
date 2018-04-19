@@ -22,8 +22,8 @@ buildpacks:
     access_key_id: <%= p("bits-service.buildpacks.fog_connection.aws_access_key_id") %>
     secret_access_key: <%= p("bits-service.buildpacks.fog_connection.aws_secret_access_key") %>
     region: <%= p("bits-service.buildpacks.fog_connection.region") %>
-    <% if_p("bits-service.buildpacks.fog_connection.host") %>
-    host: <%=  p("bits-service.buildpacks.fog_connection.host") %>
+    <% if_p("bits-service.buildpacks.fog_connection.host") do | host | %>
+    host: <%= host %>
     <% end %>
   <% end %>
   <% end %>
@@ -52,8 +52,8 @@ droplets:
     access_key_id: <%= p("bits-service.droplets.fog_connection.aws_access_key_id") %>
     secret_access_key: <%= p("bits-service.droplets.fog_connection.aws_secret_access_key") %>
     region: <%= p("bits-service.droplets.fog_connection.region") %>
-    <% if_p("bits-service.droplets.fog_connection.host") %>
-    host: <%= p("bits-service.droplets.fog_connection.host") %>
+    <% if_p("bits-service.droplets.fog_connection.host") do | host | %>
+    host: <%= host %>
     <% end %>
   <% end %>
   <% end %>
@@ -82,8 +82,8 @@ packages:
     access_key_id: <%= p("bits-service.packages.fog_connection.aws_access_key_id") %>
     secret_access_key: <%= p("bits-service.packages.fog_connection.aws_secret_access_key") %>
     region: <%= p("bits-service.packages.fog_connection.region") %>
-    <% if_p("bits-service.packages.fog_connection.host") %>
-    host: <%= p("bits-service.packages.fog_connection.host") %>
+    <% if_p("bits-service.packages.fog_connection.host") do | host | %>
+    host: <%= host %>
     <% end %>
   <% end %>
   <% end %>
@@ -112,9 +112,9 @@ app_stash:
     access_key_id: <%= p("bits-service.app_stash.fog_connection.aws_access_key_id") %>
     secret_access_key: <%= p("bits-service.app_stash.fog_connection.aws_secret_access_key") %>
     region: <%= p("bits-service.app_stash.fog_connection.region") %>
-    <% if_p("bits-service.app_stash.fog_connection.host") %>
-    host: <%= p("bits-service.app_stash.fog_connection.host") %>
-    <% end%>
+    <% if_p("bits-service.app_stash.fog_connection.host") do | host | %>
+    host: <%= host %>
+    <% end %>
   <% end %>
   <% end %>
 
