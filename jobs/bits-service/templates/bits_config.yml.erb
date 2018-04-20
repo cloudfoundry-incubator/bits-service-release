@@ -32,10 +32,10 @@ buildpacks:
     username: <%= p("bits-service.buildpacks.fog_connection.openstack_username") %>
     api_key: <%= p("bits-service.buildpacks.fog_connection.openstack_api_key") %>
     auth_url:  <%= p("bits-service.buildpacks.fog_connection.openstack_auth_url") %>
-    domain_id: <%= p("bits-service.buildpacks.fog_connection.openstack_domain_id") %>
-    region: <%= p("bits-service.buildpacks.fog_connection.openstack_region") %>
-    account_meta_temp_url_key: <%= p("bits-service.buildpacks.fog_connection.openstack_temp_url_key") %>
-    tenant:  <%= p("bits-service.buildpacks.fog_connection.openstack_tenant") %>
+    domain_id: <%= p("bits-service.buildpacks.fog_connection.openstack_domain_id", '') %>
+    region: <%= p("bits-service.buildpacks.fog_connection.openstack_region", '') %>
+    account_meta_temp_url_key: <%= p("bits-service.buildpacks.fog_connection.openstack_temp_url_key", '') %>
+    tenant:  <%= p("bits-service.buildpacks.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% end %>
 
@@ -73,10 +73,10 @@ droplets:
     username: <%= p("bits-service.droplets.fog_connection.openstack_username") %>
     api_key: <%= p("bits-service.droplets.fog_connection.openstack_api_key") %>
     auth_url:  <%= p("bits-service.droplets.fog_connection.openstack_auth_url") %>
-    domain_id: <%= p("bits-service.droplets.fog_connection.openstack_domain_id") %>
-    region: <%= p("bits-service.droplets.fog_connection.openstack_region") %>
-    account_meta_temp_url_key: <%= p("bits-service.droplets.fog_connection.openstack_temp_url_key") %>
-    tenant:  <%= p("bits-service.droplets.fog_connection.openstack_tenant") %>
+    domain_id: <%= p("bits-service.droplets.fog_connection.openstack_domain_id", '') %>
+    region: <%= p("bits-service.droplets.fog_connection.openstack_region", '') %>
+    account_meta_temp_url_key: <%= p("bits-service.droplets.fog_connection.openstack_temp_url_key", '') %>
+    tenant:  <%= p("bits-service.droplets.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% end %>
 
@@ -114,10 +114,10 @@ packages:
     username: <%= p("bits-service.packages.fog_connection.openstack_username") %>
     api_key: <%= p("bits-service.packages.fog_connection.openstack_api_key") %>
     auth_url:  <%= p("bits-service.packages.fog_connection.openstack_auth_url") %>
-    domain_id: <%= p("bits-service.packages.fog_connection.openstack_domain_id") %>
-    region: <%= p("bits-service.packages.fog_connection.openstack_region") %>
-    account_meta_temp_url_key: <%= p("bits-service.packages.fog_connection.openstack_temp_url_key") %>
-    tenant:  <%= p("bits-service.packages.fog_connection.openstack_tenant") %>
+    domain_id: <%= p("bits-service.packages.fog_connection.openstack_domain_id", '') %>
+    region: <%= p("bits-service.packages.fog_connection.openstack_region", '') %>
+    account_meta_temp_url_key: <%= p("bits-service.packages.fog_connection.openstack_temp_url_key", '') %>
+    tenant:  <%= p("bits-service.packages.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% end %>
 
@@ -155,10 +155,10 @@ app_stash:
     username: <%= p("bits-service.app_stash.fog_connection.openstack_username") %>
     api_key: <%= p("bits-service.app_stash.fog_connection.openstack_api_key") %>
     auth_url:  <%= p("bits-service.app_stash.fog_connection.openstack_auth_url") %>
-    domain_id: <%= p("bits-service.app_stash.fog_connection.openstack_domain_id") %>
-    region: <%= p("bits-service.app_stash.fog_connection.openstack_region") %>
-    account_meta_temp_url_key: <%= p("bits-service.app_stash.fog_connection.openstack_temp_url_key") %>
-    tenant:  <%= p("bits-service.app_stash.fog_connection.openstack_tenant") %>
+    domain_id: <%= p("bits-service.app_stash.fog_connection.openstack_domain_id", '') %>
+    region: <%= p("bits-service.app_stash.fog_connection.openstack_region", '') %>
+    account_meta_temp_url_key: <%= p("bits-service.app_stash.fog_connection.openstack_temp_url_key", '') %>
+    tenant:  <%= p("bits-service.app_stash.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% end %>
 
