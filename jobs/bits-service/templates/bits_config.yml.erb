@@ -26,6 +26,17 @@ buildpacks:
     host: <%= host %>
     <% end %>
   <% end %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "openstack" %>
+  openstack_config:
+    container_name: <%= p("bits-service.buildpacks.directory_key") %>
+    username: <%= p("bits-service.buildpacks.fog_connection.openstack_username") %>
+    api_key: <%= p("bits-service.buildpacks.fog_connection.openstack_api_key") %>
+    auth_url:  <%= p("bits-service.buildpacks.fog_connection.openstack_api_key") %>
+    domain_id: <%= p("bits-service.buildpacks.fog_connection.openstack_domain_id") %>
+    region: <%= p("bits-service.buildpacks.fog_connection.openstack_region") %>
+    account_meta_temp_url_key: <%= p("bits-service.buildpacks.fog_connection.openstack_temp_url_key") %>
+    tenant:  <%= p("bits-service.buildpacks.fog_connection.openstack_tenant") %>
+  <% end %>
   <% end %>
 
 droplets:
@@ -55,6 +66,17 @@ droplets:
     <% if_p("bits-service.droplets.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+  <% end %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "openstack" %>
+  openstack_config:
+    container_name: <%= p("bits-service.droplets.directory_key") %>
+    username: <%= p("bits-service.droplets.fog_connection.openstack_username") %>
+    api_key: <%= p("bits-service.droplets.fog_connection.openstack_api_key") %>
+    auth_url:  <%= p("bits-service.droplets.fog_connection.openstack_api_key") %>
+    domain_id: <%= p("bits-service.droplets.fog_connection.openstack_domain_id") %>
+    region: <%= p("bits-service.droplets.fog_connection.openstack_region") %>
+    account_meta_temp_url_key: <%= p("bits-service.droplets.fog_connection.openstack_temp_url_key") %>
+    tenant:  <%= p("bits-service.droplets.fog_connection.openstack_tenant") %>
   <% end %>
   <% end %>
 
@@ -86,6 +108,17 @@ packages:
     host: <%= host %>
     <% end %>
   <% end %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "openstack" %>
+  openstack_config:
+    container_name: <%= p("bits-service.packages.directory_key") %>
+    username: <%= p("bits-service.packages.fog_connection.openstack_username") %>
+    api_key: <%= p("bits-service.packages.fog_connection.openstack_api_key") %>
+    auth_url:  <%= p("bits-service.packages.fog_connection.openstack_api_key") %>
+    domain_id: <%= p("bits-service.packages.fog_connection.openstack_domain_id") %>
+    region: <%= p("bits-service.packages.fog_connection.openstack_region") %>
+    account_meta_temp_url_key: <%= p("bits-service.packages.fog_connection.openstack_temp_url_key") %>
+    tenant:  <%= p("bits-service.packages.fog_connection.openstack_tenant") %>
+  <% end %>
   <% end %>
 
 app_stash:
@@ -115,6 +148,17 @@ app_stash:
     <% if_p("bits-service.app_stash.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+  <% end %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "openstack" %>
+  openstack_config:
+    container_name: <%= p("bits-service.app_stash.directory_key") %>
+    username: <%= p("bits-service.app_stash.fog_connection.openstack_username") %>
+    api_key: <%= p("bits-service.app_stash.fog_connection.openstack_api_key") %>
+    auth_url:  <%= p("bits-service.app_stash.fog_connection.openstack_api_key") %>
+    domain_id: <%= p("bits-service.app_stash.fog_connection.openstack_domain_id") %>
+    region: <%= p("bits-service.app_stash.fog_connection.openstack_region") %>
+    account_meta_temp_url_key: <%= p("bits-service.app_stash.fog_connection.openstack_temp_url_key") %>
+    tenant:  <%= p("bits-service.app_stash.fog_connection.openstack_tenant") %>
   <% end %>
   <% end %>
 
