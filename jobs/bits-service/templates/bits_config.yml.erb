@@ -46,6 +46,11 @@ buildpacks:
     container_name: <%= p("bits-service.buildpacks.directory_key") %>
     account_name: <%= p("bits-service.buildpacks.fog_connection.azure_storage_account_name") %>
     account_key: <%= p("bits-service.buildpacks.fog_connection.azure_storage_access_key") %>
+    <% if p("bits-service.buildpacks.fog_connection.environment").downcase == "azurecloud" %>
+    environment: AzurePublicCloud
+    <% else %>
+    environment: <%= p("bits-service.buildpacks.fog_connection.environment") %>
+    <% end %>
   <% end %>
   <% end %>
 
@@ -97,6 +102,11 @@ droplets:
     container_name: <%= p("bits-service.droplets.directory_key") %>
     account_name: <%= p("bits-service.droplets.fog_connection.azure_storage_account_name") %>
     account_key: <%= p("bits-service.droplets.fog_connection.azure_storage_access_key") %>
+    <% if p("bits-service.droplets.fog_connection.environment").downcase == "azurecloud" %>
+    environment: AzurePublicCloud
+    <% else %>
+    environment: <%= p("bits-service.droplets.fog_connection.environment") %>
+    <% end %>
   <% end %>
   <% end %>
 
@@ -148,6 +158,11 @@ packages:
     container_name: <%= p("bits-service.packages.directory_key") %>
     account_name: <%= p("bits-service.packages.fog_connection.azure_storage_account_name") %>
     account_key: <%= p("bits-service.packages.fog_connection.azure_storage_access_key") %>
+    <% if p("bits-service.packages.fog_connection.environment").downcase == "azurecloud" %>
+    environment: AzurePublicCloud
+    <% else %>
+    environment: <%= p("bits-service.packages.fog_connection.environment") %>
+    <% end %>
   <% end %>
   <% end %>
 
@@ -199,6 +214,11 @@ app_stash:
     container_name: <%= p("bits-service.app_stash.directory_key") %>
     account_name: <%= p("bits-service.app_stash.fog_connection.azure_storage_account_name") %>
     account_key: <%= p("bits-service.app_stash.fog_connection.azure_storage_access_key") %>
+    <% if p("bits-service.app_stash.fog_connection.environment").downcase == "azurecloud" %>
+    environment: AzurePublicCloud
+    <% else %>
+    environment: <%= p("bits-service.app_stash.fog_connection.environment") %>
+    <% end %>
   <% end %>
   <% end %>
 
