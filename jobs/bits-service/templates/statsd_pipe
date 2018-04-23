@@ -24,10 +24,11 @@ if [ $# -ne 1 ]; then
 fi
 
 #
-# Grab the resource type from a request given as $1, e.g.
+# Grab the method and resource type from a request given as $1 and $2, e.g.
 #
 # PUT /droplets/7100a3b3-1eeb-49b1-ad52-747a1071a854/ HTTP/1.1
 #
+# TODO: this is not a resource type, but instead method *plus* resource type. Rename!
 resource_type() {
   local uri_regexp='^([A-Z]+) \/([a-z_]+)\/'
   [[ "$1" =~ ${uri_regexp} ]];
