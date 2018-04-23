@@ -43,6 +43,8 @@ tail -n0 -q --retry -F $1 2>/dev/null | while read in; do
   # multiply by 1000 to get ms, the only format possible with statsd timings
   time=$(echo ${fields[1]} 1000 | awk '{printf "%.0f\n",$1*$2}')
   bytes_sent="${fields[2]}"
+  bytes_received="${fields[3]}"
+  status="${fields[4]}"
 
   # if request did not refer to a resource
   if [ "$resource_type" == "-" ]; then
@@ -50,5 +52,8 @@ tail -n0 -q --retry -F $1 2>/dev/null | while read in; do
   fi
 
   printf "bits.$resource_type-time.sparse-avg:$time|ms" | socat -t 0 - UDP:127.0.0.1:8125
+  printf "bits.$resource_type-$status-time.sparse-avg:$time|ms" | socat -t 0 - UDP:127.0.0.1:8125
   printf "bits.$resource_type-size:$bytes_sent|g" | socat -t 0 - UDP:127.0.0.1:8125
+  printf "bits.$resource_type-request-size:$bytes_received|g" | socat -t 0 - UDP:127.0.0.1:8125
+  printf "bits.status-$status:1|c" | socat -t 0 - UDP:127.0.0.1:8125
 done

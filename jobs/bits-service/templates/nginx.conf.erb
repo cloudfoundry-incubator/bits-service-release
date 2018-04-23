@@ -23,7 +23,7 @@ http {
   # rewrite_log on;
 
   log_format main  '<%= p("bits-service.nginx.access_log_format").chomp %>';
-  log_format metrics '$request;$request_time;$bytes_sent';
+  log_format metrics '$request;$request_time;$bytes_sent;$request_length;$status';
 
   access_log <%= p("bits-service.nginx.access_log_destination") %> main;
 
