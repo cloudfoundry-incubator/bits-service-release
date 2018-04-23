@@ -11,7 +11,11 @@ buildpacks:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/buildpacks_ca_cert.pem"
     <% end %>
   <% else %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
+  <% else %>
   blobstore_type: <%= p("bits-service.buildpacks.fog_connection.provider") %>
+  <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "local" %>
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.buildpacks.directory_key") %>
@@ -37,6 +41,12 @@ buildpacks:
     account_meta_temp_url_key: <%= p("bits-service.buildpacks.fog_connection.openstack_temp_url_key", '') %>
     tenant:  <%= p("bits-service.buildpacks.fog_connection.openstack_tenant", '') %>
   <% end %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "azurerm" %>
+  azure_config:
+    container_name: <%= p("bits-service.buildpacks.directory_key") %>
+    account_name: <%= p("bits-service.buildpacks.fog_connection.azure_storage_account_name") %>
+    account_key: <%= p("bits-service.buildpacks.fog_connection.azure_storage_access_key") %>
+  <% end %>
   <% end %>
 
 droplets:
@@ -52,7 +62,11 @@ droplets:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/droplets_ca_cert.pem"
     <% end %>
   <% else %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
+  <% else %>
   blobstore_type: <%= p("bits-service.droplets.fog_connection.provider") %>
+  <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "local" %>
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.droplets.directory_key") %>
@@ -78,6 +92,12 @@ droplets:
     account_meta_temp_url_key: <%= p("bits-service.droplets.fog_connection.openstack_temp_url_key", '') %>
     tenant:  <%= p("bits-service.droplets.fog_connection.openstack_tenant", '') %>
   <% end %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "azurerm" %>
+  azure_config:
+    container_name: <%= p("bits-service.droplets.directory_key") %>
+    account_name: <%= p("bits-service.droplets.fog_connection.azure_storage_account_name") %>
+    account_key: <%= p("bits-service.droplets.fog_connection.azure_storage_access_key") %>
+  <% end %>
   <% end %>
 
 packages:
@@ -93,7 +113,11 @@ packages:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/packages_ca_cert.pem"
     <% end %>
   <% else %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
+  <% else %>
   blobstore_type: <%= p("bits-service.packages.fog_connection.provider") %>
+  <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "local" %>
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.packages.directory_key") %>
@@ -119,6 +143,12 @@ packages:
     account_meta_temp_url_key: <%= p("bits-service.packages.fog_connection.openstack_temp_url_key", '') %>
     tenant:  <%= p("bits-service.packages.fog_connection.openstack_tenant", '') %>
   <% end %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "azurerm" %>
+  azure_config:
+    container_name: <%= p("bits-service.packages.directory_key") %>
+    account_name: <%= p("bits-service.packages.fog_connection.azure_storage_account_name") %>
+    account_key: <%= p("bits-service.packages.fog_connection.azure_storage_access_key") %>
+  <% end %>
   <% end %>
 
 app_stash:
@@ -134,7 +164,11 @@ app_stash:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/app_stash_ca_cert.pem"
     <% end %>
   <% else %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
+  <% else %>
   blobstore_type: <%= p("bits-service.app_stash.fog_connection.provider") %>
+  <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "local" %>
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.app_stash.directory_key") %>
@@ -159,6 +193,12 @@ app_stash:
     region: <%= p("bits-service.app_stash.fog_connection.openstack_region", '') %>
     account_meta_temp_url_key: <%= p("bits-service.app_stash.fog_connection.openstack_temp_url_key", '') %>
     tenant:  <%= p("bits-service.app_stash.fog_connection.openstack_tenant", '') %>
+  <% end %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "azurerm" %>
+  azure_config:
+    container_name: <%= p("bits-service.app_stash.directory_key") %>
+    account_name: <%= p("bits-service.app_stash.fog_connection.azure_storage_account_name") %>
+    account_key: <%= p("bits-service.app_stash.fog_connection.azure_storage_access_key") %>
   <% end %>
   <% end %>
 
