@@ -57,7 +57,8 @@ buildpacks:
   gcp_config:
     bucket: <%= p("bits-service.buildpacks.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['private_key_id'] %>
-    private_key: <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['private_key'] %>
+    private_key: |
+      <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['private_key'] %>
     email: <%= p("bits-service.buildpacks.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
@@ -128,7 +129,8 @@ droplets:
   gcp_config:
     bucket: <%= p("bits-service.droplets.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['private_key_id'] %>
-    private_key: <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['private_key'] %>
+    private_key: |
+      <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['private_key'] %>
     email: <%= p("bits-service.droplets.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
@@ -198,7 +200,8 @@ packages:
   gcp_config:
     bucket: <%= p("bits-service.packages.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['private_key_id'] %>
-    private_key: <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['private_key'] %>
+    private_key: |
+      <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['private_key'] %>
     email: <%= p("bits-service.packages.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
@@ -268,7 +271,8 @@ app_stash:
   gcp_config:
     bucket: <%= p("bits-service.app_stash.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['private_key_id'] %>
-    private_key: <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['private_key'] %>
+    private_key: |
+      <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['private_key'] %>
     email: <%= p("bits-service.app_stash.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
