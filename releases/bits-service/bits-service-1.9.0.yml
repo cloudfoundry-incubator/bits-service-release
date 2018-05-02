@@ -1,0 +1,40 @@
+name: bits-service
+version: 1.9.0
+commit_hash: c98e1b8
+uncommitted_changes: false
+jobs:
+- name: bits-service
+  version: 9bead31aee04f4ab7e84fd61ad01402ba11137bd
+  fingerprint: 9bead31aee04f4ab7e84fd61ad01402ba11137bd
+  sha1: f1e4226956ca4cadc1a725396ae582a90c8fd85d
+packages:
+- name: bits-common
+  version: 0e780109467d5425b0ab5f99e8aa3df24187ec65
+  fingerprint: 0e780109467d5425b0ab5f99e8aa3df24187ec65
+  sha1: d97fba5b875497d637e3c55325b1c1df177c41c1
+  dependencies: []
+- name: bits-service
+  version: 6bc20ab43d6cd25e3d5d5e2b8d2caca9e8ff42fb
+  fingerprint: 6bc20ab43d6cd25e3d5d5e2b8d2caca9e8ff42fb
+  sha1: 644b394142657c4766dba66fe68268512e660f10
+  dependencies:
+  - ruby-2.3_bits
+- name: nginx_bits
+  version: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  fingerprint: 1c8867c98ccd77c9f8d5509ec8e6993681125bf3
+  sha1: 63277e90b8e45136e582bcfb820bbf011dfd75dd
+  dependencies: []
+- name: ruby-2.3_bits
+  version: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  fingerprint: b7b8ccbbacc6f2ee14dd25840e8d920013a427c2
+  sha1: 5aa86f46e08262c8aa2c978a3a62286e3ec8e009
+  dependencies: []
+- name: socat
+  version: 1f4f792cd5604887a8dc9d4d382a16fb838bbb09
+  fingerprint: 1f4f792cd5604887a8dc9d4d382a16fb838bbb09
+  sha1: 86c93cde55ed39017998ba9a8b7c13fa94366a5d
+  dependencies: []
+license:
+  version: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  fingerprint: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  sha1: 5b431b09817c6a22857579501120edf483cac16c
