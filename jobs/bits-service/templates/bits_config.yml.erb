@@ -11,16 +11,13 @@ buildpacks:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/buildpacks_ca_cert.pem"
     <% end %>
   <% else %>
-  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "azurerm" %>
-  blobstore_type: azure
-  <% else %>
-  blobstore_type: <%= p("bits-service.buildpacks.fog_connection.provider") %>
-  <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "local" %>
+  blobstore_type: local
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.buildpacks.directory_key") %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "aws" %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.buildpacks.directory_key") %>
     access_key_id: <%= p("bits-service.buildpacks.fog_connection.aws_access_key_id") %>
@@ -31,6 +28,7 @@ buildpacks:
     <% end %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "openstack" %>
+  blobstore_type: openstack
   openstack_config:
     container_name: <%= p("bits-service.buildpacks.directory_key") %>
     username: <%= p("bits-service.buildpacks.fog_connection.openstack_username") %>
@@ -42,6 +40,7 @@ buildpacks:
     tenant:  <%= p("bits-service.buildpacks.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
   azure_config:
     container_name: <%= p("bits-service.buildpacks.directory_key") %>
     account_name: <%= p("bits-service.buildpacks.fog_connection.azure_storage_account_name") %>
@@ -54,6 +53,7 @@ buildpacks:
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "google" %>
   <% if p("bits-service.buildpacks.fog_connection.google_storage_access_key_id", '') == '' %>
+  blobstore_type: google
   gcp_config:
     bucket: <%= p("bits-service.buildpacks.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['private_key_id'] %>
@@ -62,6 +62,7 @@ buildpacks:
     email: <%= p("bits-service.buildpacks.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.buildpacks.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.buildpacks.directory_key") %>
     access_key_id: <%= p("bits-service.buildpacks.fog_connection.google_storage_access_key_id") %>
@@ -84,16 +85,13 @@ droplets:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/droplets_ca_cert.pem"
     <% end %>
   <% else %>
-  <% if p("bits-service.droplets.fog_connection.provider").downcase == "azurerm" %>
-  blobstore_type: azure
-  <% else %>
-  blobstore_type: <%= p("bits-service.droplets.fog_connection.provider") %>
-  <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "local" %>
+  blobstore_type: local
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.droplets.directory_key") %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "aws" %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.droplets.directory_key") %>
     access_key_id: <%= p("bits-service.droplets.fog_connection.aws_access_key_id") %>
@@ -104,6 +102,7 @@ droplets:
     <% end %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "openstack" %>
+  blobstore_type: openstack
   openstack_config:
     container_name: <%= p("bits-service.droplets.directory_key") %>
     username: <%= p("bits-service.droplets.fog_connection.openstack_username") %>
@@ -115,6 +114,7 @@ droplets:
     tenant:  <%= p("bits-service.droplets.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
   azure_config:
     container_name: <%= p("bits-service.droplets.directory_key") %>
     account_name: <%= p("bits-service.droplets.fog_connection.azure_storage_account_name") %>
@@ -127,6 +127,7 @@ droplets:
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "google" %>
   <% if p("bits-service.droplets.fog_connection.google_storage_access_key_id", '') == '' %>
+  blobstore_type: google
   gcp_config:
     bucket: <%= p("bits-service.droplets.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['private_key_id'] %>
@@ -135,6 +136,7 @@ droplets:
     email: <%= p("bits-service.droplets.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.droplets.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.droplets.directory_key") %>
     access_key_id: <%= p("bits-service.droplets.fog_connection.google_storage_access_key_id") %>
@@ -157,16 +159,13 @@ packages:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/packages_ca_cert.pem"
     <% end %>
   <% else %>
-  <% if p("bits-service.packages.fog_connection.provider").downcase == "azurerm" %>
-  blobstore_type: azure
-  <% else %>
-  blobstore_type: <%= p("bits-service.packages.fog_connection.provider") %>
-  <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "local" %>
+  blobstore_type: local
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.packages.directory_key") %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "aws" %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.packages.directory_key") %>
     access_key_id: <%= p("bits-service.packages.fog_connection.aws_access_key_id") %>
@@ -177,6 +176,7 @@ packages:
     <% end %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "openstack" %>
+  blobstore_type: openstack
   openstack_config:
     container_name: <%= p("bits-service.packages.directory_key") %>
     username: <%= p("bits-service.packages.fog_connection.openstack_username") %>
@@ -188,6 +188,7 @@ packages:
     tenant:  <%= p("bits-service.packages.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
   azure_config:
     container_name: <%= p("bits-service.packages.directory_key") %>
     account_name: <%= p("bits-service.packages.fog_connection.azure_storage_account_name") %>
@@ -200,6 +201,7 @@ packages:
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "google" %>
   <% if p("bits-service.packages.fog_connection.google_storage_access_key_id", '') == '' %>
+  blobstore_type: google
   gcp_config:
     bucket: <%= p("bits-service.packages.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['private_key_id'] %>
@@ -208,6 +210,7 @@ packages:
     email: <%= p("bits-service.packages.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.packages.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.packages.directory_key") %>
     access_key_id: <%= p("bits-service.packages.fog_connection.google_storage_access_key_id") %>
@@ -230,16 +233,13 @@ app_stash:
     ca_cert_path: "/var/vcap/jobs/bits-service/config/certs/app_stash_ca_cert.pem"
     <% end %>
   <% else %>
-  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "azurerm" %>
-  blobstore_type: azure
-  <% else %>
-  blobstore_type: <%= p("bits-service.app_stash.fog_connection.provider") %>
-  <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "local" %>
+  blobstore_type: local
   local_config:
     path_prefix: /var/vcap/store/bits-service/<%= p("bits-service.app_stash.directory_key") %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "aws" %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.app_stash.directory_key") %>
     access_key_id: <%= p("bits-service.app_stash.fog_connection.aws_access_key_id") %>
@@ -250,6 +250,7 @@ app_stash:
     <% end %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "openstack" %>
+  blobstore_type: openstack
   openstack_config:
     container_name: <%= p("bits-service.app_stash.directory_key") %>
     username: <%= p("bits-service.app_stash.fog_connection.openstack_username") %>
@@ -261,6 +262,7 @@ app_stash:
     tenant:  <%= p("bits-service.app_stash.fog_connection.openstack_tenant", '') %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "azurerm" %>
+  blobstore_type: azure
   azure_config:
     container_name: <%= p("bits-service.app_stash.directory_key") %>
     account_name: <%= p("bits-service.app_stash.fog_connection.azure_storage_account_name") %>
@@ -273,6 +275,7 @@ app_stash:
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "google" %>
   <% if p("bits-service.app_stash.fog_connection.google_storage_access_key_id", '') == '' %>
+  blobstore_type: google
   gcp_config:
     bucket: <%= p("bits-service.app_stash.directory_key") %>
     private_key_id: <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['private_key_id'] %>
@@ -281,6 +284,7 @@ app_stash:
     email: <%= p("bits-service.app_stash.fog_connection.google_client_email") %>
     token_url: <%= JSON.parse(p("bits-service.app_stash.fog_connection.google_json_key_string"))['token_uri'] %>
   <% else %>
+  blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.app_stash.directory_key") %>
     access_key_id: <%= p("bits-service.app_stash.fog_connection.google_storage_access_key_id") %>
