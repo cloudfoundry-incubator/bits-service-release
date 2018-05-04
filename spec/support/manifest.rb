@@ -21,6 +21,8 @@ module ManifestHelpers
       manifest['properties']['bits-service']
     elsif manifest['instance_groups'].find { |e| e['name'] == 'bits-service' }
       manifest['instance_groups'].find { |e| e['name'] == 'bits-service' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
+    elsif manifest['instance_groups'].find { |e| e['name'] == 'bits' }
+      manifest['instance_groups'].find { |e| e['name'] == 'bits' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
     else
       manifest['instance_groups'].find { |e| e['name'] == 'api' }['jobs'].find { |e| e['name'] == 'bits-service' }['properties']['bits-service']
     end
