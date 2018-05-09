@@ -3,6 +3,7 @@ buildpacks:
   <% if p("bits-service.buildpacks.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
+    directory_key: <%= p("bits-service.buildpacks.directory_key") %>
     public_endpoint: <%= p("bits-service.buildpacks.webdav_config.public_endpoint") %>
     private_endpoint: <%= p("bits-service.buildpacks.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.buildpacks.webdav_config.username") %>
@@ -77,6 +78,7 @@ droplets:
   <% if p("bits-service.droplets.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
+    directory_key: <%= p("bits-service.droplets.directory_key") %>
     public_endpoint: <%= p("bits-service.droplets.webdav_config.public_endpoint") %>
     private_endpoint: <%= p("bits-service.droplets.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.droplets.webdav_config.username") %>
@@ -151,6 +153,7 @@ packages:
   <% if p("bits-service.packages.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
+    directory_key: <%= p("bits-service.packages.directory_key") %>
     public_endpoint: <%= p("bits-service.packages.webdav_config.public_endpoint") %>
     private_endpoint: <%= p("bits-service.packages.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.packages.webdav_config.username") %>
@@ -225,6 +228,7 @@ app_stash:
   <% if p("bits-service.app_stash.blobstore_type").downcase == "webdav" %>
   blobstore_type: webdav
   webdav_config:
+    directory_key: <%= p("bits-service.app_stash.directory_key") %>
     public_endpoint: <%= p("bits-service.app_stash.webdav_config.public_endpoint") %>
     private_endpoint: <%= p("bits-service.app_stash.webdav_config.private_endpoint") %>
     username: <%= p("bits-service.app_stash.webdav_config.username") %>

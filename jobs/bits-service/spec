@@ -81,7 +81,7 @@ properties:
 
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
-    default: "cc-droplets"
+    default: "droplets"
   bits-service.droplets.fog_connection:
     description: "Fog connection properties."
     default: null
@@ -108,7 +108,7 @@ properties:
 
   bits-service.packages.directory_key:
     description: "Directory (bucket) used to store package blobs."
-    default: "cc-packages"
+    default: "packages"
   bits-service.packages.fog_connection:
     description: "Fog connection properties."
     default: null
