@@ -25,7 +25,7 @@ pushd scripts/system-test-config
     bosh interpolate var-store.yml --path /bits_service_ssl/certificate > cert_file
     bosh interpolate var-store.yml --path /bits_service_ssl/private_key > key_file
 
-    bitsgo -c <(spruce merge localhost-config.yml $1.yml) &
+    BITS_LISTEN_ADDR=127.0.0.1 bitsgo -c <(spruce merge localhost-config.yml $1.yml) &
     BITSGO_PID=$!
     sleep 1
 popd
