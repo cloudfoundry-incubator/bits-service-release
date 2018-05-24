@@ -298,6 +298,10 @@ app_stash:
   <% end %>
   <% end %>
 
+app_stash_config:
+  minimum_size: <%= p("bits-service.app_stash.minimum_size") %>
+  maximum_size: <%= p("bits-service.app_stash.maximum_size") %>
+
 buildpack_cache:
   max_body_size: <%= p("bits-service.buildpack_cache.max_body_size") %>
 

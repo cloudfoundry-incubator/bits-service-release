@@ -159,6 +159,12 @@ properties:
   bits-service.app_stash.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
+  bits-service.app_stash.minimum_size:
+    default: "64K"
+    description: "Minimum size of a resource to cache in App-Stash"
+  bits-service.app_stash.maximum_size:
+    default: "512M"
+    description: "Maximum size of a resource to cache in App-Stash"
 
   bits-service.buildpack_cache.max_body_size:
     default: "1536M"
