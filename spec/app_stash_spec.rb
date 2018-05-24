@@ -18,8 +18,8 @@ describe 'app_stash endpoint' do
   let(:app_stash_zip_path) { File.expand_path('../assets/app.zip', __FILE__) }
   let(:app_stash_entries) do
     [
-      { 'fn' => 'app/app.rb', 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'mode' => '777' },
-      { 'fn' => 'app/lib.rb', 'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5', 'mode' => '666' }
+      { 'fn' => 'app/app.rb', 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'mode' => '777', 'size' => 53 },
+      { 'fn' => 'app/lib.rb', 'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5', 'mode' => '666', 'size' => 36 }
     ]
   end
 
@@ -103,8 +103,18 @@ describe 'app_stash endpoint' do
     context 'when all entries match' do
       let(:sha_list) do
         [
-          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659' },
-          { 'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5' }
+          {
+            'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
+            'fn' => 'bla',
+            'mode' => 'bla',
+            'size' => 123
+          },
+          {
+            'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5',
+            'fn' => 'bla',
+            'mode' => 'bla',
+            'size' => 123
+          }
         ]
       end
 
@@ -116,7 +126,7 @@ describe 'app_stash endpoint' do
     end
 
     context 'when none of entries match' do
-      let(:sha_list) { [{ 'sha1' => 'abcde' }] }
+      let(:sha_list) { [{ 'sha1' => 'abcde', 'fn' => 'some-other-file', 'size' => 5, 'mode' => '777' }] }
 
       it 'returns an empty list' do
         response_body = JSON.parse(response.body)
@@ -127,15 +137,15 @@ describe 'app_stash endpoint' do
     context 'when some of the entries matches' do
       let(:sha_list) do
         [
-          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659' },
-          { 'sha1' => 'abcde' }
+          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'fn' => 'some-file', 'size' => 3, 'mode' => '666' },
+          { 'sha1' => 'abcde', 'fn' => 'some-other-file', 'size' => 5, 'mode' => '777' }
         ]
       end
 
       it 'returns only the matching entries' do
         expect(response.code).to eq(200)
         response_body = JSON.parse(response.body)
-        expect(response_body).to eq([{ 'sha1' => '8b381f8864b572841a26266791c64ae97738a659' }])
+        expect(response_body).to eq([sha_list[0]])
       end
     end
 
