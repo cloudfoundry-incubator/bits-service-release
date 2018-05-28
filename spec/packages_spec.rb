@@ -158,7 +158,7 @@ describe 'packages resource' do
 
         response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).put upload_body
 
-        expect(response.code).to eq(201), "First upload to \"#{package_upload_url}\" should succeed"
+        expect(response.code).to be_between(200, 204), "First upload to \"#{package_upload_url}\" should succeed"
 
         # zip_file from upload_body is already closed by now, so we can't reuse it:
         begin
