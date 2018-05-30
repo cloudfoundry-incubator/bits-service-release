@@ -11,3 +11,6 @@ max_body_size: 2M
 signing_users:
   - username: admin
     password: admin
+app_stash_config:
+  maximum_size: 512M
+  minimum_size: 64K

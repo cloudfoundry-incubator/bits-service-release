@@ -107,13 +107,13 @@ describe 'app_stash endpoint' do
             'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
             'fn' => 'bla',
             'mode' => 'bla',
-            'size' => 123
+            'size' => 123*1024
           },
           {
             'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5',
             'fn' => 'bla',
             'mode' => 'bla',
-            'size' => 123
+            'size' => 123*1024
           }
         ]
       end
@@ -137,7 +137,7 @@ describe 'app_stash endpoint' do
     context 'when some of the entries matches' do
       let(:sha_list) do
         [
-          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'fn' => 'some-file', 'size' => 3, 'mode' => '666' },
+          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'fn' => 'some-file', 'size' => 3*1024*1024, 'mode' => '666' },
           { 'sha1' => 'abcde', 'fn' => 'some-other-file', 'size' => 5, 'mode' => '777' }
         ]
       end
