@@ -45,7 +45,7 @@ bundle exec rake
 
 ## CI Pipeline
 
-The pipeline is publicly visible at [flintstone.ci.cf-app.com](https://flintstone.ci.cf-app.com). The sources are located at [bits-service-ci](https://github.com/cloudfoundry-incubator/bits-service-ci).
+The pipeline is publicly visible at [flintstone.ci.cf-app.com](https://flintstone.ci.cf-app.com/teams/main/pipelines/bits-service). The sources are located at [bits-service-ci](https://github.com/cloudfoundry-incubator/bits-service-ci).
 
 ## Certificate generation
 We used CA credentials as provided by `cf-release/templates/bosh-lite-fixtures/server-ca.{crt,key}`. To generate bits-service certificate and key, the following commands have been issued:
