@@ -45,6 +45,34 @@ describe 'URL Signing', type: :integration do
     expect(response.code).to be_between(200, 204)
   end
 
+  context 'app_stash, method: POST' do
+    it 'return a signed URL that can be used to upload a package' do
+      response = RestClient::Request.execute({
+        url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign/app_stash/matches?verb=post",
+        method: :get,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
+        })
+      signed_url = response.body.to_s
+
+      response = RestClient::Resource.new(
+        signed_url,
+        verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+        ssl_cert_store: cert_store
+      ).post([
+        {
+          'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
+          'fn' => 'bla',
+          'mode' => 'bla',
+          'size' => 123*1024
+        }
+      ].to_json)
+
+      expect(response.code).to eq(200)
+      expect(JSON.parse(response.body)).to eq([])
+    end
+  end
+
   context 'method: PUT', action: :upload do
     it 'return a signed URL that can be used to upload a package' do
       response = RestClient::Request.execute({
