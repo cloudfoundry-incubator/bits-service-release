@@ -1,5 +1,7 @@
 #!/bin/bash
 
+: ${1?"Please provide a blobstore type as argument. USAGE: run-system-tests.sh (local|webdav|s3|...)"}
+
 cd $(dirname $0)/..
 
 if [ "$1" == "webdav" -o "$1" == "local" ]; then
