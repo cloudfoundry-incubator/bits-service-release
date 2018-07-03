@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nc -z 127.0.0.1 <%= p('bits-service.tls.port') %>
+openssl s_client -connect localhost:<%= p('bits-service.tls.port') %>
 
 # http://www.consul.io/docs/agent/checks.html
 if [ $? -ne 0 ]; then
