@@ -71,6 +71,14 @@ buildpacks:
     host: storage.googleapis.com
   <% end %>
   <% end %>
+  <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "aliyun" %>
+  blobstore_type: alibaba
+  alibaba_config:
+    bucket_name: <%= p("bits-service.buildpacks.directory_key") %>
+    access_key_id: <%= p("bits-service.buildpacks.fog_connection.aliyun_accesskey_id") %>
+    access_key_secret: <%= p("bits-service.buildpacks.fog_connection.aliyun_accesskey_secret") %>
+    endpoint: <%= p("bits-service.buildpacks.fog_connection.aliyun_oss_endpoint") %>
+  <% end %>
   <% end %>
 
 droplets:
@@ -145,6 +153,14 @@ droplets:
     secret_access_key: <%= p("bits-service.droplets.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
   <% end %>
+  <% end %>
+  <% if p("bits-service.droplets.fog_connection.provider").downcase == "aliyun" %>
+  blobstore_type: alibaba
+  alibaba_config:
+    bucket_name: <%= p("bits-service.droplets.directory_key") %>
+    access_key_id: <%= p("bits-service.droplets.fog_connection.aliyun_accesskey_id") %>
+    access_key_secret: <%= p("bits-service.droplets.fog_connection.aliyun_accesskey_secret") %>
+    endpoint: <%= p("bits-service.droplets.fog_connection.aliyun_oss_endpoint") %>
   <% end %>
   <% end %>
 
@@ -221,6 +237,14 @@ packages:
     host: storage.googleapis.com
   <% end %>
   <% end %>
+  <% if p("bits-service.packages.fog_connection.provider").downcase == "aliyun" %>
+  blobstore_type: alibaba
+  alibaba_config:
+    bucket_name: <%= p("bits-service.packages.directory_key") %>
+    access_key_id: <%= p("bits-service.packages.fog_connection.aliyun_accesskey_id") %>
+    access_key_secret: <%= p("bits-service.packages.fog_connection.aliyun_accesskey_secret") %>
+    endpoint: <%= p("bits-service.packages.fog_connection.aliyun_oss_endpoint") %>
+  <% end %>
   <% end %>
 
 app_stash:
@@ -295,6 +319,14 @@ app_stash:
     secret_access_key: <%= p("bits-service.app_stash.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
   <% end %>
+  <% end %>
+  <% if p("bits-service.app_stash.fog_connection.provider").downcase == "aliyun" %>
+  blobstore_type: alibaba
+  alibaba_config:
+    bucket_name: <%= p("bits-service.app_stash.directory_key") %>
+    access_key_id: <%= p("bits-service.app_stash.fog_connection.aliyun_accesskey_id") %>
+    access_key_secret: <%= p("bits-service.app_stash.fog_connection.aliyun_accesskey_secret") %>
+    endpoint: <%= p("bits-service.app_stash.fog_connection.aliyun_oss_endpoint") %>
   <% end %>
   <% end %>
 
