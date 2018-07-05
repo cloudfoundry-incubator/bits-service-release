@@ -5,6 +5,7 @@ require 'shared_examples'
 require 'json'
 require 'support/cf.rb'
 require "rspec/json_expectations"
+require 'open3'
 
 require 'support/environment'
 require 'support/manifest'
@@ -67,13 +68,9 @@ describe 'packages resource' do
 
   describe 'PUT /packages/:guid', type: :integration do
     context 'when package is uploaded', action: :upload do
-      it 'returns HTTP status 201' do
+      it 'stores the blob in the backend and returns HTTP status 201' do
         response = make_put_request resource_path, upload_body
         expect(response.code).to eq 201
-      end
-
-      it 'stores the blob in the backend' do
-        make_put_request resource_path, upload_body
         expect(blobstore_client.key_exist?(guid)).to eq(true)
       end
 
@@ -87,6 +84,51 @@ describe 'packages resource' do
       end
 
       include_examples 'when blobstore disk is full', :packages
+
+      context 'client specifies resources to use from app_stash' do
+        it 'creates the package using files from zip and app_stash and returns HTTP status 201' do
+          response = make_put_request "/packages/#{SecureRandom.uuid}", { package: File.new(File.expand_path('../assets/above-64k.zip', __FILE__)) }
+          expect(response.code).to eq 201
+
+          response = make_put_request resource_path, { package: zip_file, resources: [ { fn: "bla", size: 123, sha1: "ba57acddaf6cea7c70250fef45a8727ecec1961e" } ].to_json }
+          expect(response.code).to eq(201), response.body
+
+          response = make_get_request resource_path
+          expect(response.code).to eq 200
+
+          tempfile = Tempfile.open('xxx')
+          tempfile.binmode
+          tempfile.write(response.body)
+          tempfile.close
+
+          dirpath = Dir.mktmpdir
+          output, error, status = Open3.capture3(
+            %(/usr/bin/unzip -qq -n #{Shellwords.escape(tempfile.path)} -d #{Shellwords.escape(dirpath)})
+          )
+          expect(status.success?).to be_truthy, "output: #{output}, error: #{error}"
+
+          expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at '+ dirpath
+          expect(File.exist?(File.join(dirpath, 'bla'))).to be_truthy, 'Extracted zip file at '+ dirpath
+
+          FileUtils.rmdir(dirpath)
+        end
+      end
+
+      context 'client specifies resources to use from app_stash which do not exist in appstash' do
+        it 'returns HTTP status 422' do
+          response = make_put_request resource_path, { package: zip_file, resources: [ { fn: "bla", size: 123, sha1: "nonexistingsha" } ].to_json }
+          expect(response.code).to eq 422
+          expect(response.body).to include("not all sha1s specified could be found")
+        end
+      end
+
+      context 'client specifies resources that are not valid json' do
+        it 'returns HTTP status 422' do
+          response = make_put_request resource_path, { package: zip_file, resources: { value: "this is not an array of fingerprints" }.to_json }
+          expect(response.code).to eq 422
+          expect(response.body).to include("JSON payload could not be parsed")
+        end
+      end
     end
 
     context 'when package is duplicated' do
@@ -190,8 +232,23 @@ describe 'packages resource' do
 
       it 'returns the correct contents' do
         response = make_get_request resource_path
-        expect(response.body).to eq File.open(zip_filepath, 'rb').read
-      end
+
+        tempfile = Tempfile.open('xxx')
+        tempfile.binmode
+        tempfile.write(response.body)
+        tempfile.close
+
+        dirpath = Dir.mktmpdir
+        output, error, status = Open3.capture3(
+          %(/usr/bin/unzip -qq -n #{Shellwords.escape(tempfile.path)} -d #{Shellwords.escape(dirpath)})
+        )
+        puts dirpath
+        expect(status.success?).to be_truthy, "output: #{output}, error: #{error}"
+
+        expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at '+ dirpath
+
+        FileUtils.rmdir(dirpath)
+    end
     end
 
     context 'when the package does not exist' do
