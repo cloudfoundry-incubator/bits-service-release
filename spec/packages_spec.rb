@@ -65,11 +65,15 @@ describe 'packages resource' do
   end
 
   after action: :upload do
-    expect(blobstore_client.delete_resource(guid)).to be_truthy
+    if blobstore_client.key_exist?(guid)
+      expect(blobstore_client.delete_resource(guid)).to be_truthy
+    end
     expect(blobstore_client.key_exist?(guid)).to eq(false)
   end
   after action: :upload_existing do
-    expect(blobstore_client.delete_resource(existing_guid)).to be_truthy
+    if blobstore_client.key_exist?(existing_guid)
+      expect(blobstore_client.delete_resource(existing_guid)).to be_truthy
+    end
     expect(blobstore_client.key_exist?(existing_guid)).to eq(false)
   end
 
