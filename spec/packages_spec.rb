@@ -29,6 +29,13 @@ describe 'packages resource' do
       @cf_client.create_package(@app_id)
     end
   end
+  let(:another_guid) do
+    if !cc_updates_enabled?
+      SecureRandom.uuid
+    else
+      @cf_client.create_package(@app_id)
+    end
+  end
   let(:existing_guid) do
     if !cc_updates_enabled?
       SecureRandom.uuid
@@ -87,7 +94,7 @@ describe 'packages resource' do
 
       context 'client specifies resources to use from app_stash' do
         it 'creates the package using files from zip and app_stash and returns HTTP status 201' do
-          response = make_put_request "/packages/#{SecureRandom.uuid}", { package: File.new(File.expand_path('../assets/above-64k.zip', __FILE__)) }
+          response = make_put_request "/packages/#{another_guid}", { package: File.new(File.expand_path('../assets/above-64k.zip', __FILE__)) }
           expect(response.code).to eq 201
 
           response = make_put_request resource_path, { package: zip_file, resources: [ { fn: "bla", size: 123, sha1: "ba57acddaf6cea7c70250fef45a8727ecec1961e" } ].to_json }
