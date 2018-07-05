@@ -1,12 +1,83 @@
 hash: ee47d7228377c5ff4e9cc48d1cd34cc809595662aea62e69ee8b35835bfbf218
-updated: 2018-01-12T10:29:41.164191019+01:00
+updated: 2018-07-05T23:58:03.204816+02:00
 imports: []
 testImports:
+- name: github.com/cloudfoundry-incubator/cf-test-helpers
+  version: 4dd9d48177008d37e3a5e581cf65c8585453e45c
+  subpackages:
+  - cf
+  - generator
+  - helpers
+  - runner
+- name: github.com/nu7hatch/gouuid
+  version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+- name: github.com/onsi/ginkgo
+  version: 6665a7cf0a58963034f099ffcd3bc4e4a11c300c
+  subpackages:
+  - config
+  - internal/codelocation
+  - internal/containernode
+  - internal/failer
+  - internal/leafnodes
+  - internal/remote
+  - internal/spec
+  - internal/spec_iterator
+  - internal/specrunner
+  - internal/suite
+  - internal/testingtproxy
+  - internal/writer
+  - reporters
+  - reporters/stenographer
+  - reporters/stenographer/support/go-colorable
+  - reporters/stenographer/support/go-isatty
+  - types
+- name: github.com/onsi/gomega
+  version: f9b2e15b86f3d6dd556700ffbaa4feee86745028
+  subpackages:
+  - format
+  - gbytes
+  - gexec
+  - internal/assertion
+  - internal/asyncassertion
+  - internal/oraclematcher
+  - internal/testingtsupport
+  - matchers
+  - matchers/support/goraph/bipartitegraph
+  - matchers/support/goraph/edge
+  - matchers/support/goraph/node
+  - matchers/support/goraph/util
+  - types
 - name: github.com/tecnickcom/statsd
   version: 969e3814be4f15681e2da76965ffa464b576a51f
+- name: golang.org/x/net
+  version: 1f9224279e98554b6a6432d4dd998a739f8b2b7c
+  subpackages:
+  - html
+  - html/atom
+  - html/charset
 - name: golang.org/x/sys
-  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  version: 90796e5a05ce440b41c768bd9af257005e470461
   subpackages:
   - unix
+- name: golang.org/x/text
+  version: 5cec4b58c438bd98288aeb248bab2c1840713d21
+  subpackages:
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - internal/language
+  - internal/language/compact
+  - internal/tag
+  - internal/utf8internal
+  - language
+  - runes
+  - transform
 - name: gopkg.in/yaml.v2
-  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
+  version: cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b
