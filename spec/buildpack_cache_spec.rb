@@ -6,7 +6,6 @@ require 'shared_examples'
 require 'support/environment'
 require 'support/manifest'
 
-
 RSpec.configure {
   include EnvironmentHelpers
   include ManifestHelpers

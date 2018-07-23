@@ -29,8 +29,8 @@ module RemoteCommands
     guid, _ = guid.split('/') if guid.include?('/')
     res = exec_remote_cmd "rm -r #{resource_root_path}/#{path_for_guid guid}"
     if !res.include?('stderr') # assumption: bosh ssh always prints:
-                               # 'stderr | Unauthorized use is strictly prohibited. All access and activity'
-                               # independent of the command bosh ssh executes inside the VM.
+      # 'stderr | Unauthorized use is strictly prohibited. All access and activity'
+      # independent of the command bosh ssh executes inside the VM.
       raise "exec_remote_cmd failed: #{res}"
     end
     if res.include?('stdout') # bosh ssh + rm returns potential errors with a 'stdout' prefix (comes from bosh ssh)

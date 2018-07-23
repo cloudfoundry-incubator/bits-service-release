@@ -4,12 +4,11 @@ require 'spec_helper'
 require 'shared_examples'
 require 'json'
 require 'support/cf.rb'
-require "rspec/json_expectations"
+require 'rspec/json_expectations'
 require 'open3'
 
 require 'support/environment'
 require 'support/manifest'
-
 
 RSpec.configure {
   include EnvironmentHelpers
@@ -101,7 +100,7 @@ describe 'packages resource' do
           response = make_put_request "/packages/#{another_guid}", { package: File.new(File.expand_path('../assets/above-64k.zip', __FILE__)) }
           expect(response.code).to eq 201
 
-          response = make_put_request resource_path, { package: zip_file, resources: [ { fn: "bla", size: 123, sha1: "ba57acddaf6cea7c70250fef45a8727ecec1961e" } ].to_json }
+          response = make_put_request resource_path, { package: zip_file, resources: [{ fn: 'bla', size: 123, sha1: 'ba57acddaf6cea7c70250fef45a8727ecec1961e' }].to_json }
           expect(response.code).to eq(201), response.body
 
           response = make_get_request resource_path
@@ -118,8 +117,8 @@ describe 'packages resource' do
           )
           expect(status.success?).to be_truthy, "output: #{output}, error: #{error}"
 
-          expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at '+ dirpath
-          expect(File.exist?(File.join(dirpath, 'bla'))).to be_truthy, 'Extracted zip file at '+ dirpath
+          expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at ' + dirpath
+          expect(File.exist?(File.join(dirpath, 'bla'))).to be_truthy, 'Extracted zip file at ' + dirpath
 
           FileUtils.rmdir(dirpath)
         end
@@ -127,17 +126,17 @@ describe 'packages resource' do
 
       context 'client specifies resources to use from app_stash which do not exist in appstash' do
         it 'returns HTTP status 422' do
-          response = make_put_request resource_path, { package: zip_file, resources: [ { fn: "bla", size: 123, sha1: "nonexistingsha" } ].to_json }
+          response = make_put_request resource_path, { package: zip_file, resources: [{ fn: 'bla', size: 123, sha1: 'nonexistingsha' }].to_json }
           expect(response.code).to eq 422
-          expect(response.body).to include("not all sha1s specified could be found")
+          expect(response.body).to include('not all sha1s specified could be found')
         end
       end
 
       context 'client specifies resources that are not valid json' do
         it 'returns HTTP status 422' do
-          response = make_put_request resource_path, { package: zip_file, resources: { value: "this is not an array of fingerprints" }.to_json }
+          response = make_put_request resource_path, { package: zip_file, resources: { value: 'this is not an array of fingerprints' }.to_json }
           expect(response.code).to eq 422
-          expect(response.body).to include("JSON payload could not be parsed")
+          expect(response.body).to include('JSON payload could not be parsed')
         end
       end
     end
@@ -219,7 +218,7 @@ describe 'packages resource' do
         begin
           # zip_file from upload_body is already closed by now, so we can't reuse it:
           response = RestClient::Resource.new(package_upload_url, verify_ssl: OpenSSL::SSL::VERIFY_NONE).
-            put({ package: File.new(zip_filepath) })
+                     put({ package: File.new(zip_filepath) })
           fail "Second upload to \"#{package_upload_url}\" should not succeed"
         rescue RestClient::ExceptionWithResponse => e
           expect(e.response.code).to eq(400)
@@ -256,10 +255,10 @@ describe 'packages resource' do
         puts dirpath
         expect(status.success?).to be_truthy, "output: #{output}, error: #{error}"
 
-        expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at '+ dirpath
+        expect(File.exist?(File.join(dirpath, 'hello'))).to be_truthy, 'Extracted zip file at ' + dirpath
 
         FileUtils.rmdir(dirpath)
-    end
+      end
     end
 
     context 'when the package does not exist' do

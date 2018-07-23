@@ -61,6 +61,7 @@ describe 'accessing the bits-service', type: :integration do
 
   context 'by IP address' do
     context 'not passing a host header' do
+
       it 'responds SSLError: hostname <private_endpoint_ip> does not match the server certificate, because the IP is not part of the certificate.' do
         expect {
           RestClient::Request.execute(

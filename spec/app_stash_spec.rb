@@ -6,7 +6,6 @@ require 'shared_examples'
 require 'support/environment'
 require 'support/manifest'
 
-
 RSpec.configure {
   include EnvironmentHelpers
   include ManifestHelpers
@@ -93,7 +92,7 @@ describe 'app_stash endpoint' do
       response = make_post_request '/app_stash/entries', request_body
       expect(response.code).to eq 201
       # We had some flakes and would like to assert that the blobstore really really has these SHAs
-      ['8b381f8864b572841a26266791c64ae97738a659','594eb15515c89bbfb0874aa4fd4128bee0a1d0b5'].each do |entry|
+      ['8b381f8864b572841a26266791c64ae97738a659', '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5'].each do |entry|
         expect(blobstore_client.key_exist?(entry)).to be_truthy
       end
     end
@@ -107,13 +106,13 @@ describe 'app_stash endpoint' do
             'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
             'fn' => 'bla',
             'mode' => 'bla',
-            'size' => 123*1024
+            'size' => 123 * 1024
           },
           {
             'sha1' => '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5',
             'fn' => 'bla',
             'mode' => 'bla',
-            'size' => 123*1024
+            'size' => 123 * 1024
           }
         ]
       end
@@ -137,7 +136,7 @@ describe 'app_stash endpoint' do
     context 'when some of the entries matches' do
       let(:sha_list) do
         [
-          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'fn' => 'some-file', 'size' => 3*1024*1024, 'mode' => '666' },
+          { 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'fn' => 'some-file', 'size' => 3 * 1024 * 1024, 'mode' => '666' },
           { 'sha1' => 'abcde', 'fn' => 'some-other-file', 'size' => 5, 'mode' => '777' }
         ]
       end

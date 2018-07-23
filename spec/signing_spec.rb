@@ -64,7 +64,7 @@ describe 'URL Signing', type: :integration do
           'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
           'fn' => 'bla',
           'mode' => 'bla',
-          'size' => 123*1024
+          'size' => 123 * 1024
         }
       ].to_json)
 

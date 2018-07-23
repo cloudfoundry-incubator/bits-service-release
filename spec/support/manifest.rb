@@ -2,7 +2,7 @@
 
 require 'yaml'
 
-def load_manifest()
+def load_manifest
   puts "Using ENV['BITS_SERVICE_MANIFEST']=#{ENV.fetch('BITS_SERVICE_MANIFEST')}:\n"
   yaml = YAML.load_file(ENV.fetch('BITS_SERVICE_MANIFEST'))
   puts yaml
