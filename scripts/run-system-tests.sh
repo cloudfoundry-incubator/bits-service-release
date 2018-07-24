@@ -15,6 +15,10 @@ fi
 # build bitsgo
 pushd src/github.com/petergtz/bitsgo/cmd/bitsgo
     go install
+    if [ $? != 0 ]; then
+        echo "Error: Could not compile bitsgo"
+        exit 1
+    fi
 popd
 
 # generate config and run bitsgo
