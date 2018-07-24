@@ -70,7 +70,7 @@ describe 'accessing the bits-service', type: :integration do
             verify_ssl: OpenSSL::SSL::VERIFY_PEER,
             ssl_cert_store: cert_store
           )
-        }.to raise_error(OpenSSL::SSL::SSLError, "hostname \"#{private_endpoint_ip}\" does not match the server certificate")
+        }.to raise_error(RestClient::SSLCertificateNotVerified)
       end
     end
 
@@ -81,9 +81,7 @@ describe 'accessing the bits-service', type: :integration do
           method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store,
           headers: { host: public_endpoint.hostname }
           })
-        }.to raise_error(OpenSSL::SSL::SSLError, "hostname \"#{private_endpoint_ip}\" does not match the server certificate")
-
-
+        }.to raise_error(RestClient::SSLCertificateNotVerified)
       end
     end
   end
