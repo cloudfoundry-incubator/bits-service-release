@@ -159,8 +159,34 @@ describe 'Upload limits for resources', type: 'limits' do
     let(:file_size_small) { 5.5 * 1024 * 1024 }
     let(:file_size_big) { 6.5 * 1024 * 1024 }
 
-    # TODO: re-include these by creating proper package zips.
-    # include_examples 'limited file upload'
+    context 'internal uploads' do
+      context 'when the file is smaller than limit' do
+        let(:package_zip) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
+        let(:package_zip_with_new_resources) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
+        after do
+          del_response = make_delete_request resource_path
+          expect(del_response.code).to be_between(200, 204)
+        end
+
+        it 'returns HTTP status code 201' do
+          response = make_put_request resource_path, { package: package_zip, mulitpart: true}
+          expect(response.code).to eq 201
+
+          response = make_put_request resource_path, { package: package_zip_with_new_resources, resources: [{ fn: 'bla', size: 123, sha1: 'ba57acddaf6cea7c70250fef45a8727ecec1961e' }].to_json }
+          expect(response.code).to eq(201), response.body
+
+          expect(response.code).to eq 201
+        end
+      end
+
+      context 'when the file is bigger than limit' do
+        it 'returns HTTP status code 413' do
+          response = make_put_request resource_path, { package: file_big, resources: [{ fn: 'bla', size: 123, sha1: 'ba57acddaf6cea7c70250fef45a8727ecec1961e' }].to_json }
+          expect(response.code).to eq 413
+        end
+      end
+    end
+
     # include_examples 'limited signed file upload' if blobstore_provider(:packages) == 'local'
   end
 
