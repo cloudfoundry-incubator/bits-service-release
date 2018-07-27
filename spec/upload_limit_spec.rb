@@ -129,6 +129,45 @@ describe 'Upload limits for resources', type: 'limits' do
     include_examples 'limited signed file upload' if blobstore_provider(:buildpacks) == 'local'
   end
 
+
+  context 'droplets' do
+    let(:resource_path) { "/droplets/#{SecureRandom.uuid}/#{SecureRandom.uuid}" }
+    let(:upload_field) { 'droplet' }
+    let(:file_size_small) { 4.5 * 1024 * 1024 }
+    let(:file_size_big) { 5.5 * 1024 * 1024 }
+
+    include_examples 'limited file upload'
+    include_examples 'limited signed file upload' if blobstore_provider(:droplets) == 'local'
+  end
+
+  context 'app_stash/entries' do
+    let(:resource_path) { '/app_stash/entries' }
+    let(:upload_field) { 'application' }
+    # We need a valid zip for this spec
+    let(:file_small) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
+    let(:file_size_big) { 3.5 * 1024 * 1024 }
+
+    context 'when the file is smaller than limit' do
+      after do
+        app_stash_entries.each do |entry|
+          expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
+          expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
+        end
+      end
+      it 'returns HTTP status code 201' do
+        response = make_post_request(resource_path, upload_body_small)
+        expect(response.code).to eq 201
+      end
+    end
+
+    context 'when the file is bigger than limit' do
+      it 'returns HTTP status code 413' do
+        response = make_post_request(resource_path, upload_body_big)
+        expect(response.code).to eq 413
+      end
+    end
+  end
+
   context 'packages' do
     let(:guid) do
       if !cc_updates_enabled?
@@ -186,44 +225,55 @@ describe 'Upload limits for resources', type: 'limits' do
         end
       end
     end
+    # Make it work with the new packages endpoint
+    context 'signed uploads' do
+      context 'when the file is smaller than limit' do
+        after do
+          del_response = make_delete_request resource_path
+          expect(del_response.code).to be_between(200, 204)
+        end
+        let(:package_zip) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
+        it 'returns HTTP status code 201' do
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{resource_path}?verb=put"
+          response = RestClient::Request.execute({
+            url: sign_url,
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+            })
+          signed_put_url = response.body.to_s
 
-    # include_examples 'limited signed file upload' if blobstore_provider(:packages) == 'local'
-  end
+          payload = {package: package_zip, resources: [{ fn: 'bla', size: 123, sha1: 'ba57acddaf6cea7c70250fef45a8727ecec1961e' }].to_json}
+          response = RestClient::Resource.new(
+            signed_put_url,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+          ).put payload
 
-  context 'droplets' do
-    let(:resource_path) { "/droplets/#{SecureRandom.uuid}/#{SecureRandom.uuid}" }
-    let(:upload_field) { 'droplet' }
-    let(:file_size_small) { 4.5 * 1024 * 1024 }
-    let(:file_size_big) { 5.5 * 1024 * 1024 }
-
-    include_examples 'limited file upload'
-    include_examples 'limited signed file upload' if blobstore_provider(:droplets) == 'local'
-  end
-
-  context 'app_stash/entries' do
-    let(:resource_path) { '/app_stash/entries' }
-    let(:upload_field) { 'application' }
-    # We need a valid zip for this spec
-    let(:file_small) { File.new(File.expand_path('../assets/app.zip', __FILE__)) }
-    let(:file_size_big) { 3.5 * 1024 * 1024 }
-
-    context 'when the file is smaller than limit' do
-      after do
-        app_stash_entries.each do |entry|
-          expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
-          expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
+          expect(response.code).to eq 201
         end
       end
-      it 'returns HTTP status code 201' do
-        response = make_post_request(resource_path, upload_body_small)
-        expect(response.code).to eq 201
-      end
-    end
 
-    context 'when the file is bigger than limit' do
-      it 'returns HTTP status code 413' do
-        response = make_post_request(resource_path, upload_body_big)
-        expect(response.code).to eq 413
+      context 'when the file is bigger than limit' do
+        it 'returns HTTP status code 413' do
+          sign_url = "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign#{resource_path}?verb=put"
+          response = RestClient::Request.execute({
+            url: sign_url,
+            method: :get,
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+          })
+          signed_put_url = response.body.to_s
+
+          payload = {package: file_big, resources: [{ fn: 'bla', size: 123, sha1: 'ba57acddaf6cea7c70250fef45a8727ecec1961e' }].to_json}
+          expect {
+            RestClient::Resource.new(
+              signed_put_url,
+              verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+              ssl_cert_store: cert_store
+            ).put(payload)
+          }.to raise_error(RestClient::RequestEntityTooLarge)
+        end
       end
     end
   end
