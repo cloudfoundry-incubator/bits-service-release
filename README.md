@@ -46,28 +46,3 @@ bundle exec rake
 ## CI Pipeline
 
 The pipeline is publicly visible at [flintstone.ci.cf-app.com](https://flintstone.ci.cf-app.com/teams/main/pipelines/bits-service). The sources are located at [bits-service-ci](https://github.com/cloudfoundry-incubator/bits-service-ci).
-
-## Certificate generation
-We used CA credentials as provided by `cf-release/templates/bosh-lite-fixtures/server-ca.{crt,key}`. To generate bits-service certificate and key, the following commands have been issued:
-```sh
-certstrap init --key server-ca.key --cn 'bbsCA'
-certstrap request-cert --passphrase '' --common-name bits-service
-certstrap sign bits-service --CA bbsCA
-```
-
-You can pick up you new credentials from `./out/bits-service.{crt,key}`.
-
-Pay extra attention to CA's common name: it absolutely needs to be 'bbsCA' for the certificates to work correctly.
-
-## Troubleshooting
-### Failed TCP connections
-If you run into connection errors like this one: `Failed to open TCP connection to 10.250.0.2.xip.io:80 (getaddrinfo: nodename nor servname provided, or not known)` try cleaning your DNS cache. On MacOS Sierra (10.12) you can do this with:
-```sh
-sudo killall -HUP mDNSResponder
-```
-
-### Failed SSH connections
-If you run into errors like `Net::SSH::HostKeyMismatch`, you need to remove the offending entry from `~/.ssh/known_hosts`.
-```sh
-ssh-keygen -R $offending_ip
-```
