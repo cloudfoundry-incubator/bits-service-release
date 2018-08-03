@@ -2,7 +2,7 @@ set -e -x
 
 export GOPATH=$(mktemp -d)
 mkdir -p $GOPATH/src
-cd ${BUILD_DIR}/github.com/petergtz/bitsgo
+cd ${BUILD_DIR}/github.com/cloudfoundry-incubator/bits-service
 
 glide install
 

@@ -13,7 +13,7 @@ if [ "$1" == "webdav" -o "$1" == "local" ]; then
 fi
 
 # build bitsgo
-pushd src/github.com/petergtz/bitsgo/cmd/bitsgo
+pushd src/github.com/cloudfoundry-incubator/bits-service/cmd/bitsgo
     go install
     if [ $? != 0 ]; then
         echo "Error: Could not compile bitsgo"
