@@ -1,3 +1,3 @@
 [submodule "src/github.com/petergtz/bitsgo"]
-	path = src/github.com/petergtz/bitsgo
-	url = https://github.com/petergtz/bitsgo.git
+	path = src/github.com/cloudfoundry-incubator/bits-service
+	url = https://github.com/cloudfoundry-incubator/bits-service.git
