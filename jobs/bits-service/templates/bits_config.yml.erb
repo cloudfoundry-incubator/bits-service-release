@@ -27,6 +27,7 @@ buildpacks:
     <% if_p("bits-service.buildpacks.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "openstack" %>
   blobstore_type: openstack
@@ -69,6 +70,7 @@ buildpacks:
     access_key_id: <%= p("bits-service.buildpacks.fog_connection.google_storage_access_key_id") %>
     secret_access_key: <%= p("bits-service.buildpacks.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "aliyun" %>
@@ -110,6 +112,7 @@ droplets:
     <% if_p("bits-service.droplets.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "openstack" %>
   blobstore_type: openstack
@@ -152,6 +155,7 @@ droplets:
     access_key_id: <%= p("bits-service.droplets.fog_connection.google_storage_access_key_id") %>
     secret_access_key: <%= p("bits-service.droplets.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "aliyun" %>
@@ -193,6 +197,7 @@ packages:
     <% if_p("bits-service.packages.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "openstack" %>
   blobstore_type: openstack
@@ -235,6 +240,7 @@ packages:
     access_key_id: <%= p("bits-service.packages.fog_connection.google_storage_access_key_id") %>
     secret_access_key: <%= p("bits-service.packages.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "aliyun" %>
@@ -276,6 +282,7 @@ app_stash:
     <% if_p("bits-service.app_stash.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "openstack" %>
   blobstore_type: openstack
@@ -318,6 +325,7 @@ app_stash:
     access_key_id: <%= p("bits-service.app_stash.fog_connection.google_storage_access_key_id") %>
     secret_access_key: <%= p("bits-service.app_stash.fog_connection.google_storage_secret_access_key") %>
     host: storage.googleapis.com
+    s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "aliyun" %>

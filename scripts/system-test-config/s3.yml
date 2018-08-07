@@ -6,6 +6,7 @@ buildpacks: &blobstore_config
     access_key_id: (( grab $ACCESS_KEY_ID ))
     secret_access_key: (( grab $SECRET_ACCESS_KEY ))
     region: (( grab $REGION ))
+    s3_debug_log_level:
 droplets:
   <<: *blobstore_config
   max_body_size: 5M
