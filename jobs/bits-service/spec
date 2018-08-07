@@ -80,7 +80,7 @@ properties:
     description: "Maximum body size for nginx"
   bits-service.buildpacks.s3_debug_log_level:
     default: ""
-    description: Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors
+    description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
 
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
@@ -110,7 +110,7 @@ properties:
     description: "Maximum body size for nginx"
   bits-service.droplets.s3_debug_log_level:
     default: ""
-    description: Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors
+    description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
 
   bits-service.packages.directory_key:
     description: "Directory (bucket) used to store package blobs."
@@ -140,7 +140,7 @@ properties:
     description: "Maximum body size for nginx"
   bits-service.packages.s3_debug_log_level:
     default: ""
-    description: Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors
+    description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
 
   bits-service.app_stash.directory_key:
     description: "Directory (bucket) used to store app stash blobs."
@@ -176,7 +176,7 @@ properties:
     description: "Maximum size of a resource to cache in App-Stash"
   bits-service.app_stash.s3_debug_log_level:
     default: ""
-    description: Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors
+    description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
 
   bits-service.buildpack_cache.max_body_size:
     default: "1536M"
