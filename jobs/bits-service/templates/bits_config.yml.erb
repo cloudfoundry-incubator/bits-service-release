@@ -346,10 +346,7 @@ buildpack_cache:
   max_body_size: <%= p("bits-service.buildpack_cache.max_body_size") %>
 
 logging:
-  file: /var/vcap/sys/log/bits-service/bits-service.log
-  syslog: vcap.bits-service
   level: <%= p("bits-service.logging.level") %>
-  max_retries: <%= p("bits-service.logging.max_retries") %>
 private_endpoint: <%= p("bits-service.private_endpoint") %>
 public_endpoint: <%= p("bits-service.public_endpoint") %>
 port: 443

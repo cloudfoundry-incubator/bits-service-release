@@ -189,9 +189,6 @@ properties:
   bits-service.logging.level:
     default: "debug"
     description: "Log level for bits-service. See Steno logger for details."
-  bits-service.logging.max_retries:
-    default: 1
-    description: "Number of times to retry if a write to the log file fails. See Steno logger for details."
 
   bits-service.cc_updates.cc_url:
     description: "CloudController endpoint for sending package status updates"
