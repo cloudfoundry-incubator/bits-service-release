@@ -1,7 +1,7 @@
 logging:
   level: debug
-private_endpoint: https://internal.127.0.0.1.xip.io
-public_endpoint: https://127.0.0.1.xip.io
+private_endpoint: https://internal.127.0.0.1.nip.io
+public_endpoint: https://127.0.0.1.nip.io
 cert_file: cert_file
 key_file: key_file
 port: 4443

@@ -1,7 +1,7 @@
 properties:
   bits-service:
-    private_endpoint: https://internal.127.0.0.1.xip.io:4443
-    public_endpoint: https://127.0.0.1.xip.io:4443
+    private_endpoint: https://internal.127.0.0.1.nip.io:4443
+    public_endpoint: https://127.0.0.1.nip.io:4443
     secret: 12345
     signing_users:
     - password: admin
