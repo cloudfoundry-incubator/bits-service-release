@@ -128,7 +128,7 @@ describe 'packages resource' do
         it 'returns HTTP status 422' do
           response = make_put_request resource_path, { package: zip_file, resources: [{ fn: 'bla', size: 123, sha1: 'nonexistingsha' }].to_json }
           expect(response.code).to eq 422
-          expect(response.body).to include('not all sha1s specified could be found')
+          expect(response.body).to include('not all specified sha1s could be found')
         end
       end
 
