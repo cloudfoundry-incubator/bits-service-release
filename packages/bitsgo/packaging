@@ -8,6 +8,10 @@ export PATH=$GOPATH/bin:$PATH
 mkdir src
 mkdir bin
 cp -a github.com src
-cd src/github.com/cloudfoundry-incubator/bits-service/cmd/bitsgo
-go install
-cp $GOPATH/bin/bitsgo ${BOSH_INSTALL_TARGET}
+pushd src/github.com/cloudfoundry-incubator/bits-service/cmd/bitsgo
+    go build -o ${BOSH_INSTALL_TARGET}/bitsgo
+popd
+
+pushd src/github.com/cloudfoundry-incubator/bits-service/cmd/dashboard
+    go build -o ${BOSH_INSTALL_TARGET}/dashboard
+popd
