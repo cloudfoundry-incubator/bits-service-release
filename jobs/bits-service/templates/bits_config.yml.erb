@@ -29,6 +29,7 @@ buildpacks:
     <% end %>
     server_side_encryption: <%= p("bits-service.buildpacks.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.buildpacks.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
+    use_iam_profile: <%= p("bits-service.buildpacks.fog_connection.use_iam_profile", 'false') %>
     s3_debug_log_level: <%= p("bits-service.buildpacks.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.buildpacks.fog_connection.provider").downcase == "openstack" %>
@@ -116,6 +117,7 @@ droplets:
     <% end %>
     server_side_encryption: <%= p("bits-service.droplets.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.droplets.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
+    use_iam_profile: <%= p("bits-service.droplets.fog_connection.use_iam_profile", 'false') %>
     s3_debug_log_level: <%= p("bits-service.droplets.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.droplets.fog_connection.provider").downcase == "openstack" %>
@@ -203,6 +205,7 @@ packages:
     <% end %>
     server_side_encryption: <%= p("bits-service.packages.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.packages.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
+    use_iam_profile: <%= p("bits-service.packages.fog_connection.use_iam_profile", 'false') %>
     s3_debug_log_level: <%= p("bits-service.packages.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.packages.fog_connection.provider").downcase == "openstack" %>
@@ -290,6 +293,7 @@ app_stash:
     <% end %>
     server_side_encryption: <%= p("bits-service.app_stash.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.app_stash.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
+    use_iam_profile: <%= p("bits-service.app_stash.fog_connection.use_iam_profile", 'false') %>
     s3_debug_log_level: <%= p("bits-service.app_stash.s3_debug_log_level", '') %>
   <% end %>
   <% if p("bits-service.app_stash.fog_connection.provider").downcase == "openstack" %>
