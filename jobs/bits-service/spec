@@ -76,6 +76,9 @@ properties:
   bits-service.buildpacks.fog_connection:
     description: "Fog connection properties."
     default: null
+  bits-service.buildpacks.fog_aws_storage_options:
+    description: "Storage options passed to fog for aws blobstores. See http://docs.cloudfoundry.org/deploying/common/cc-blobstore-config.html#fog-aws-sse for example configuration."
+    default: {}
   bits-service.buildpacks.max_body_size:
     default: "1536M"
     description: "Maximum body size for nginx"
@@ -89,6 +92,9 @@ properties:
   bits-service.droplets.fog_connection:
     description: "Fog connection properties."
     default: null
+  bits-service.droplets.fog_aws_storage_options:
+    description: "Storage options passed to fog for aws blobstores. See http://docs.cloudfoundry.org/deploying/common/cc-blobstore-config.html#fog-aws-sse for example configuration."
+    default: {}
   bits-service.droplets.blobstore_type:
     description: "The type of blobstore backing to use. Valid values: ['fog', 'webdav']"
     default: "fog"
@@ -119,6 +125,9 @@ properties:
   bits-service.packages.fog_connection:
     description: "Fog connection properties."
     default: null
+  bits-service.packages.fog_aws_storage_options:
+    description: "Storage options passed to fog for aws blobstores. See http://docs.cloudfoundry.org/deploying/common/cc-blobstore-config.html#fog-aws-sse for example configuration."
+    default: {}
   bits-service.packages.blobstore_type:
     description: "The type of blobstore backing to use. Valid values: ['fog', 'webdav']"
     default: "fog"
@@ -149,6 +158,9 @@ properties:
   bits-service.app_stash.fog_connection:
     description: "Fog connection properties."
     default: null
+  bits-service.app_stash.fog_aws_storage_options:
+    description: "Storage options passed to fog for aws blobstores. See http://docs.cloudfoundry.org/deploying/common/cc-blobstore-config.html#fog-aws-sse for example configuration."
+    default: {}
   bits-service.app_stash.blobstore_type:
     description: "The type of blobstore backing to use. Valid values: ['fog', 'webdav']"
     default: "fog"
