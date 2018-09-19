@@ -21,8 +21,8 @@ buildpacks:
   blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.buildpacks.directory_key") %>
-    access_key_id: <%= p("bits-service.buildpacks.fog_connection.aws_access_key_id") %>
-    secret_access_key: <%= p("bits-service.buildpacks.fog_connection.aws_secret_access_key") %>
+    access_key_id: <%= p("bits-service.buildpacks.fog_connection.aws_access_key_id", '') %>
+    secret_access_key: <%= p("bits-service.buildpacks.fog_connection.aws_secret_access_key", '') %>
     region: <%= p("bits-service.buildpacks.fog_connection.region", '') %>
     <% if_p("bits-service.buildpacks.fog_connection.host") do | host | %>
     host: <%= host %>
@@ -109,8 +109,8 @@ droplets:
   blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.droplets.directory_key") %>
-    access_key_id: <%= p("bits-service.droplets.fog_connection.aws_access_key_id") %>
-    secret_access_key: <%= p("bits-service.droplets.fog_connection.aws_secret_access_key") %>
+    access_key_id: <%= p("bits-service.droplets.fog_connection.aws_access_key_id", '') %>
+    secret_access_key: <%= p("bits-service.droplets.fog_connection.aws_secret_access_key", '') %>
     region: <%= p("bits-service.droplets.fog_connection.region", '') %>
     <% if_p("bits-service.droplets.fog_connection.host") do | host | %>
     host: <%= host %>
@@ -197,8 +197,8 @@ packages:
   blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.packages.directory_key") %>
-    access_key_id: <%= p("bits-service.packages.fog_connection.aws_access_key_id") %>
-    secret_access_key: <%= p("bits-service.packages.fog_connection.aws_secret_access_key") %>
+    access_key_id: <%= p("bits-service.packages.fog_connection.aws_access_key_id", '') %>
+    secret_access_key: <%= p("bits-service.packages.fog_connection.aws_secret_access_key", '') %>
     region: <%= p("bits-service.packages.fog_connection.region", '') %>
     <% if_p("bits-service.packages.fog_connection.host") do | host | %>
     host: <%= host %>
@@ -285,8 +285,8 @@ app_stash:
   blobstore_type: aws
   s3_config:
     bucket: <%= p("bits-service.app_stash.directory_key") %>
-    access_key_id: <%= p("bits-service.app_stash.fog_connection.aws_access_key_id") %>
-    secret_access_key: <%= p("bits-service.app_stash.fog_connection.aws_secret_access_key") %>
+    access_key_id: <%= p("bits-service.app_stash.fog_connection.aws_access_key_id", '') %>
+    secret_access_key: <%= p("bits-service.app_stash.fog_connection.aws_secret_access_key", '') %>
     region: <%= p("bits-service.app_stash.fog_connection.region", '') %>
     <% if_p("bits-service.app_stash.fog_connection.host") do | host | %>
     host: <%= host %>
