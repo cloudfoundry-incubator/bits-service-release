@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 : ${1?"Please provide a blobstore type as argument. USAGE: run-system-tests.sh (local|webdav|s3|...)"}
 
