@@ -85,6 +85,9 @@ properties:
   bits-service.buildpacks.s3_debug_log_level:
     default: ""
     description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
+  bits-service.buildpacks.gcp_retry_timeout_seconds:
+    default: 10
+    description: "Specifies a timeout for calls against Google Cloud Storage. Only used when bucket is in Google Cloud and access method is through Google service account."
 
   bits-service.droplets.directory_key:
     description: "Directory (bucket) used to store droplet blobs."
@@ -118,6 +121,9 @@ properties:
   bits-service.droplets.s3_debug_log_level:
     default: ""
     description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
+  bits-service.droplets.gcp_retry_timeout_seconds:
+    default: 10
+    description: "Specifies a timeout for calls against Google Cloud Storage. Only used when bucket is in Google Cloud and access method is through Google service account."
 
   bits-service.packages.directory_key:
     description: "Directory (bucket) used to store package blobs."
@@ -151,6 +157,9 @@ properties:
   bits-service.packages.s3_debug_log_level:
     default: ""
     description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
+  bits-service.packages.gcp_retry_timeout_seconds:
+    default: 10
+    description: "Specifies a timeout for calls against Google Cloud Storage. Only used when bucket is in Google Cloud and access method is through Google service account."
 
   bits-service.app_stash.directory_key:
     description: "Directory (bucket) used to store app stash blobs."
@@ -190,6 +199,9 @@ properties:
   bits-service.app_stash.s3_debug_log_level:
     default: ""
     description: "Specifies log level for low-level S3 logging. Valid values are: LogDebug, LogDebugWithSigning, LogDebugWithHTTPBody, LogDebugWithRequestRetries, LogDebugWithRequestErrors"
+  bits-service.app_stash.gcp_retry_timeout_seconds:
+    default: 10
+    description: "Specifies a timeout for calls against Google Cloud Storage. Only used when bucket is in Google Cloud and access method is through Google service account."
 
   bits-service.buildpack_cache.max_body_size:
     default: "1536M"
