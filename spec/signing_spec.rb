@@ -129,7 +129,7 @@ describe 'URL Signing', type: :integration do
         expect(response.code).to eq 200
 
         signed_url = response.body.to_s
-        expect(signed_url).to match(/.*md5=.*/).or match(/X-Amz-Signature=/)
+        expect(signed_url).to match(/.*signature=.*/).or match(/X-Amz-Signature=/)
         expect(signed_url).to match(/.*expires=.*/).or match(/X-Amz-Expires=/)
       end
 
