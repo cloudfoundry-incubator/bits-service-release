@@ -55,3 +55,4 @@ src/github.com/sqs/
 src/github.com/tylerb/
 src/sourcegraph.com/
 .private
+docker/assets/*
