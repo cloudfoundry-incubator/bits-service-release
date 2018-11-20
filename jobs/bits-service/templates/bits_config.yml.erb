@@ -27,6 +27,7 @@ buildpacks:
     <% if_p("bits-service.buildpacks.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    signature_version: <%= p("bits-service.buildpacks.fog_connection.aws_signature_version", '4') %>
     server_side_encryption: <%= p("bits-service.buildpacks.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.buildpacks.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
     use_iam_profile: <%= p("bits-service.buildpacks.fog_connection.use_iam_profile", 'false') %>
@@ -116,6 +117,7 @@ droplets:
     <% if_p("bits-service.droplets.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    signature_version: <%= p("bits-service.droplets.fog_connection.aws_signature_version", '4') %>
     server_side_encryption: <%= p("bits-service.droplets.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.droplets.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
     use_iam_profile: <%= p("bits-service.droplets.fog_connection.use_iam_profile", 'false') %>
@@ -205,6 +207,7 @@ packages:
     <% if_p("bits-service.packages.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    signature_version: <%= p("bits-service.packages.fog_connection.aws_signature_version", '4') %>
     server_side_encryption: <%= p("bits-service.packages.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.packages.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
     use_iam_profile: <%= p("bits-service.packages.fog_connection.use_iam_profile", 'false') %>
@@ -294,6 +297,7 @@ app_stash:
     <% if_p("bits-service.app_stash.fog_connection.host") do | host | %>
     host: <%= host %>
     <% end %>
+    signature_version: <%= p("bits-service.app_stash.fog_connection.aws_signature_version", '4') %>
     server_side_encryption: <%= p("bits-service.app_stash.fog_aws_storage_options.encryption", '') %>
     server_side_encryption_aws_kms_key_id: <%= p("bits-service.app_stash.fog_aws_storage_options.x-amz-server-side-encryption-aws-kms-key-id", '') %>
     use_iam_profile: <%= p("bits-service.app_stash.fog_connection.use_iam_profile", 'false') %>
