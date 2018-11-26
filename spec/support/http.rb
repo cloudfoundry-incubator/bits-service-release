@@ -51,6 +51,8 @@ module HttpHelpers
 
   def try_catch
     yield
+  rescue RestClient::SSLCertificateNotVerified
+    raise
   rescue RestClient::Exception => e
     e.response
   end
