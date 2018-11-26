@@ -144,6 +144,20 @@ describe 'URL Signing', type: :integration do
               })
           }.to raise_error RestClient::Unauthorized
         end
+
+        context 'when the resource for droplets is empty' do
+          it 'returns HTTP status code 404' do
+            expect {
+              RestClient::Request.execute({
+                url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign/droplets/",
+                method: :get,
+                verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+                ssl_cert_store: cert_store
+                })
+            }.to raise_error RestClient::BadRequest
+          end
+        end
+
       end
     end
 
