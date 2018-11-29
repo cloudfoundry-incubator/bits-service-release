@@ -146,7 +146,7 @@ describe 'URL Signing', type: :integration do
         end
 
         context 'when the resource for droplets is empty' do
-          it 'returns HTTP status code 404' do
+          it 'returns HTTP status code 400' do
             expect {
               RestClient::Request.execute({
                 url: "https://#{signing_username}:#{signing_password}@#{private_endpoint.hostname}:#{private_endpoint.port}/sign/droplets/",
