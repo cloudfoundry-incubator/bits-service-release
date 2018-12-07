@@ -23,6 +23,13 @@ packages:
   - bitsgo
   - bits-common
 
+provides:
+- name: bits_signing_keys
+  type: signing_keys
+  properties:
+  - 'bits-service.signing_keys'
+  - 'bits-service.active_signing_key_id'
+
 properties:
   request_timeout_in_seconds:
     description: "Timeout for requests in seconds."
@@ -42,7 +49,9 @@ properties:
     description: The TLS server private key
 
   bits-service.secret:
-    description: "The secret used for signing URLs"
+    description: |
+      The secret used for signing URLs.
+      Deprecated: Use client side signed URLs through the provided bits_signing_keys BOSH links.
   bits-service.signing_users:
     description: |
      List of Username and Password pairs that are allowed to sign urls. Cloud Controller must use one of these to access the /sign endpoint via HTTP Basic Auth.
@@ -52,7 +61,22 @@ properties:
          password: password1
        - username: user2
          password: password2
-
+  bits-service.signing_keys:
+    description: |
+      List of access key ID and secret pairs that are used to sign and validate URLs. Clients should use active_signing_key_id
+      and the corresponding secret to generate signed URLs.
+      Example:
+      signing_keys:
+        - key_id: some_key_id
+          secret: some_secret
+        - key_id: some_other_key_id
+          secret: some_other_secret
+    default: []
+  bits-service.active_signing_key_id:
+    description: |
+      Must be one of the key_ids from bits-service.signing_keys. It is used to identify the secret when signing URLs. It should
+      not point to a signing key_id that will be removed on the next deployment.
+    default: ""
   bits-service.buildpacks.directory_key:
     description: "Directory (bucket) used to store buildpack blobs."
     default: "buildpacks"
