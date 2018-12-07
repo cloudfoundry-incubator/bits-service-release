@@ -56,3 +56,5 @@ src/github.com/tylerb/
 src/sourcegraph.com/
 .private
 docker/assets/*
+docker/bitsgo
+
