@@ -388,9 +388,11 @@ max_body_size: <%= p("bits-service.max_body_size") %>
 cert_file: /var/vcap/jobs/bits-service/config/certs/bits_tls.crt
 key_file: /var/vcap/jobs/bits-service/config/certs/bits_tls.key
 
+<% if p("bits-service.active_signing_key.key_id") != '' &&  p("bits-service.active_signing_key.secret") != '' %>
 signing_keys:
   <% p('bits-service.alternative_signing_keys').tap{|keys| keys.push({'key_id' => p("bits-service.active_signing_key.key_id"), 'secret' => p("bits-service.active_signing_key.secret")})}.each do |key| %>
   - key_id: <%= key['key_id'] %>
     secret: <%= key['secret'] %>
   <% end %>
 active_key_id: <%= p("bits-service.active_signing_key.key_id") %>
+<% end %>
