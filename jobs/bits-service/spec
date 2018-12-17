@@ -24,11 +24,11 @@ packages:
   - bits-common
 
 provides:
-- name: bits_signing_keys
-  type: signing_keys
+- name: active_signing_key
+  type: active_signing_key
   properties:
-  - 'bits-service.signing_keys'
-  - 'bits-service.active_signing_key_id'
+  - 'bits-service.active_signing_key.key_id'
+  - 'bits-service.active_signing_key.secret'
 
 properties:
   request_timeout_in_seconds:
@@ -61,10 +61,10 @@ properties:
          password: password1
        - username: user2
          password: password2
-  bits-service.signing_keys:
+  bits-service.alternative_signing_keys:
     description: |
-      List of access key ID and secret pairs that are used to sign and validate URLs. Clients should use active_signing_key_id
-      and the corresponding secret to generate signed URLs.
+      List of alternative access key ID and secret pairs that can be used to sign and validate URLs. Clients should use active_signing_key.key_id
+      and active_signing_key.secret to generate signed URLs to make sure they don't use a key that is being removed with the next deployment.
       Example:
       signing_keys:
         - key_id: some_key_id
@@ -72,10 +72,15 @@ properties:
         - key_id: some_other_key_id
           secret: some_other_secret
     default: []
-  bits-service.active_signing_key_id:
+  bits-service.active_signing_key.key_id:
     description: |
-      Must be one of the key_ids from bits-service.signing_keys. It is used to identify the secret when signing URLs. It should
-      not point to a signing key_id that will be removed on the next deployment.
+      This is the key ID Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
+      alternative_signing_keys before removing them completely.
+    default: ""
+  bits-service.active_signing_key.secret:
+    description: |
+      This is the key secret Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
+      alternative_signing_keys before removing them completely.
     default: ""
   bits-service.buildpacks.directory_key:
     description: "Directory (bucket) used to store buildpack blobs."
