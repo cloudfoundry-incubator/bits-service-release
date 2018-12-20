@@ -55,17 +55,17 @@ properties:
   bits-service.signing_users:
     description: |
      List of Username and Password pairs that are allowed to sign urls. Cloud Controller must use one of these to access the /sign endpoint via HTTP Basic Auth.
-     Example:
-       signing_users:
-       - username: user1
-         password: password1
-       - username: user2
-         password: password2
+    example: |
+      signing_users:
+      - username: user1
+        password: password1
+      - username: user2
+        password: password2
   bits-service.alternative_signing_keys:
     description: |
       List of alternative access key ID and secret pairs that can be used to sign and validate URLs. Clients should use active_signing_key.key_id
       and active_signing_key.secret to generate signed URLs to make sure they don't use a key that is being removed with the next deployment.
-      Example:
+    example: |
       signing_keys:
         - key_id: some_key_id
           secret: some_secret
