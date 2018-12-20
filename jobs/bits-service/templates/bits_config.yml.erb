@@ -370,7 +370,12 @@ logging:
 private_endpoint: <%= p("bits-service.private_endpoint") %>
 public_endpoint: <%= p("bits-service.public_endpoint") %>
 port: 443
-secret: <%= p("bits-service.secret") %>
+<%
+  if p("bits-service.secret", "") == '' && p("bits-service.active_signing_key.secret", "") == ''
+    raise 'Must either provide bits-service.secret or bits-service.active_signing_key.secret'
+  end
+%>
+secret: <%= p("bits-service.secret", "") %>
 skip_cert_verify: true
 <% if_p("bits-service.cc_updates.ca_cert", "bits-service.cc_updates.client_cert", "bits-service.cc_updates.client_key") do %>
 cc_updater:
