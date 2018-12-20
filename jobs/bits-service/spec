@@ -61,6 +61,16 @@ properties:
         password: password1
       - username: user2
         password: password2
+  bits-service.active_signing_key.key_id:
+    description: |
+      This is the key ID Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
+      alternative_signing_keys before removing them completely.
+    default: ""
+  bits-service.active_signing_key.secret:
+    description: |
+      This is the key secret Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
+      alternative_signing_keys before removing them completely.
+    default: ""
   bits-service.alternative_signing_keys:
     description: |
       List of alternative access key ID and secret pairs that can be used to sign and validate URLs. Clients should use active_signing_key.key_id
@@ -72,16 +82,6 @@ properties:
         - key_id: some_other_key_id
           secret: some_other_secret
     default: []
-  bits-service.active_signing_key.key_id:
-    description: |
-      This is the key ID Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
-      alternative_signing_keys before removing them completely.
-    default: ""
-  bits-service.active_signing_key.secret:
-    description: |
-      This is the key secret Bits-Service uses and clients should use to generate signed URLs. When rotating active signing keys, they should first go to
-      alternative_signing_keys before removing them completely.
-    default: ""
   bits-service.buildpacks.directory_key:
     description: "Directory (bucket) used to store buildpack blobs."
     default: "buildpacks"
