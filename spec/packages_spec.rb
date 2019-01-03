@@ -13,6 +13,7 @@ require 'support/manifest'
 RSpec.configure {
   include EnvironmentHelpers
   include ManifestHelpers
+  include HttpHelpers
 }
 
 describe 'packages resource' do
@@ -267,6 +268,64 @@ describe 'packages resource' do
       it 'returns the correct error' do
         response = make_get_request resource_path
         expect(response).to be_a_404
+      end
+    end
+  end
+
+  describe 'HEAD /packages/:guid' do
+    context 'should_proxy_get_requests', if: should_proxy_get_requests? do
+      context 'package exists' do
+        it 'returns 200, no redirect' do
+          response_code = 0
+
+          RestClient::Request.execute({
+            method: :head,
+            url: "#{private_endpoint}/packages/#{existing_guid}",
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+          }) { |response, request, result, &block| # using block form here to avoid following redirects
+            response_code = response.code
+            puts response.headers[:location]
+          }
+
+          expect(response_code).to eq(200)
+        end
+      end
+
+      context 'package does not exist' do
+        it 'returns 404, no redirect' do
+          response_code = 0
+
+          RestClient::Request.execute({
+            method: :head,
+            url: "#{private_endpoint}/packages/some-non-existing-guid",
+            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+            ssl_cert_store: cert_store
+          }) { |response, request, result, &block| # using block form here to avoid following redirects
+            response_code = response.code
+            puts response.headers[:location]
+          }
+
+          expect(response_code).to eq(404)
+        end
+      end
+    end
+
+    context 'should not proxy get requests', if: !should_proxy_get_requests? do
+      it 'returns 302, no info about resource existence yet' do
+        response_code = 0
+
+        RestClient::Request.execute({
+          method: :head,
+          url: "#{private_endpoint}/packages/#{existing_guid}",
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_cert_store: cert_store
+        }) { |response, request, result, &block| # using block form here to avoid following redirects
+          response_code = response.code
+          puts response.headers[:location]
+        }
+
+        expect(response_code).to eq(302)
       end
     end
   end

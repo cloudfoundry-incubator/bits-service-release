@@ -83,6 +83,10 @@ module ManifestHelpers
     !cc_updates['client_key'].to_s.empty?
   end
 
+  def should_proxy_get_requests?
+    !bits_service_config['proxy_get_requests'].nil?
+  end
+
   def test_properties
     manifest['properties']['bits_service_tests']
   end
