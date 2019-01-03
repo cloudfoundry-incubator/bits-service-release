@@ -273,7 +273,7 @@ describe 'packages resource' do
   end
 
   describe 'HEAD /packages/:guid' do
-    context 'should_proxy_get_requests', if: should_proxy_get_requests? do
+    context 'should_proxy_get_requests', if: should_proxy_get_requests? || blobstore_provider(:packages) == 'local' do
       context 'package exists' do
         it 'returns 200, no redirect' do
           response_code = 0
@@ -311,7 +311,7 @@ describe 'packages resource' do
       end
     end
 
-    context 'should not proxy get requests', if: !should_proxy_get_requests? do
+    context 'should not proxy get requests', if: !should_proxy_get_requests? && blobstore_provider(:packages) != 'local' do
       it 'returns 302, no info about resource existence yet' do
         response_code = 0
 
