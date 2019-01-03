@@ -14,3 +14,5 @@ signing_users:
 app_stash_config:
   maximum_size: 512M
   minimum_size: 64K
+# ENABLE when Bits-Service should proxy GET requests. Also enable in localhost-manifest.yml
+# proxy_get_requests: true

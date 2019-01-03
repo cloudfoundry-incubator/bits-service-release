@@ -10,3 +10,6 @@ properties:
     #   ca_cert: TODO
     #   client_cert: TODO
     #   client_key: TODO
+
+    # ENABLE when Bits-Service is proxying GET requests. Also enable in localhost-config.yml
+    # proxy_get_requests: true
