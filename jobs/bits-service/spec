@@ -253,3 +253,7 @@ properties:
     description: "PEM-encoded certificate for secure, mutually authenticated TLS communication"
   bits-service.cc_updates.client_key:
     description: "PEM-encoded key for secure, mutually authenticated TLS communication"
+
+  bits-service.proxy_get_requests:
+    description: "When set to true, GET requests get proxied through Bits-Service and not redirected to the backend blobstore (such as S3)"
+    default: false
