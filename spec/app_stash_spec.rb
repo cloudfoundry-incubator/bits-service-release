@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'shared_examples'
 
 require 'support/environment'
 require 'support/manifest'
@@ -12,8 +11,6 @@ RSpec.configure {
 }
 
 describe 'app_stash endpoint' do
-  let(:blobstore_client) { backend_client(:app_stash) }
-
   let(:app_stash_zip_path) { File.expand_path('../assets/app.zip', __FILE__) }
   let(:app_stash_entries) do
     [
@@ -22,33 +19,15 @@ describe 'app_stash endpoint' do
     ]
   end
 
-  after action: :upload do
-    app_stash_entries.each do |entry|
-      expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
-      expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
-    end
-  end
-
   describe 'POST /app_stash/entries', { type: :integration, action: :upload } do
     let(:endpoint) { '/app_stash/entries' }
     let(:request_body) { { application: File.new(app_stash_zip_path) } }
 
-    it 'returns HTTP status 201 and stores the blob in the backend' do
+    it 'returns HTTP status 201 and returns a json with the receipt of the stored zip' do
       response = make_post_request endpoint, request_body
-    end
 
-    it 'stores the blob in the backend' do
-      response = make_post_request endpoint, request_body
       expect(response.code).to eq 201
-      app_stash_entries.each do |entry|
-        expect(blobstore_client.key_exist?(entry['sha1'])).to eq(true)
-      end
-    end
-
-    it 'returns a json with the reciept of the stored zip' do
-      response = make_post_request endpoint, request_body
       receipt = JSON.parse(response.body)
-
       expect(receipt).to be_a(Array)
       app_stash_entries.each do |entry|
         expect(receipt).to include(entry)
@@ -63,27 +42,6 @@ describe 'app_stash endpoint' do
         expect(response.code).to eq 400
       end
     end
-
-    context 'when the files are really new and space needs to be allocated' do
-      let(:tmp_dir) { Dir.mktmpdir }
-      let(:filepath) { File.join(tmp_dir, 'file') }
-      let(:zip_path) { File.join(tmp_dir, 'file.zip') }
-      let(:request_body) do
-        { application: File.new(zip_path) }
-      end
-
-      before do
-        write_random_to_file(filepath)
-        `zip #{zip_path} #{filepath}`
-      end
-
-      after do
-        File.unlink zip_path
-        File.unlink filepath
-      end
-
-      include_examples 'when blobstore disk is full', :app_stash
-    end
   end
 
   describe 'POST /app_stash/matches', { type: :integration, action: :upload } do
@@ -91,10 +49,6 @@ describe 'app_stash endpoint' do
       request_body = { application: File.new(app_stash_zip_path) }
       response = make_post_request '/app_stash/entries', request_body
       expect(response.code).to eq 201
-      # We had some flakes and would like to assert that the blobstore really really has these SHAs
-      ['8b381f8864b572841a26266791c64ae97738a659', '594eb15515c89bbfb0874aa4fd4128bee0a1d0b5'].each do |entry|
-        expect(blobstore_client.key_exist?(entry)).to be_truthy
-      end
     end
 
     subject(:response) { make_post_request '/app_stash/matches', sha_list.to_json }
@@ -151,11 +105,8 @@ describe 'app_stash endpoint' do
     context 'when the sha list is empty' do
       let(:sha_list) { [] }
 
-      it 'returns HTTP status 422' do
+      it 'returns HTTP status 422 and error message ' do
         expect(response.code).to eq(422)
-      end
-
-      it 'returns an error' do
         description = JSON.parse(response.body)['description']
         expect(description).to eq('The request is semantically invalid: must be a non-empty array.')
       end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'shared_examples'
 require 'support/http'
 
 RSpec.configure {
@@ -13,7 +12,6 @@ describe 'droplets resource' do
   let(:resource_path) { "/droplets/#{guid}" }
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
   let(:upload_body) { { droplet: zip_file } }
-  let(:blobstore_client) { backend_client(:droplets) }
   let(:existing_guid) do
     "#{SecureRandom.uuid}/#{SecureRandom.uuid}".tap do |guid|
       make_put_request "/droplets/#{guid}", upload_body
@@ -24,8 +22,8 @@ describe 'droplets resource' do
   end
 
   after action: :upload do
-    expect(blobstore_client.delete_resource(guid)).to be_truthy
-    expect(blobstore_client.key_exist?(guid)).to eq(false)
+    response = make_delete_request resource_path
+    expect(response.code).to eq(404).or(eq(204))
   end
 
   describe 'public signed endpoints', type: :integration, action: :upload do
@@ -107,17 +105,13 @@ describe 'droplets resource' do
 
   describe 'internal endpoint' do
     describe 'PUT /droplets/:guid/:digest', type: :integration, action: :upload do
-      it 'returns HTTP status 201' do
+      it 'stores the blob in the backend and returns HTTP status 201' do
         response = make_put_request resource_path, upload_body
         expect(response.code).to eq 201
-      end
 
-      it 'stores the blob in the backend' do
-        make_put_request resource_path, upload_body
-        expect(blobstore_client.key_exist?(guid)).to eq(true)
+        response = make_get_request resource_path
+        expect(response.code).to eq 200
       end
-
-      include_examples 'when blobstore disk is full', :droplets
 
       context 'when the request body is invalid', action: false do
         let(:tempfile) {
@@ -166,14 +160,12 @@ describe 'droplets resource' do
       context 'when the droplet exists' do
         let(:guid) { existing_guid }
 
-        it 'returns HTTP status 204' do
+        it 'deletes the blob from the backend and returns HTTP status 204' do
           response = make_delete_request resource_path
           expect(response.code).to eq 204
-        end
 
-        it 'deletes the blob from the backend' do
-          make_delete_request resource_path
-          expect(blobstore_client.key_exist?(guid)).to eq(false)
+          response = make_get_request resource_path
+          expect(response.code).to eq 404
         end
       end
 
@@ -183,11 +175,6 @@ describe 'droplets resource' do
         it 'has HTTP 404 as status code' do
           response = make_delete_request resource_path
           expect(response.code).to eq 404
-        end
-
-        it 'returns the correct error' do
-          response = make_delete_request resource_path
-          expect(response).to be_a_404
         end
       end
     end

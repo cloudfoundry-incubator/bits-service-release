@@ -61,7 +61,7 @@ describe 'URL Signing', type: :integration do
         ssl_cert_store: cert_store
       ).post([
         {
-          'sha1' => '8b381f8864b572841a26266791c64ae97738a659',
+          'sha1' => SecureRandom.uuid,
           'fn' => 'bla',
           'mode' => 'bla',
           'size' => 123 * 1024

@@ -31,7 +31,6 @@ describe 'Upload limits for resources', type: 'limits' do
   let(:upload_body_small) { { upload_field => file_small } }
   let(:upload_body_big) { { upload_field => file_big } }
 
-  let(:blobstore_client) { backend_client(:app_stash) }
   let(:app_stash_entries) do
     [
       { 'fn' => 'app/app.rb', 'sha1' => '8b381f8864b572841a26266791c64ae97738a659', 'mode' => '777' },
@@ -148,12 +147,6 @@ describe 'Upload limits for resources', type: 'limits' do
     let(:file_size_big) { 3.5 * 1024 * 1024 }
 
     context 'when the file is smaller than limit' do
-      after do
-        app_stash_entries.each do |entry|
-          expect(blobstore_client.delete_resource(entry['sha1'])).to be_truthy
-          expect(blobstore_client.key_exist?(entry['sha1'])).to eq(false)
-        end
-      end
       it 'returns HTTP status code 201' do
         response = make_post_request(resource_path, upload_body_small)
         expect(response.code).to eq 201

@@ -7,7 +7,6 @@ require 'pry'
 require 'pry-nav'
 require 'securerandom'
 
-require_relative 'support/backend'
 require_relative 'support/response'
 require_relative 'support/http'
 require_relative 'support/file'
@@ -16,8 +15,6 @@ require_relative 'support/manifest'
 RSpec.configure do |conf|
   include HttpHelpers
   include ManifestHelpers
-  include BackendHelpers
-  include ResponseHelpers
   include FileHelpers
 
   conf.filter_run focus: true

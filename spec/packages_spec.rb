@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'shared_examples'
 require 'json'
 require 'support/cf.rb'
 require 'rspec/json_expectations'
@@ -19,7 +18,6 @@ RSpec.configure {
 describe 'packages resource' do
   let(:resource_path) { "/packages/#{guid}" }
   let(:upload_body) { { package: zip_file } }
-  let(:blobstore_client) { backend_client(:packages) }
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
   let(:zip_file) { File.new(zip_filepath) }
   let(:guid) do
@@ -42,7 +40,8 @@ describe 'packages resource' do
     else
       @cf_client.create_package(@app_id)
     end.tap do |guid|
-      make_put_request "/packages/#{guid}", upload_body
+      response = make_put_request "/packages/#{guid}", upload_body
+      expect(response.code).to equal(201)
     end
   end
 
@@ -65,16 +64,12 @@ describe 'packages resource' do
   end
 
   after action: :upload do
-    if blobstore_client.key_exist?(guid)
-      expect(blobstore_client.delete_resource(guid)).to be_truthy
-    end
-    expect(blobstore_client.key_exist?(guid)).to eq(false)
+    response = make_delete_request resource_path
+    expect(response.code).to eq(204).or eq(404)
   end
   after action: :upload_existing do
-    if blobstore_client.key_exist?(existing_guid)
-      expect(blobstore_client.delete_resource(existing_guid)).to be_truthy
-    end
-    expect(blobstore_client.key_exist?(existing_guid)).to eq(false)
+    response = make_delete_request "/packages/#{existing_guid}"
+    expect(response.code).to eq(204).or eq(404)
   end
 
   describe 'PUT /packages/:guid', type: :integration do
@@ -82,7 +77,6 @@ describe 'packages resource' do
       it 'stores the blob in the backend and returns HTTP status 201' do
         response = make_put_request resource_path, upload_body
         expect(response.code).to eq 201
-        expect(blobstore_client.key_exist?(guid)).to eq(true)
       end
 
       context 'when the request body is invalid', action: false do
@@ -93,8 +87,6 @@ describe 'packages resource' do
           expect(response.code).to eq 400
         end
       end
-
-      include_examples 'when blobstore disk is full', :packages
 
       context 'client specifies resources to use from app_stash' do
         it 'creates the package using files from zip and app_stash and returns HTTP status 201' do
@@ -149,11 +141,6 @@ describe 'packages resource' do
         it 'returns HTTP status 201' do
           response = make_put_request resource_path, JSON.generate(source_guid: existing_guid)
           expect(response.code).to eq 201
-        end
-
-        it 'returns the guid and the package exists' do
-          make_put_request resource_path, JSON.generate(source_guid: existing_guid)
-          expect(blobstore_client.key_exist?(guid)).to eq(true)
         end
       end
 
@@ -340,8 +327,8 @@ describe 'packages resource' do
       end
 
       it 'deletes the blob from the backend' do
-        make_delete_request resource_path
-        expect(blobstore_client.key_exist?(guid)).to eq(false)
+        response = make_delete_request resource_path
+        expect(response.code).to eq 204
       end
     end
 

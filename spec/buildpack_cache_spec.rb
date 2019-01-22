@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'shared_examples'
 
 require 'support/environment'
 require 'support/manifest'
@@ -17,26 +16,25 @@ describe 'buildpack cache resource', type: :integration do
     File.new(zip_filepath)
   end
   let(:upload_body) { { buildpack_cache: zip_file } }
-  let(:blobstore_client) { backend_client(:buildpack_cache) }
-
   let(:app_guid) { SecureRandom.uuid }
   let(:app_name) { "#{app_guid}/linux" }
   let(:path) { '/buildpack_cache/entries/' + app_name }
 
   after action: :upload do
-    expect(blobstore_client.delete_resource(app_name)).to be_truthy
-    expect(blobstore_client.key_exist?(app_name)).to eq(false)
+    response = make_delete_request('/buildpack_cache/entries/')
+    expect(response.code).to eq(204)
   end
 
   describe 'PUT /buildpack_cache/entries/:app_guid/:stack_name', action: :upload do
-    it 'returns HTTP status 201' do
+    it 'stores the blob and returns HTTP status 201' do
+      response = make_get_request(path)
+      expect(response.code).to eq(404)
+
       response = make_put_request(path, upload_body)
       expect(response.code).to eq(201)
-    end
 
-    it 'stores the blob in the backend' do
-      make_put_request(path, upload_body)
-      expect(blobstore_client.key_exist?(app_name)).to eq(true)
+      response = make_get_request(path)
+      expect(response.code).to eq(200)
     end
 
     context 'when the request body is invalid', action: false do
@@ -45,24 +43,21 @@ describe 'buildpack cache resource', type: :integration do
         expect(response.code).to eq(400)
       end
     end
-
-    include_examples 'when blobstore disk is full', :buildpack_cache
   end
 
   describe 'DELETE specific entry for /buildpack_cache/entries/:app_guid/:stack_name' do
     context 'when deleting an known file' do
-      before do
-        make_put_request(path, upload_body)
-      end
+      it 'deletes the blob and returns HTTP status 204' do
+        response = make_put_request(path, upload_body)
+        expect(response.code).to eq(201)
+        response = make_get_request(path)
+        expect(response.code).to eq(200)
 
-      it 'returns HTTP status 204' do
         response = make_delete_request(path)
         expect(response.code).to eq(204)
-      end
 
-      it 'deletes the blob from the backend' do
-        make_delete_request(path)
-        expect(blobstore_client.key_exist?(app_name)).to eq(false)
+        response = make_get_request(path)
+        expect(response.code).to eq(404)
       end
     end
 
@@ -73,11 +68,6 @@ describe 'buildpack cache resource', type: :integration do
         response = make_delete_request(path)
         expect(response).to be_a_404
       end
-
-      it 'returns the correct error' do
-        response = make_delete_request(path)
-        expect(response).to be_a_404
-      end
     end
   end
 
@@ -85,17 +75,16 @@ describe 'buildpack cache resource', type: :integration do
     let(:delete_path) { '/buildpack_cache/entries/' + app_guid }
     context 'when deleting an known file' do
       before do
-        make_put_request(path, upload_body)
+        response = make_put_request(path, upload_body)
+        expect(response.code).to eq(201)
       end
 
-      it 'returns HTTP status 204' do
+      it 'deletes the blob and returns HTTP status 204' do
         response = make_delete_request(delete_path)
         expect(response.code).to eq(204)
-      end
 
-      it 'deletes the blob from the backend' do
-        make_delete_request(delete_path)
-        expect(blobstore_client.key_exist?(app_name)).to eq(false)
+        response = make_get_request(delete_path)
+        expect(response.code).to eq(404)
       end
     end
 
@@ -103,6 +92,9 @@ describe 'buildpack cache resource', type: :integration do
       let(:path) { '/buildpack_cache/entries/unknown_app' }
 
       it 'returns HTTP status 204' do
+        response = make_get_request(path)
+        expect(response.code).to eq(404)
+
         response = make_delete_request(path)
         expect(response.code).to eq(204)
       end
@@ -115,19 +107,19 @@ describe 'buildpack cache resource', type: :integration do
 
     before do
       [key1, key2].each do |key|
-        make_put_request("/buildpack_cache/entries/#{key}", { buildpack_cache: File.new(zip_filepath) })
+        response = make_put_request("/buildpack_cache/entries/#{key}", { buildpack_cache: File.new(zip_filepath) })
+        expect(response.code).to eq(201)
       end
     end
 
-    it 'returns HTTP status 204' do
+    it 'removes all the stored files and returns HTTP status 204' do
       response = make_delete_request('/buildpack_cache/entries')
       expect(response.code).to eq(204)
-    end
 
-    it 'removes all the stored files' do
-      [key1, key2].each { |key| expect(blobstore_client.key_exist?(key)).to eq(true) }
-      make_delete_request('/buildpack_cache/entries')
-      [key1, key2].each { |key| expect(blobstore_client.key_exist?(key)).to eq(false) }
+      [key1, key2].each { |key|
+        response = make_get_request("/buildpack_cache/entries/#{key}")
+        expect(response.code).to eq(404)
+      }
     end
   end
 

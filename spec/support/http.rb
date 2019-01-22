@@ -5,6 +5,12 @@ require 'support/environment'
 module HttpHelpers
   include EnvironmentHelpers
 
+  def make_head_request(path, args={})
+    try_catch {
+      RestClient::Request.execute({ url: url(path), method: :head, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store }.merge(args))
+    }
+  end
+
   def make_get_request(path, args={})
     try_catch {
       RestClient::Request.execute({ url: url(path), method: :get, verify_ssl: OpenSSL::SSL::VERIFY_PEER, ssl_cert_store: cert_store }.merge(args))
