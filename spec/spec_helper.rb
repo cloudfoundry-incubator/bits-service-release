@@ -7,7 +7,6 @@ require 'pry'
 require 'pry-nav'
 require 'securerandom'
 
-require_relative 'support/response'
 require_relative 'support/http'
 require_relative 'support/file'
 require_relative 'support/manifest'
