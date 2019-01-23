@@ -3,12 +3,18 @@
 require 'spec_helper'
 require 'support/cf.rb'
 require 'support/http'
+require 'support/manifest'
+require 'support/s3'
 
 RSpec.configure {
   include HttpHelpers
+  include ManifestHelpers
+  include S3Helpers
 }
 
 describe 'URL Signing', type: :integration do
+  after(:all) { clear_app_stash }
+
   let(:path) { "/packages/#{guid}" }
   let(:guid) do
     if !cc_updates_enabled?

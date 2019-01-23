@@ -3,12 +3,18 @@
 require 'spec_helper'
 require 'support/cf.rb'
 require 'support/http'
+require 'support/manifest'
+require 'support/s3'
 
 RSpec.configure {
   include HttpHelpers
+  include ManifestHelpers
+  include S3Helpers
 }
 
 describe 'Upload limits for resources', type: 'limits' do
+  after(:all) { clear_app_stash }
+
   before :all do
     @tmp_dir = Dir.mktmpdir
   end
@@ -169,6 +175,7 @@ describe 'Upload limits for resources', type: 'limits' do
         @cf_client.create_package(@app_id)
       end
     end
+
     before :all do
       if cc_updates_enabled?
         @cf_client = CFClient::Client.new(cc_api_url, cc_user, cc_password)
@@ -178,14 +185,23 @@ describe 'Upload limits for resources', type: 'limits' do
         expect(@space_id).to_not be_empty
         @app_id = @cf_client.create_app(@space_id)
         expect(@app_id).to_not be_empty
+        some_uuid = @cf_client.create_package(@app_id)
+      else
+        some_uuid = SecureRandom.uuid
       end
+      # this package upload makes sure that there is a file in app_stash with sha
+      # ba57acddaf6cea7c70250fef45a8727ecec1961e, which is used in several places in this spec
+      response = make_put_request "/packages/#{some_uuid}", { package: File.new(File.expand_path('../assets/above-64k.zip', __FILE__)) }
+      expect(response.code).to eq 201
     end
+
     after :all do
       if cc_updates_enabled?
         @cf_client.delete_org(@org_id)
         expect(@cf_client.get_org(@org_id)['error_code']).to eq('CF-OrganizationNotFound')
       end
     end
+
     let(:resource_path) { "/packages/#{guid}" }
     let(:upload_field) { 'package' }
     let(:file_size_small) { 5.5 * 1024 * 1024 }

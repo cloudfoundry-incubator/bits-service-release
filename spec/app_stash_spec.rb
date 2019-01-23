@@ -4,13 +4,17 @@ require 'spec_helper'
 
 require 'support/environment'
 require 'support/manifest'
+require 'support/s3'
 
 RSpec.configure {
   include EnvironmentHelpers
   include ManifestHelpers
+  include S3Helpers
 }
 
 describe 'app_stash endpoint' do
+  after(:all) { clear_app_stash }
+
   let(:app_stash_zip_path) { File.expand_path('../assets/app.zip', __FILE__) }
   let(:app_stash_entries) do
     [

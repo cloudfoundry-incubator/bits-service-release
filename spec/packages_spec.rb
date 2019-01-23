@@ -8,14 +8,18 @@ require 'open3'
 
 require 'support/environment'
 require 'support/manifest'
+require 'support/s3'
 
 RSpec.configure {
   include EnvironmentHelpers
   include ManifestHelpers
   include HttpHelpers
+  include S3Helpers
 }
 
 describe 'packages resource' do
+  after(:all) { clear_app_stash }
+
   let(:resource_path) { "/packages/#{guid}" }
   let(:upload_body) { { package: zip_file } }
   let(:zip_filepath) { File.expand_path('../assets/empty.zip', __FILE__) }
