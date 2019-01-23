@@ -4,7 +4,7 @@
 
 cd $(dirname $0)/..
 
-if [ "$1" == "webdav" -o "$1" == "local" ]; then
+if [ "$1" == "webdav" ]; then
 # the tests use bosh ssh for webdav and local
 : ${BOSH_ENVIRONMENT?"Please set bosh env variable BOSH_ENVIRONMENT to access the blobstore VM."}
 : ${BOSH_CLIENT?"Please set bosh env variable BOSH_CLIENT to access the blobstore VM."}
