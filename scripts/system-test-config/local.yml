@@ -18,17 +18,9 @@ packages:
 
 properties:
   bits-service:
-    app_stash:
-      directory_key: app_stash
-      fog_connection: &fog_connection
-        local_root: /var/vcap/store/bits-service/
+    app_stash: &fog_connection
+      fog_connection:
         provider: local
-    buildpacks:
-      directory_key: buildpacks
-      fog_connection: *fog_connection
-    droplets:
-      directory_key: droplets
-      fog_connection: *fog_connection
-    packages:
-      directory_key: packages
-      fog_connection: *fog_connection
+    buildpacks: *fog_connection
+    droplets: *fog_connection
+    packages: *fog_connection

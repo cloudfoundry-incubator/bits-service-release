@@ -1,24 +1,14 @@
 buildpacks: &blobstore_config
   blobstore_type: AWS
-  max_body_size: 4M
   s3_config:
     bucket: (( grab $BUCKET ))
     access_key_id: (( grab $ACCESS_KEY_ID ))
     secret_access_key: (( grab $SECRET_ACCESS_KEY ))
     region: (( grab $REGION ))
     s3_debug_log_level:
-droplets:
-  <<: *blobstore_config
-  max_body_size: 5M
-packages:
-  <<: *blobstore_config
-  max_body_size: 6M
-app_stash:
-  <<: *blobstore_config
-  max_body_size: 3M
-buildpack_cache:
-  max_body_size: 7M
-max_body_size: 2M
+droplets: *blobstore_config
+packages: *blobstore_config
+app_stash: *blobstore_config
 
 properties:
   bits-service:

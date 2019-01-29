@@ -1,3 +1,15 @@
+buildpacks:
+  max_body_size: 4M
+droplets:
+  max_body_size: 5M
+packages:
+  max_body_size: 6M
+app_stash:
+  max_body_size: 3M
+buildpack_cache:
+  max_body_size: 7M
+max_body_size: 2M
+
 logging:
   level: debug
 private_endpoint: https://internal.127.0.0.1.nip.io
