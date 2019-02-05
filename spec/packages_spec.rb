@@ -264,46 +264,8 @@ describe 'packages resource' do
   end
 
   describe 'HEAD /packages/:guid' do
-    context 'should_proxy_get_requests', if: should_proxy_get_requests? || blobstore_provider(:packages) == 'local' do
-      context 'package exists' do
-        it 'returns 200, no redirect' do
-          response_code = 0
-
-          RestClient::Request.execute({
-            method: :head,
-            url: "#{private_endpoint}/packages/#{existing_guid}",
-            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-            ssl_cert_store: cert_store
-          }) { |response, request, result, &block| # using block form here to avoid following redirects
-            response_code = response.code
-            puts response.headers[:location]
-          }
-
-          expect(response_code).to eq(200)
-        end
-      end
-
-      context 'package does not exist' do
-        it 'returns 404, no redirect' do
-          response_code = 0
-
-          RestClient::Request.execute({
-            method: :head,
-            url: "#{private_endpoint}/packages/some-non-existing-guid",
-            verify_ssl: OpenSSL::SSL::VERIFY_PEER,
-            ssl_cert_store: cert_store
-          }) { |response, request, result, &block| # using block form here to avoid following redirects
-            response_code = response.code
-            puts response.headers[:location]
-          }
-
-          expect(response_code).to eq(404)
-        end
-      end
-    end
-
-    context 'should not proxy get requests', if: !should_proxy_get_requests? && blobstore_provider(:packages) != 'local' do
-      it 'returns 302, no info about resource existence yet' do
+    context 'package exists' do
+      it 'returns 200, no redirect' do
         response_code = 0
 
         RestClient::Request.execute({
@@ -316,7 +278,25 @@ describe 'packages resource' do
           puts response.headers[:location]
         }
 
-        expect(response_code).to eq(302)
+        expect(response_code).to eq(200)
+      end
+    end
+
+    context 'package does not exist' do
+      it 'returns 404, no redirect' do
+        response_code = 0
+
+        RestClient::Request.execute({
+          method: :head,
+          url: "#{private_endpoint}/packages/some-non-existing-guid",
+          verify_ssl: OpenSSL::SSL::VERIFY_PEER,
+          ssl_cert_store: cert_store
+        }) { |response, request, result, &block| # using block form here to avoid following redirects
+          response_code = response.code
+          puts response.headers[:location]
+        }
+
+        expect(response_code).to eq(404)
       end
     end
   end
