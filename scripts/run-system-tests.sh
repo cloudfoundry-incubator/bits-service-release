@@ -52,7 +52,7 @@ if [ "$1" == "webdav" ]; then
 fi
 
 # generate config and run bitsgo
-if [ "$1" != "local" &&  "$1" != "webdav" && ]; then
+if [[ "$1" != "local" ]] &&  [[ "$1" != "webdav" ]]; then
     source .private/$1.sh
 fi
 pushd scripts/system-test-config
