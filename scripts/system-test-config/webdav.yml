@@ -1,26 +1,28 @@
 buildpacks: &blobstore_config
   blobstore_type: webdav
-  webdav_config:
-    private_endpoint: (( grab $PRIVATE_ENDPOINT ))
-    public_endpoint: (( grab $PUBLIC_ENDPOINT ))
-    ca_cert_path: (( grab $CA_CERT_FILE ))
-    username: (( grab $USERNAME ))
-    password: (( grab $PASSWORD ))
-droplets: *blobstore_config
-packages: *blobstore_config
-app_stash: *blobstore_config
+  webdav_config: &webdav_config
+    directory_key: buildpacks
+    private_endpoint: https://127.0.0.1:4444
+    public_endpoint: http://127.0.0.1:12345
+    ca_cert_path: ca.crt
+    username: admin
+    password: admin
+droplets:
+  <<: *blobstore_config
+  directory_key: droplets
+packages:
+  <<: *blobstore_config
+  directory_key: packages
+app_stash:
+  <<: *blobstore_config
+  directory_key: app_stash
 
 properties:
   bits-service:
     app_stash: &manifest_blobstore_config
       blobstore_type: webdav
       directory_key: app_stash
-      webdav_config:
-        private_endpoint:  (( grab $PRIVATE_ENDPOINT ))
-        public_endpoint: (( grab $PUBLIC_ENDPOINT ))
-        ca_cert: (( file $CA_CERT_FILE ))
-        username: (( grab $USERNAME ))
-        password: (( grab $PASSWORD ))
+      webdav_config: *webdav_config
     buildpacks:
       <<: *manifest_blobstore_config
       directory_key: buildpacks

@@ -4,18 +4,10 @@
 
 cd $(dirname $0)/..
 
-if [ "$1" == "webdav" ]; then
-# the tests use bosh ssh for webdav and local
-: ${BOSH_ENVIRONMENT?"Please set bosh env variable BOSH_ENVIRONMENT to access the blobstore VM."}
-: ${BOSH_CLIENT?"Please set bosh env variable BOSH_CLIENT to access the blobstore VM."}
-: ${BOSH_CLIENT_SECRET?"Please set bosh env variable BOSH_CLIENT_SECRET to access the blobstore VM."}
-: ${BOSH_DEPLOYMENT?"Please set bosh env variable BOSH_DEPLOYMENT to access the blobstore VM."}
-fi
-
 cleanup () {
     pushd scripts/system-test-config
         kill -9 $BITSGO_PID || true
-        rm -rf cert_file key_file ca_cert var-store.yml manifest.yml
+        rm -rf cert_file key_file ca_cert var-store.yml manifest.yml blobstore.crt blobstore.key ca.crt
     popd
 }
 trap cleanup EXIT
@@ -29,8 +21,38 @@ pushd src/github.com/cloudfoundry-incubator/bits-service/cmd/bitsgo
     fi
 popd
 
+if [ "$1" == "webdav" ]; then
+    mkdir -p /tmp/blobstore_url_signer/src/github.com/cloudfoundry
+    export GOPATH=/tmp/blobstore_url_signer
+    pushd /tmp/blobstore_url_signer/src/github.com/cloudfoundry
+        rm -rf blobstore_url_signer
+        git clone https://github.com/cloudfoundry/blobstore_url_signer.git
+        sleep 1
+        pushd blobstore_url_signer
+            go build
+        popd
+    popd
+    if pgrep blobstore_url_signer; then pkill blobstore_url_signer; fi
+    mkdir -p /tmp/blobstore_url_signer
+    /tmp/blobstore_url_signer/src/github.com/cloudfoundry/blobstore_url_signer/blobstore_url_signer \
+        -secret BLOBSTORE_SECURE_LINK_SECRET -network unix -laddr /tmp/blobstore_url_signer/signer.sock &
+
+    pushd scripts/system-test-config
+        rm -f var-store.yml
+        bosh interpolate --vars-store=var-store.yml generate-cert.yml
+        bosh interpolate var-store.yml --path /blobstore_ssl/ca > ca.crt
+        bosh interpolate var-store.yml --path /blobstore_ssl/certificate > blobstore.crt
+        bosh interpolate var-store.yml --path /blobstore_ssl/private_key > blobstore.key
+    popd
+    # For this to work on MacOS, make sure you have:
+    # brew tap denji/nginx
+    # brew install nginx-full --with-webdav --with-dav-ext-module --with-secure-link
+    if pgrep nginx; then pkill nginx; fi
+    nginx -c $PWD/scripts/nginx.conf &
+fi
+
 # generate config and run bitsgo
-if [ "$1" != "local" ]; then
+if [ "$1" != "local" &&  "$1" != "webdav" && ]; then
     source .private/$1.sh
 fi
 pushd scripts/system-test-config
