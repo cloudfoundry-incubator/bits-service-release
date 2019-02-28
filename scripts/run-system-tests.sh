@@ -9,6 +9,7 @@ cleanup () {
         kill -9 $BITSGO_PID || true
         kill -9 $NGINX_PID || true
         kill -9 $BLOBSTORE_URL_SIGNER_PID || true
+        kill -9 $(ps ax | grep [n]ginx | awk '{$1=$1};1' | cut -f1 -d' ') || true
         rm -rf cert_file key_file ca_cert var-store.yml manifest.yml blobstore.crt blobstore.key ca.crt
     popd
 }
