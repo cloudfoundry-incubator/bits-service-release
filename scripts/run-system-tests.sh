@@ -7,6 +7,8 @@ cd $(dirname $0)/..
 cleanup () {
     pushd scripts/system-test-config
         kill -9 $BITSGO_PID || true
+        kill -9 $NGINX_PID || true
+        kill -9 $BLOBSTORE_URL_SIGNER_PID || true
         rm -rf cert_file key_file ca_cert var-store.yml manifest.yml blobstore.crt blobstore.key ca.crt
     popd
 }
@@ -36,6 +38,7 @@ if [ "$1" == "webdav" ]; then
     mkdir -p /tmp/blobstore_url_signer
     /tmp/blobstore_url_signer/src/github.com/cloudfoundry/blobstore_url_signer/blobstore_url_signer \
         -secret BLOBSTORE_SECURE_LINK_SECRET -network unix -laddr /tmp/blobstore_url_signer/signer.sock &
+    BLOBSTORE_URL_SIGNER_PID=$!
 
     pushd scripts/system-test-config
         rm -f var-store.yml
@@ -51,6 +54,7 @@ if [ "$1" == "webdav" ]; then
     mkdir -p /tmp/webdav/log/blobstore
     mkdir -p /tmp/webdav/store/shared
     nginx -c $PWD/scripts/nginx.conf &
+    NGINX_PID=$!
 fi
 
 # generate config and run bitsgo
