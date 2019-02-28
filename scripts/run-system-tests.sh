@@ -48,6 +48,7 @@ if [ "$1" == "webdav" ]; then
     # brew tap denji/nginx
     # brew install nginx-full --with-webdav --with-dav-ext-module --with-secure-link
     if pgrep nginx; then pkill nginx; fi
+    mkdir -p /tmp/webdav/log/blobstore
     nginx -c $PWD/scripts/nginx.conf &
 fi
 
