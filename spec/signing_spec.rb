@@ -191,7 +191,7 @@ describe 'URL Signing', type: :integration do
         it 'returns a 403' do
           expect {
             RestClient::Request.execute({
-              url: "#{public_endpoint}/signed#{path}?md5=INVALID_SIGNATURE&expires=1467828099",
+              url: "#{public_endpoint}#{path}?md5=INVALID_SIGNATURE&expires=1467828099",
               method: :get,
               verify_ssl: OpenSSL::SSL::VERIFY_PEER,
               ssl_cert_store: cert_store
