@@ -24,8 +24,8 @@ packages:
   - bits-common
 
 provides:
-- name: active_signing_key
-  type: active_signing_key
+- name: bits_service_active_signing_key
+  type: bits_service_active_signing_key
   properties:
   - 'bits-service.active_signing_key.key_id'
   - 'bits-service.active_signing_key.secret'
@@ -51,7 +51,7 @@ properties:
   bits-service.secret:
     description: |
       The secret used for signing URLs.
-      Deprecated: Use active_signing_key and alternative_signing_keys instead and use client side signed URLs through the provided active_signing_key BOSH links.
+      Deprecated: Use active_signing_key and alternative_signing_keys instead and use client side signed URLs through the provided bits_service_active_signing_key BOSH links.
   bits-service.signing_users:
     description: |
      List of Username and Password pairs that are allowed to sign urls. Cloud Controller must use one of these to access the /sign endpoint via HTTP Basic Auth.
