@@ -257,3 +257,11 @@ properties:
   bits-service.proxy_get_requests:
     description: "When set to true, GET requests get proxied through Bits-Service and not redirected to the backend blobstore (such as S3)"
     default: false
+
+  bits-service.registry_endpoint:
+    description: "Docker registry endpoint"
+  bits-service.enable_registry:
+    description: "When set to true, the configured registry it's used"
+    default: false
+  bits-service.rootfs.blobstore_type:
+    descriptioon: "The type of blobstore backing to use."
