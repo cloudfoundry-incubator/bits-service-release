@@ -9,18 +9,18 @@ function main
 
     verify_rootfs_version_exists
 
-    create_etag_file_if_non_existent
+    create_version_file_if_non_existent
 
-    ETAG_VALUE=$(cat ${ASSETS_PATH}/eirini_rootfs_etag)
-    if [ ! -s ${ASSETS_PATH}/eirini_rootfs_etag ]; then
-        echo "eirini_rootfs_etag not set - will download specified version (<rootfasversion_value_goes_here>) of rootfs from GIT"
-        grep_and_persist_etag
+    VERSION_VALUE=$(cat ${ASSETS_PATH}/eirini_rootfs_version_file)
+    if [ ! -s ${ASSETS_PATH}/eirini_rootfs_version_file ]; then
+        echo "eirini_rootfs_etag not set - will download specified version ($EIRINI_ROOTFS_VERSION) of rootfs from GIT"
+        grep_and_persist_version
         download_rootfs_tar
     else
         is_specified_rootfs_version_present
         echo "RootFS is outdated - Downloading..."
         delete_eirini_rootfs_tar_if_present
-        grep_and_persist_etag
+        grep_and_persist_version
         download_rootfs_tar
         return 0
     fi
@@ -34,16 +34,16 @@ function abort_if_eirini_rootfs_version_not_set
     fi
 }
 
-function create_etag_file_if_non_existent
+function create_version_file_if_non_existent
 {
-    if [ ! -f ${ASSETS_PATH}/eirini_rootfs_etag ]; then
-        touch ${ASSETS_PATH}/eirini_rootfs_etag
+    if [ ! -f ${ASSETS_PATH}/eirini_rootfs_version_file ]; then
+        touch ${ASSETS_PATH}/eirini_rootfs_version_file
     fi
 }
 
-function grep_and_persist_etag
+function grep_and_persist_version
 {
-    curl https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION} -L -i | grep ETag: | cut -d \"  -f 2 > ${ASSETS_PATH}/eirini_rootfs_etag
+    echo $EIRINI_ROOTFS_VERSION > ${ASSETS_PATH}/eirini_rootfs_version_file
 }
 
 function download_rootfs_tar
@@ -53,9 +53,9 @@ function download_rootfs_tar
 
 function is_specified_rootfs_version_present
 {
-    LOCAL_ETAG=$(cat ${ASSETS_PATH}/eirini_rootfs_etag)
-    REMOTE_ETAG=$(curl https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION} -L -i | grep ETag: | cut -d \"  -f 2 )
-    if [ "$LOCAL_ETAG" == "$REMOTE_ETAG" ]
+    LOCAL_version=$(cat ${ASSETS_PATH}/eirini_rootfs_version_file)
+    REMOTE_version=${EIRINI_ROOTFS_VERSION}
+    if [ "$LOCAL_version" == "$REMOTE_version" ]
      then
         echo "Already have the downloaded version ${EIRINI_ROOTFS_VERSION} "
         exit 0
