@@ -408,7 +408,7 @@ enable_registry: <%= p("bits-service.enable_registry") %>
 <% if_p("bits-service.registry_endpoint") do | registry | %>
 registry_endpoint: <%= registry %>
 <% end %>
-<% if p("bits-service.rootfs.blobstore_type") != '' && p("bits-service.rootfs.blobstore_type") != nil %>
+<% if_p("bits-service.rootfs.blobstore_type") && if p("bits-service.rootfs.blobstore_type") != '' && p("bits-service.rootfs.blobstore_type") != nil %>
 rootfs:
   blobstore_type: <%= p("bits-service.rootfs.blobstore_type") %>
   local_config:
