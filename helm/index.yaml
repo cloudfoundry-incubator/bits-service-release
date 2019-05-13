@@ -8,6 +8,6 @@ entries:
     digest: 880f026c91bebbc48eb4dbfe6e0c9df0eaa1ac224543789638645db2148f78d4
     name: bits
     urls:
-    - http://cloudfoundry-incubator.github.io/bits-service-release/bits-0.0.0-dev.tgz
+    - http://cloudfoundry-incubator.github.io/bits-service-release/helm/bits-0.0.0-dev.tgz
     version: 0.0.0-dev
 generated: 2019-05-08T14:11:25.198100598+02:00
