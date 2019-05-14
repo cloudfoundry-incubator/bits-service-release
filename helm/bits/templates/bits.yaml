@@ -116,7 +116,7 @@ spec:
         image: flintstonecf/bits-service:2.26.0-dev.8
         imagePullPolicy: Always
         ports:
-          - containerPort: 4443
+          - containerPort: 8888
         volumeMounts:
         - name: bits-config
           mountPath: /workspace/jobs/bits-service/config
