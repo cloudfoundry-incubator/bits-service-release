@@ -1,5 +1,13 @@
+<% if p("bpm.enabled") %>
+check process bits-service
+  with pidfile /var/vcap/sys/run/bpm/bits-service/bits-service.pid
+  start program "/var/vcap/jobs/bpm/bin/bpm start bits-service"
+  stop program "/var/vcap/jobs/bpm/bin/bpm stop bits-service"
+  group vcap
+<% else %>
 check process bits-service
   with pidfile /var/vcap/sys/run/bits-service/bits-service.pid
   start program "/var/vcap/jobs/bits-service/bin/bits-service_ctl start"
   stop program "/var/vcap/jobs/bits-service/bin/bits-service_ctl stop"
   group vcap
+<% end %>
