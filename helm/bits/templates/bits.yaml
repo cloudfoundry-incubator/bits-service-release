@@ -111,6 +111,7 @@ spec:
           hostPath:
             path: /bits/assets/
             type: DirectoryOrCreate
+      restartPolicy: "OnFailure"
       containers:
       - name: bits
         image: flintstonecf/bits-service:2.26.0-dev.8
@@ -134,7 +135,6 @@ spec:
         volumeMounts:
         - name: bits-assets
           mountPath: /assets/
-        restartPolicy: "OnFailure"
 
 # Service
 ---
