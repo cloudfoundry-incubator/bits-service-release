@@ -1,0 +1,9 @@
+processes:
+- name: bits-service
+  executable: /var/vcap/packages/bitsgo/bitsgo
+  args:
+  - -c
+  - /var/vcap/jobs/bits-service/config/bits_config.yml
+  capabilities:
+  - NET_BIND_SERVICE
+  persistent_disk: true

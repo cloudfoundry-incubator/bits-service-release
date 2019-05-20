@@ -8,6 +8,7 @@ templates:
   dashboard.erb:           bin/dashboard
 
   bits_config.yml.erb:        config/bits_config.yml
+  bpm.yml.erb:                config/bpm.yml
   signing_users.erb:          config/signing_users
   app_stash_ca_cert.pem.erb:  config/certs/app_stash_ca_cert.pem
   buildpacks_ca_cert.pem.erb: config/certs/buildpacks_ca_cert.pem
@@ -31,6 +32,10 @@ provides:
   - 'bits-service.active_signing_key.secret'
 
 properties:
+  bpm.enabled:
+    description: "Enable BOSH Process Manager"
+    default: false
+
   request_timeout_in_seconds:
     description: "Timeout for requests in seconds."
     default: 900

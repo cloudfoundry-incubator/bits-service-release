@@ -369,7 +369,7 @@ logging:
   level: <%= p("bits-service.logging.level") %>
 private_endpoint: <%= p("bits-service.private_endpoint") %>
 public_endpoint: <%= p("bits-service.public_endpoint") %>
-port: 443
+port: <%= p("bits-service.tls.port") %>
 <%
   if p("bits-service.secret", "") == '' && p("bits-service.active_signing_key.secret", "") == ''
     raise 'Must either provide bits-service.secret or bits-service.active_signing_key.secret'
