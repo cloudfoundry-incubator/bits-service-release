@@ -261,7 +261,7 @@ properties:
   bits-service.registry_endpoint:
     description: "Docker registry endpoint"
   bits-service.enable_registry:
-    description: "When set to true, the configured registry it's used"
+    description: "When set to true, the configured registry is used"
     default: false
   bits-service.rootfs.blobstore_type:
     descriptioon: "The type of blobstore backing to use."
