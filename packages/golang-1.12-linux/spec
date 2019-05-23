@@ -1,0 +1,7 @@
+---
+name: golang-1.12-linux
+
+dependencies: []
+
+files:
+- golang/go1.12*.linux-amd64.tar.gz
