@@ -408,9 +408,7 @@ enable_registry: <%= p("bits-service.enable_registry") %>
 <% if_p("bits-service.registry_endpoint") do | registry | %>
 registry_endpoint: <%= registry %>
 <% end %>
-<% if p("bits-service.rootfs.blobstore_type", "").to_s != ''  %>
 rootfs:
-  blobstore_type: <%= p("bits-service.rootfs.blobstore_type") %>
+  blobstore_type: local
   local_config:
     path_prefix: /var/vcap/store/bits-service/
-<% end %>
