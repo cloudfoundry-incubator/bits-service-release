@@ -1,12 +1,17 @@
 set -ex
+ 
+export GOROOT=$(readlink -nf /var/vcap/packages/golang-1.12-linux)
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.10)
 export PATH=${GOROOT}/bin:${PATH}
 export GOPATH=$PWD
 export PATH=$GOPATH/bin:$PATH
 
 mkdir src
 mkdir bin
+mkdir home
+pushd home
+    export HOME=$(pwd)
+popd
 cp -a github.com src
 pushd src/github.com/cloudfoundry-incubator/bits-service/cmd/bitsgo
     go build -o ${BOSH_INSTALL_TARGET}/bitsgo
