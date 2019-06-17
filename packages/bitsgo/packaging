@@ -1,9 +1,6 @@
 set -ex
 
-export GOROOT=$(readlink -nf /var/vcap/packages/golang1.10)
-export PATH=${GOROOT}/bin:${PATH}
-export GOPATH=$PWD
-export PATH=$GOPATH/bin:$PATH
+source /var/vcap/packages/golang-1.12-linux/bosh/compile.env
 
 mkdir src
 mkdir bin

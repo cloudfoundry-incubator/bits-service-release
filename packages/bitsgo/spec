@@ -2,7 +2,7 @@
 name: bitsgo
 
 dependencies:
- - golang1.10
+ - golang-1.12-linux
 
 files:
   - github.com/**/*
