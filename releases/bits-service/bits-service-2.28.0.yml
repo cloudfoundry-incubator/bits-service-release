@@ -1,0 +1,30 @@
+name: bits-service
+version: 2.28.0
+commit_hash: 63d3d01
+uncommitted_changes: false
+jobs:
+- name: bits-service
+  version: b220c0b1347978222080314196bd7a54000a15df
+  fingerprint: b220c0b1347978222080314196bd7a54000a15df
+  sha1: 7c5ff3f304eaaa8f1f0998eb9f8aaae83b469553
+packages:
+- name: bits-common
+  version: 0e780109467d5425b0ab5f99e8aa3df24187ec65
+  fingerprint: 0e780109467d5425b0ab5f99e8aa3df24187ec65
+  sha1: d97fba5b875497d637e3c55325b1c1df177c41c1
+  dependencies: []
+- name: bitsgo
+  version: 1eeb018be79af81946104534ac1bd7cfe7d13b7d
+  fingerprint: 1eeb018be79af81946104534ac1bd7cfe7d13b7d
+  sha1: f9734fd0450f1a026b6523bbd8e42dd9565a02ac
+  dependencies:
+  - golang-1.12-linux
+- name: golang-1.12-linux
+  version: 2566cc8c8b3c0f3ccf6c832a6a4657a14f938197a70c2d2b6243be051439a395
+  fingerprint: 2566cc8c8b3c0f3ccf6c832a6a4657a14f938197a70c2d2b6243be051439a395
+  sha1: sha256:1707f9e1b46d6570e4efae54955101cd8e996fc9a2bd6cd50cfb215177eeabd3
+  dependencies: []
+license:
+  version: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  fingerprint: 7ed92c55145623ed4180d9efef5ab2919a5c1c1f
+  sha1: 5b431b09817c6a22857579501120edf483cac16c

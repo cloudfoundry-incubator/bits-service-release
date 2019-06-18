@@ -65,6 +65,8 @@ builds:
     version: 2.7.0
   e99b1d27-c895-4c5d-4482-b0675ab1c5ed:
     version: 2.16.0
+  f222753c-c851-4c39-70e7-49323c1cc14e:
+    version: 2.28.0
   f52d33c4-cffe-44ee-5a0a-d18a639fb5ad:
     version: 2.3.0
 format-version: "2"
