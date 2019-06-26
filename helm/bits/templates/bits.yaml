@@ -111,7 +111,7 @@ spec:
           emptyDir: {}
       containers:
       - name: bits
-        image: flintstonecf/bits-service:2.26.0-dev.8
+        image: flintstonecf/bits-service:2.27.0-dev.6
         imagePullPolicy: Always
         ports:
           - containerPort: 8888
@@ -124,7 +124,7 @@ spec:
           mountPath: /assets/
       initContainers:
       - name: "download-eirini-rootfs"
-        image: flintstonecf/eirinifs-downloader:2.26.0-dev.8
+        image: flintstonecf/eirinifs-downloader:2.27.0-dev.6
         env:
         - name: EIRINI_ROOTFS_VERSION
           value: {{ .Values.opi.rootfs_version }}
