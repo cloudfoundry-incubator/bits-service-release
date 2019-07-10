@@ -1,5 +1,9 @@
 # Bits Service Release
 
+
+**Please note: the Bits-Service is not actively maintained anymore. [More information](https://lists.cloudfoundry.org/g/cf-dev/message/8660).**
+
+
 A [BOSH](http://docs.cloudfoundry.org/bosh/) release for deploying the [bits-service](https://github.com/cloudfoundry-incubator/bits-service).
 
 ## Deployment
