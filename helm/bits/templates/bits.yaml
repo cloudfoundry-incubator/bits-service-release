@@ -128,6 +128,12 @@ spec:
         env:
         - name: EIRINI_ROOTFS_VERSION
           value: {{ .Values.opi.rootfs_version }}
+          {{- if .Values.env.eirinifs_downloader_http_proxy }}
+        - name: http_proxy
+          value: "{{ .Values.env.eirinifs_downloader_http_proxy }}"
+        - name: https_proxy
+          value: "{{ .Values.env.eirinifs_downloader_http_proxy }}"
+          {{- end }}
         command: ["/bin/sh", "-c", "./eirini-rootfs-downloader.sh"]
         volumeMounts:
         - name: bits-assets
