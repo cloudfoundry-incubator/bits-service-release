@@ -23,3 +23,4 @@ env:
   # Base domain of the SCF cluster.
   # Example: "my-scf-cluster.com"
   DOMAIN: ~
+  eirinifs_downloader_http_proxy: ~
