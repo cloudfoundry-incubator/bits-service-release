@@ -111,7 +111,7 @@ spec:
           emptyDir: {}
       containers:
       - name: bits
-        image: flintstonecf/bits-service:2.27.0-dev.6
+        image: flintstonecf/bits-service:{{ .Values.bits.image_tag }}
         imagePullPolicy: Always
         ports:
           - containerPort: 8888

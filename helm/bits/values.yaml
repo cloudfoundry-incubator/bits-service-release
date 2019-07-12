@@ -5,6 +5,9 @@ opi:
   use_docker: false
   rootfs_version: v40.0.0
 
+bits:
+  image_tag: 2.28.0-dev.7
+
 kube:
   external_ips: []
 
