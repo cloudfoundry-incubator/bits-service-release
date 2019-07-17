@@ -127,7 +127,7 @@ spec:
         image: flintstonecf/eirinifs-downloader:2.27.0-dev.6
         env:
         - name: EIRINI_ROOTFS_VERSION
-          value: {{ .Values.opi.rootfs_version }}
+          value: {{ .Values.global.rootfs_version }}
           {{- if .Values.env.eirinifs_downloader_http_proxy }}
         - name: http_proxy
           value: "{{ .Values.env.eirinifs_downloader_http_proxy }}"
