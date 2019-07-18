@@ -3,6 +3,7 @@ opi:
   ingress_endpoint: no-ingress-set
   use_registry_ingress: false
   use_docker: false
+global:
   rootfs_version: v40.0.0
 
 bits:
