@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart for CloudFoundry/bits-service
 name: bits
-version: 2.28.0-dev.7
+version: 2.28.0-dev.8
