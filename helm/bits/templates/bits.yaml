@@ -11,6 +11,8 @@ data:
     private_endpoint: "https://bits.{{ .Release.Namespace }}.svc.cluster.local"
     {{- if .Values.services.loadbalanced }}
     public_endpoint: https://registry.{{ .Values.env.DOMAIN }}:6666
+    {{- else if .Values.opi.use_registry_ingress }}
+    public_endpoint: https://registry.{{ .Values.opi.ingress_endpoint }}
     {{- else }}
     public_endpoint: https://bits.{{ index .Values.kube.external_ips 0 }}.nip.io
     {{- end }}
@@ -172,6 +174,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: bits-registry
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: {{ .Values.static_ip_name }}
   labels:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -184,7 +188,7 @@ spec:
     - host: "registry.{{ .Values.opi.ingress_endpoint }}"
       http:
         paths:
-          - path: /
+          - path: /*
             backend:
               serviceName: bits
               servicePort: 8888
