@@ -6,6 +6,8 @@ opi:
 global:
   rootfs_version: v40.0.0
 
+tls_secret_name: private-registry-cert
+
 bits:
   image_tag: 2.28.0-dev.7
 
