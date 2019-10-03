@@ -7,6 +7,10 @@ global:
   rootfs_version: v40.0.0
 
 tls_secret_name: private-registry-cert
+# set to true if you wish to use a pre-populated
+# secret for TLS certs, such as that created by
+# cert-manager
+useExistingSecret: false
 
 bits:
   image_tag: 2.28.0-dev.7
@@ -25,6 +29,8 @@ secrets:
   BITS_SERVICE_SECRET: secret
   BITS_SERVICE_SIGNING_USER_PASSWORD: notpassword123
   BLOBSTORE_PASSWORD:  blobstore
+  BITS_TLS_CRT: ~
+  BITS_TLS_KEY: ~
 env:
   # Base domain of the SCF cluster.
   # Example: "my-scf-cluster.com"
