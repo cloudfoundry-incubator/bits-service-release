@@ -1,8 +1,9 @@
-opi:
-  # set ingress endoint when 'use_registry_ingress' is set to true
-  ingress_endpoint: no-ingress-set
-  use_registry_ingress: false
-  use_docker: false
+# set ingress endoint when 'use_registry_ingress' is set to true
+ingress:
+  use: false
+  endpoint: ~
+  annotations: {}
+
 global:
   rootfs_version: v40.0.0
 
