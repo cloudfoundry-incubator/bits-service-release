@@ -54,7 +54,9 @@ data:
       webdav_config: &webdav_config
         directory_key: cc-buildpacks
         private_endpoint: https://blobstore-blobstore.{{ .Release.Namespace }}.svc.cluster.local:4443
-        {{- if .Values.services.loadbalanced }}
+        {{- if .Values.opi.use_registry_ingress }}
+        public_endpoint: https://blobstore.{{ .Values.opi.ingress_endpoint }}
+        {{- else if .Values.services.loadbalanced }}
         public_endpoint: https://blobstore.{{ .Values.env.DOMAIN }}
         {{- else }}
         public_endpoint: https://blobstore.{{ index .Values.kube.external_ips 0 }}.nip.io
