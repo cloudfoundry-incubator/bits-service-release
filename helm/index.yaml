@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   bits:
   - apiVersion: v1
+    created: "2019-11-14T11:51:32.622753+01:00"
+    description: A Helm chart for CloudFoundry/bits-service
+    digest: 8079caf38bf2ec7f29f54878b4aec78ad3457469409e57879226deb3bb0eef46
+    name: bits
+    urls:
+    - https://cloudfoundry-incubator.github.io/bits-service-release/helm/bits-2.30.0.tgz
+    version: 2.30.0
+  - apiVersion: v1
     created: "2019-10-03T14:36:33.2931+01:00"
     description: A Helm chart for CloudFoundry/bits-service
     digest: 19b3c4341996aac220a40ba7d6285b2f693f5908779ba2058e3264b5225ac6c6

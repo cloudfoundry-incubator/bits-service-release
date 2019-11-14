@@ -126,6 +126,10 @@ spec:
           mountPath: /workspace/jobs/bits-service/certs
         - name: bits-assets
           mountPath: /assets/
+        resources:
+          requests:
+            cpu: 800m 
+            memory: 150Mi
       initContainers:
       - name: "download-eirini-rootfs"
         image: flintstonecf/eirinifs-downloader:2.27.0-dev.6
@@ -142,6 +146,10 @@ spec:
         volumeMounts:
         - name: bits-assets
           mountPath: /assets/
+        resources:
+          requests:
+            cpu: 200m 
+            memory: 50Mi
 
 # Service
 ---
