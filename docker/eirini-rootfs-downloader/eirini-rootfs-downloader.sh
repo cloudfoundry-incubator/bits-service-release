@@ -18,16 +18,16 @@ function sync_and_download_rootfs_tar_version
 
     if [ ! -s ${ASSETS_PATH}/eirini_rootfs_version_file ]; then
         echo "INFO: EIRINI_ROOTFS_VERSION specified - will download version ($EIRINI_ROOTFS_VERSION) of rootfs from GitHub"
-        grep_and_persist_version
         download_rootfs_tar
+        persist_version
         echo "INFO: EIRINI_ROOTFS_VERSION ($EIRINI_ROOTFS_VERSION) successfully downloaded - exiting."
         return 0
     else
         is_specified_rootfs_version_present
         echo "INFO: RootFS is outdated - Downloading..."
         delete_eirini_rootfs_tar_if_present
-        grep_and_persist_version
         download_rootfs_tar
+        persist_version
         echo "INFO: EIRINI_ROOTFS_VERSION ($EIRINI_ROOTFS_VERSION) successfully downloaded - exiting."
         return 0
     fi
@@ -48,14 +48,33 @@ function create_version_file_if_non_existent
     fi
 }
 
-function grep_and_persist_version
+function persist_version
 {
     echo $EIRINI_ROOTFS_VERSION > ${ASSETS_PATH}/eirini_rootfs_version_file
 }
 
 function download_rootfs_tar
 {
-    curl -X GET -L $(curl https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION} | jq '.assets[].browser_download_url' | tr -d '\"') --output ${ASSETS_PATH}/eirinifs.tar
+    local api_data eirinifs_url eirinifs_sha256_url checksum
+    local sha256_file="${ASSETS_PATH}/eirinifs.tar.${EIRINI_ROOTFS_VERSION}.sha256"
+    local tmp_file="${ASSETS_PATH}/eirinifs.tar.${EIRINI_ROOTFS_VERSION}.downloading"
+
+    api_data=$(curl -sS "https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION}")
+    eirinifs_url=$(jq -r <<< "$api_data" '.assets[] | select(.name == "eirinifs.tar") | .browser_download_url')
+    eirinifs_sha256_url=$(jq -r <<< "$api_data" '.assets[] | select(.name == "eirinifs.tar.sha256") | .browser_download_url')
+
+    curl -Ss -L "$eirinifs_sha256_url" --output "$sha256_file"
+    curl -C- -L "$eirinifs_url" --output "$tmp_file"
+
+    checksum=$(sha256sum -b "$tmp_file" | cut -d' ' -f1)
+
+    if [ "$checksum" != "$(cat "$sha256_file")" ]; then
+        echo "ERROR: Checksum doesn't match. Deleting $tmp_file and exiting ..."
+        rm "$tmp_file"
+        exit 1
+    fi
+
+    mv "$tmp_file" "${ASSETS_PATH}/eirinifs.tar"
 }
 
 function is_specified_rootfs_version_present
