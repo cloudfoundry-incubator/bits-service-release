@@ -5,7 +5,7 @@ ingress:
   annotations: {}
 
 global:
-  rootfs_version: v40.0.0
+  rootfs_version: v129.0.0
 
 tls_secret_name: private-registry-cert
 # set to true if you wish to use a pre-populated

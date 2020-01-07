@@ -132,7 +132,7 @@ spec:
             memory: 150Mi
       initContainers:
       - name: "download-eirini-rootfs"
-        image: flintstonecf/eirinifs-downloader:2.27.0-dev.6
+        image: eirini/rootfs-downloader:2.31.0@sha256:26f9e9ec3ca7ec74f7122bb1b2163fa48c5c459fe13448d2d9e994ab9142a8b4
         env:
         - name: EIRINI_ROOTFS_VERSION
           value: {{ .Values.global.rootfs_version }}
