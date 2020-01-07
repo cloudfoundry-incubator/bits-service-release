@@ -1,6 +1,8 @@
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get install vim curl jq -y
+RUN apt-get update \ 
+  && apt-get install --no-install-recommends curl jq ca-certificates  -y \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY eirini-rootfs-downloader.sh /
 

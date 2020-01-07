@@ -50,7 +50,7 @@ function create_version_file_if_non_existent
 
 function persist_version
 {
-    echo $EIRINI_ROOTFS_VERSION > ${ASSETS_PATH}/eirini_rootfs_version_file
+    echo "$EIRINI_ROOTFS_VERSION" > "${ASSETS_PATH}/eirini_rootfs_version_file"
 }
 
 function download_rootfs_tar
@@ -90,13 +90,15 @@ function is_specified_rootfs_version_present
     fi
 }
 
-function abort_if_rootfs_version_does_not_exist 
+function abort_if_rootfs_version_does_not_exist
 {
-    STATUS_CODE=$(curl -I -L https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION} --write-out  %{http_code} --silent --output /dev/null)
-    if [ "$STATUS_CODE" == "200" ]
+    local status_code
+curl -I -L "https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION}" --write-out  "%{http_code}" --silent
+    status_code=$(curl -I -L "https://api.github.com/repos/cloudfoundry-incubator/eirinifs/releases/tags/${EIRINI_ROOTFS_VERSION}" --write-out  "%{http_code}" --silent --output /dev/null)
+    if [ "$status_code" == "200" ]
     then
         echo "INFO: The specified rootfs version (${EIRINI_ROOTFS_VERSION}) exists --continue"
-    elif [ "$STATUS_CODE" == "404" ]
+    elif [ "$status_code" == "404" ]
      then
         echo "ERROR: The specified rootfs version (${EIRINI_ROOTFS_VERSION}) does not exist - please speficy an existing version"
         exit 1
