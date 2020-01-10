@@ -128,7 +128,7 @@ spec:
           mountPath: /assets/
         resources:
           requests:
-            cpu: 800m 
+            cpu: 800m
             memory: 150Mi
       initContainers:
       - name: "download-eirini-rootfs"
@@ -148,8 +148,10 @@ spec:
           mountPath: /assets/
         resources:
           requests:
-            cpu: 200m 
+            cpu: 200m
             memory: 50Mi
+      securityContext:
+        runAsNonRoot: false
 
 # Service
 ---
