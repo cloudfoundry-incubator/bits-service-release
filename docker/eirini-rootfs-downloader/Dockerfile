@@ -6,4 +6,6 @@ RUN apt-get update \
 
 COPY eirini-rootfs-downloader.sh /
 
-RUN chmod u+x /eirini-rootfs-downloader.sh
+RUN chmod 775 /eirini-rootfs-downloader.sh
+
+USER 1001
