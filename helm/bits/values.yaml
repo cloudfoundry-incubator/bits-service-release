@@ -4,6 +4,10 @@ ingress:
   endpoint: ~
   annotations: {}
 
+blobstore:
+  serviceName: "blobstore-blobstore"
+  userName: "blobstore_user"
+
 global:
   rootfs_version: v129.0.0
 

@@ -53,7 +53,7 @@ data:
       blobstore_type: webdav
       webdav_config: &webdav_config
         directory_key: cc-buildpacks
-        private_endpoint: https://blobstore-blobstore.{{ .Release.Namespace }}.svc.cluster.local:4443
+        private_endpoint: https://{{ .Values.blobstore.serviceName }}.{{ .Release.Namespace }}.svc.cluster.local:4443
         {{- if .Values.ingress.use }}
         public_endpoint: https://blobstore.{{ .Values.ingress.endpoint }}
         {{- else if .Values.services.loadbalanced }}
@@ -61,7 +61,7 @@ data:
         {{- else }}
         public_endpoint: https://blobstore.{{ index .Values.kube.external_ips 0 }}.nip.io
         {{- end }}
-        username: blobstore_user
+        username: {{ .Values.blobstore.userName }}
         password: {{ .Values.secrets.BLOBSTORE_PASSWORD  }}
         # TODO: provide proper cert file here
         ca_cert_path: /workspace/jobs/bits-service/certs/tls.crt
