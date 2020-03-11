@@ -115,7 +115,7 @@ spec:
           emptyDir: {}
       containers:
       - name: bits
-        image: eirini/bits-service:2.31.0@sha256:211d01cae3a5eedca28fd6bffb8cdf1dd37d95ae2a83976d96f777af220aa0fe
+        image: eirini/bits-service:2.36.0@sha256:4cf84e13890890f5d8443a5e6e129b701d524f51d35c9c4295a0562ed8bb1bb2
         imagePullPolicy: Always
         ports:
           - containerPort: 8888
