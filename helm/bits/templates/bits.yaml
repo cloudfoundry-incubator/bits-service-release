@@ -115,10 +115,18 @@ spec:
           emptyDir: {}
       containers:
       - name: bits
-        image: eirini/bits-service:2.31.0@sha256:6bfbbf3c2125e722e72dba7df36a47e058496d007dcfb26e1ac1c436f520cc46
+        image: eirini/bits-service:2.31.0@sha256:211d01cae3a5eedca28fd6bffb8cdf1dd37d95ae2a83976d96f777af220aa0fe
         imagePullPolicy: Always
         ports:
           - containerPort: 8888
+        {{- if and (.Values.blobstore.secret.name) (.Values.blobstore.secret.passwordPath) }}
+        env:
+        - name: BITS_BLOBSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: "{{ .Values.blobstore.secret.passwordPath }}"
+              name: "{{ .Values.blobstore.secret.name }}"
+        {{- end }}
         volumeMounts:
         - name: bits-config
           mountPath: /workspace/jobs/bits-service/config

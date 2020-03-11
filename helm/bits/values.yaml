@@ -7,6 +7,9 @@ ingress:
 blobstore:
   serviceName: "blobstore-blobstore"
   userName: "blobstore_user"
+  secret:
+    name: ~
+    passwordPath: ~
 
 global:
   rootfs_version: v129.0.0
