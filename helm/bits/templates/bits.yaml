@@ -23,8 +23,8 @@ data:
     {{- else }}
     registry_endpoint: "https://registry.{{ index .Values.kube.external_ips 0 }}.nip.io"
     {{- end }}
-    cert_file: /workspace/jobs/bits-service/certs/tls.crt
-    key_file: /workspace/jobs/bits-service/certs/tls.key
+    cert_file: /workspace/jobs/bits-service/certs/{{ if index .Values "tls_cert_name" }}{{ .Values.tls_cert_name }}{{ else }}{{ "tls.crt" }}{{ end }}
+    key_file: /workspace/jobs/bits-service/certs/{{ if index .Values "tls_key_name" }}{{ .Values.tls_key_name }}{{ else }}{{ "tls.key" }}{{ end }}
     port: 6666
     enable_http: true
     http_port: 8888
@@ -64,7 +64,7 @@ data:
         username: {{ .Values.blobstore.userName }}
         password: {{ .Values.secrets.BLOBSTORE_PASSWORD  }}
         # TODO: provide proper cert file here
-        ca_cert_path: /workspace/jobs/bits-service/certs/tls.crt
+        ca_cert_path: /workspace/jobs/bits-service/certs/{{ if index .Values "tls_ca_name" }}{{ .Values.tls_ca_name }}{{ else }}{{ "tls.crt" }}{{ end }}
         # TODO: remove this skip, when we have propert cert file above
         skip_cert_verify: true
     droplets:
