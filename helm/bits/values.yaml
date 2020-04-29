@@ -13,6 +13,8 @@ blobstore:
 
 global:
   rootfs_version: v129.0.0
+  label: {}
+  annotations: {}
 
 tls_secret_name: private-registry-cert
 # set to true if you wish to use a pre-populated
