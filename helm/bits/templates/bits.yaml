@@ -90,6 +90,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: "bits"
+{{- if .Values.global.labels }}
+  labels:
+{{ toYaml .Values.global.labels | indent 4 }}
+{{- end }}
+{{- if .Values.global.annotations }}
+  annotations:
+{{ toYaml .Values.global.annotations | indent 4 }}
+{{- end }}
 spec:
   replicas: 1
   selector:
