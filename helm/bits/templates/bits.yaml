@@ -115,7 +115,7 @@ spec:
           emptyDir: {}
       containers:
       - name: bits
-        image: eirini/bits-service:2.36.0@sha256:4cf84e13890890f5d8443a5e6e129b701d524f51d35c9c4295a0562ed8bb1bb2
+        image: {{ .Values.global.images.bits_service }}
         imagePullPolicy: Always
         ports:
           - containerPort: 8888
@@ -140,7 +140,7 @@ spec:
             memory: 150Mi
       initContainers:
       - name: "download-eirini-rootfs"
-        image: eirini/rootfs-downloader:2.32.0@sha256:6ae511688a27a453dcf31bf5a3bd7287ba99233e1586c7aeb78c87a18c68dbe4
+        image: {{ .Values.global.images.rootfs_downloader }}
         env:
         - name: EIRINI_ROOTFS_VERSION
           value: {{ .Values.global.rootfs_version }}
