@@ -20,6 +20,10 @@ tls_secret_name: private-registry-cert
 # cert-manager
 useExistingSecret: false
 
+# If set to false, the eirinifs will not be downloaded when the bits pod
+# is started. It should be used when the eirinifs is provided in some other way.
+download_eirinifs: true
+
 kube:
   external_ips: []
 
